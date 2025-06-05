@@ -26,6 +26,7 @@
 using Microsoft.EntityFrameworkCore;
 using Spirekit.Core.Constants;
 using Spirekit.Core.Interfaces;
+using Spirekit.Events;
 using System.Linq.Expressions;
 
 namespace Spirekit.API.EntityFramework.Repositories;
@@ -44,16 +45,18 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
     protected readonly TContext _context;
     protected readonly DbSet<T> _dbSet;
 
-    public event Func<T, Task>? OnAfterAddAsync;
-    public event Func<T, Task>? OnAfterUpdateAsync;
-    public event Func<T, Task>? OnAfterDeleteAsync;
+    public LazyEventEmitter<T> OnAfterAdd { get; } = new();
+    public LazyEventEmitter<List<T>> OnAfterAddRange { get; } = new();
+    public LazyEventEmitter<T> OnAfterUpdate { get; } = new();
+    public LazyEventEmitter<List<T>> OnAfterUpdateRange { get; } = new();
+    public LazyEventEmitter<T> OnAfterDelete { get; } = new();
+    public LazyEventEmitter<List<T>> OnAfterDeleteRange { get; } = new();
 
     protected BaseRepository(TContext context)
     {
         _context = context;
         _dbSet = context.Set<T>();
     }
-
 
     // --- Read ---
 
@@ -75,9 +78,9 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
     }
 
     public virtual async Task<PaginatedResult<T>> ListPagedFilteredAsync(
-    Expression<Func<T, bool>> filter,
-    int page,
-    int pageSize)
+        Expression<Func<T, bool>> filter,
+        int page,
+        int pageSize)
     {
         var query = _dbSet
             .Where(e => e.StateFlag == StateFlags.ACTIVE)
@@ -92,37 +95,38 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
 
-
-
     // --- Create ---
 
     public virtual async Task<T> AddAsync(T entity)
     {
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.UpdatedAt = DateTime.UtcNow;
+
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
 
-        if (OnAfterAddAsync is not null)
-            await OnAfterAddAsync.Invoke(entity);
-
+        OnAfterAdd.Emit(entity);
         return entity;
     }
 
     public virtual async Task<IReadOnlyList<T>> AddRangeAsync(IEnumerable<T> entities)
     {
         var entityList = entities.ToList();
+        var utcNow = DateTime.UtcNow;
+
+        foreach (var entity in entityList)
+        {
+            entity.CreatedAt = utcNow;
+            entity.UpdatedAt = utcNow;
+        }
+
         await _dbSet.AddRangeAsync(entityList);
         await _context.SaveChangesAsync();
 
-        if (OnAfterAddAsync is not null)
-        {
-            foreach (var entity in entityList)
-                await OnAfterAddAsync.Invoke(entity);
-        }
+        OnAfterAddRange.Emit(entityList);
 
         return entityList;
     }
-
-
 
     // --- Update ---
 
@@ -132,31 +136,25 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
 
-        if (OnAfterUpdateAsync is not null)
-            await OnAfterUpdateAsync.Invoke(entity);
-
+        OnAfterUpdate.Emit(entity);
         return entity;
     }
 
     public virtual async Task<IReadOnlyList<T>> UpdateRangeAsync(IEnumerable<T> entities)
     {
         var entityList = entities.ToList();
+        var utcNow = DateTime.UtcNow;
+
         foreach (var entity in entityList)
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = utcNow;
 
         _dbSet.UpdateRange(entityList);
         await _context.SaveChangesAsync();
 
-        if (OnAfterUpdateAsync is not null)
-        {
-            foreach (var entity in entityList)
-                await OnAfterUpdateAsync.Invoke(entity);
-        }
+        OnAfterUpdateRange.Emit(entityList);
 
         return entityList;
     }
-
-
 
     // --- Delete ---
 
@@ -167,29 +165,25 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
 
-        if (OnAfterDeleteAsync is not null)
-            await OnAfterDeleteAsync.Invoke(entity);
-
+        OnAfterDelete.Emit(entity);
         return entity;
     }
 
     public virtual async Task<IReadOnlyList<T>> DeleteRangeAsync(IEnumerable<T> entities)
     {
         var entityList = entities.ToList();
+        var utcNow = DateTime.UtcNow;
+
         foreach (var entity in entityList)
         {
             entity.StateFlag = StateFlags.DELETED;
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = utcNow;
         }
 
         _dbSet.UpdateRange(entityList);
         await _context.SaveChangesAsync();
 
-        if (OnAfterDeleteAsync is not null)
-        {
-            foreach (var entity in entityList)
-                await OnAfterDeleteAsync.Invoke(entity);
-        }
+        OnAfterDeleteRange.Emit(entityList);
 
         return entityList;
     }
@@ -204,9 +198,7 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
 
-        if (OnAfterDeleteAsync is not null)
-            await OnAfterDeleteAsync.Invoke(entity);
-
+        OnAfterDelete.Emit(entity);
         return entity;
     }
 }

@@ -12,3 +12,8 @@ public abstract record BaseEntityRecord : ICreatedAt, IUpdatedAt, IStateFlag
     // State Flag
     public string StateFlag { get; set; } = StateFlags.ACTIVE;
 }
+
+public abstract record BaseEntityRecord<TId> : BaseEntityRecord, IHasId<TId>
+{
+    public TId Id { get; set; } = default!;
+}

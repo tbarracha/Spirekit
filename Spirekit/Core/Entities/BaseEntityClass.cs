@@ -12,3 +12,8 @@ public abstract class BaseEntityClass : ICreatedAt, IUpdatedAt, IStateFlag
     // State Flag
     public string StateFlag { get; set; } = StateFlags.ACTIVE;
 }
+
+public abstract class BaseEntityClass<TId> : BaseEntityClass, IHasId<TId>
+{
+    public TId Id { get; set; } = default!;
+}
