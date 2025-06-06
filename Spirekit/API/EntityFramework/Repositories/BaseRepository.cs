@@ -38,7 +38,7 @@ namespace Spirekit.API.EntityFramework.Repositories;
 /// <typeparam name="T">The entity type. Must implement ICreatedAt, IUpdatedAt, and IStateFlag.</typeparam>
 /// <typeparam name="TId">The primary key type of the entity.</typeparam>
 /// <typeparam name="TContext">The EF Core DbContext type for the current repository scope.</typeparam>
-public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
+public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IPagination<T>
     where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     where TContext : DbContext
 {
@@ -67,6 +67,9 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
 
     public virtual async Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize)
     {
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+
         var query = _dbSet.Where(e => e.StateFlag == StateFlags.ACTIVE);
         var totalCount = await query.CountAsync();
         var items = await query
@@ -77,11 +80,15 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
 
+
     public virtual async Task<PaginatedResult<T>> ListPagedFilteredAsync(
-        Expression<Func<T, bool>> filter,
-        int page,
-        int pageSize)
+    Expression<Func<T, bool>> filter,
+    int page,
+    int pageSize)
     {
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+
         var query = _dbSet
             .Where(e => e.StateFlag == StateFlags.ACTIVE)
             .Where(filter);
@@ -94,6 +101,8 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>
 
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
+
+
 
     // --- Create ---
 

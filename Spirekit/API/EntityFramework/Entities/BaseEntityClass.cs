@@ -1,9 +1,9 @@
 ﻿using Spirekit.Core.Constants;
 using Spirekit.Core.Interfaces;
 
-namespace Spirekit.Core.Entities;
+namespace Spirekit.API.EntityFramework.Entities;
 
-public abstract record BaseEntityRecord : ICreatedAt, IUpdatedAt, IStateFlag
+public abstract class BaseEntityClass : ICreatedAt, IUpdatedAt, IStateFlag
 {
     // Timestamps
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -13,7 +13,7 @@ public abstract record BaseEntityRecord : ICreatedAt, IUpdatedAt, IStateFlag
     public string StateFlag { get; set; } = StateFlags.ACTIVE;
 }
 
-public abstract record BaseEntityRecord<TId> : BaseEntityRecord, IHasId<TId>
+public abstract class BaseEntityClass<TId> : BaseEntityClass, IHasId<TId>
 {
     public TId Id { get; set; } = default!;
 }

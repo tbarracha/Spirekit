@@ -3,8 +3,6 @@
 // Created with AI assistance (ChatGPT)
 // -----------------------------------------------------------------------------
 
-using System.Linq.Expressions;
-
 namespace Spirekit.API.EntityFramework.Repositories;
 
 /// <summary>
@@ -21,19 +19,6 @@ public interface IRepository<T, TId> where T : class
 
     /// <summary>Gets a list of all active entities.</summary>
     Task<IReadOnlyList<T>> ListAsync();
-
-    /// <summary>
-    /// Retrieves a paginated list of active entities.
-    /// </summary>
-    Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize);
-
-    /// <summary>
-    /// Retrieves a paginated list of active entities matching the given filter expression.
-    /// </summary>
-    Task<PaginatedResult<T>> ListPagedFilteredAsync(
-        Expression<Func<T, bool>> filter,
-        int page,
-        int pageSize);
 
 
 

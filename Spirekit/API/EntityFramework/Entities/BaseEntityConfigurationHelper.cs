@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Spirekit.Core.Interfaces;
 
-namespace Spirekit.Core.Entities;
+namespace Spirekit.API.EntityFramework.Entities;
 
 public static class BaseEntityConfigurationHelper
 {
