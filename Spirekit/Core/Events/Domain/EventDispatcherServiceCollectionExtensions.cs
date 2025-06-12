@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Scrutor;
 
 namespace Spirekit.Events.Domain.Extensions;
 

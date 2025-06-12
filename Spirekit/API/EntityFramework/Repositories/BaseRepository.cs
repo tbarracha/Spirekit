@@ -45,6 +45,8 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
     protected readonly TContext _context;
     protected readonly DbSet<T> _dbSet;
 
+    public IQueryable<T> Query() => _dbSet.AsQueryable();
+
     public LazyEventEmitter<T> OnAfterAdd { get; } = new();
     public LazyEventEmitter<List<T>> OnAfterAddRange { get; } = new();
     public LazyEventEmitter<T> OnAfterUpdate { get; } = new();
