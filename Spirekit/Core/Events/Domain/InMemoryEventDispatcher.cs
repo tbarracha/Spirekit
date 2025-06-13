@@ -12,14 +12,14 @@ public class InMemoryEventDispatcher : IEventDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public async Task DispatchAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
+    public async Task DispatchEventAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
         where TEvent : IDomainEvent
     {
         var handlers = _serviceProvider.GetServices<IEventHandler<TEvent>>();
 
         foreach (var handler in handlers)
         {
-            await handler.HandleAsync(@event, cancellationToken);
+            await handler.HandleEventAsync(@event, cancellationToken);
         }
     }
 }

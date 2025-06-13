@@ -1,20 +1,32 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Scrutor;
 
-namespace Spirekit.Events.Domain.Extensions;
-
-public static class EventDispatcherServiceCollectionExtensions
+namespace Spirekit.Events.Domain.Extensions
 {
-    public static IServiceCollection AddDomainEventDispatcher(this IServiceCollection services)
+    public static class EventDispatcherServiceCollectionExtensions
     {
-        services.AddSingleton<IEventDispatcher, InMemoryEventDispatcher>();
+        public static IServiceCollection AddDomainEventDispatcher(this IServiceCollection services)
+        {
+            services.AddSingleton<IEventDispatcher, InMemoryEventDispatcher>();
 
-        services.Scan(scan => scan
-            .FromApplicationDependencies()
-            .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>)))
-            .AsImplementedInterfaces()
-            .WithTransientLifetime());
+            // Get all types in all loaded assemblies
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        return services;
+            var handlerInterfaceType = typeof(IEventHandler<>);
+
+            var handlerTypes = assemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(t => !t.IsAbstract && !t.IsInterface)
+                .SelectMany(t => t.GetInterfaces()
+                    .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterfaceType)
+                    .Select(i => new { HandlerType = t, InterfaceType = i }))
+                .ToList();
+
+            foreach (var handler in handlerTypes)
+            {
+                services.AddTransient(handler.InterfaceType, handler.HandlerType);
+            }
+
+            return services;
+        }
     }
 }
