@@ -3,6 +3,9 @@
 // Created with AI assistance (ChatGPT)
 // -----------------------------------------------------------------------------
 
+using Spirekit.Core.Constants;
+using System.Linq.Expressions;
+
 namespace Spirekit.API.EntityFramework.Repositories;
 
 /// <summary>
@@ -17,8 +20,11 @@ public interface IRepository<T, TId> where T : class
     /// <summary>Gets an entity by its ID.</summary>
     Task<T?> GetByIdAsync(TId id);
 
-    /// <summary>Gets a list of all active entities.</summary>
-    Task<IReadOnlyList<T>> ListAsync();
+    /// <summary>Gets a list of all entities matching a given state flag (default: ACTIVE).</summary>
+    Task<IReadOnlyList<T>> ListAsync(string state = StateFlags.ACTIVE);
+
+    /// <summary>Gets a filtered list of entities matching a given state flag (default: ACTIVE).</summary>
+    Task<IReadOnlyList<T>> ListFilteredAsync(Expression<Func<T, bool>> filter, string state = StateFlags.ACTIVE);
 
 
 

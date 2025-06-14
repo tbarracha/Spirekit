@@ -24,6 +24,7 @@
 // -----------------------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
+using Spirekit.API.EntityFramework.Pagination;
 using Spirekit.Core.Constants;
 using Spirekit.Core.Interfaces;
 using Spirekit.Events;
@@ -64,15 +65,23 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
 
     public abstract Task<T?> GetByIdAsync(TId id);
 
-    public virtual async Task<IReadOnlyList<T>> ListAsync()
-        => await _dbSet.Where(e => e.StateFlag == StateFlags.ACTIVE).ToListAsync();
+    public virtual async Task<IReadOnlyList<T>> ListAsync(string state = StateFlags.ACTIVE)
+    => await _dbSet.Where(e => e.StateFlag == state).ToListAsync();
 
-    public virtual async Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize)
+    public virtual async Task<IReadOnlyList<T>> ListFilteredAsync(Expression<Func<T, bool>> filter, string state = StateFlags.ACTIVE)
+    {
+        return await _dbSet
+            .Where(e => e.StateFlag == state)
+            .Where(filter)
+            .ToListAsync();
+    }
+
+    public virtual async Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize, string state = StateFlags.ACTIVE)
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
 
-        var query = _dbSet.Where(e => e.StateFlag == StateFlags.ACTIVE);
+        var query = _dbSet.Where(e => e.StateFlag == state);
         var totalCount = await query.CountAsync();
         var items = await query
             .Skip((page - 1) * pageSize)
@@ -82,17 +91,17 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
 
-
     public virtual async Task<PaginatedResult<T>> ListPagedFilteredAsync(
-    Expression<Func<T, bool>> filter,
-    int page,
-    int pageSize)
+        Expression<Func<T, bool>> filter,
+        int page,
+        int pageSize,
+        string state = StateFlags.ACTIVE)
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
 
         var query = _dbSet
-            .Where(e => e.StateFlag == StateFlags.ACTIVE)
+            .Where(e => e.StateFlag == state)
             .Where(filter);
 
         var totalCount = await query.CountAsync();

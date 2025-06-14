@@ -25,7 +25,7 @@ using Spirekit.Core.Constants;
 using Spirekit.Core.Interfaces;
 using System.Linq.Expressions;
 
-namespace Spirekit.API.EntityFramework;
+namespace Spirekit.API.EntityFramework.DbContexts;
 
 public static class DbContextExtensions
 {

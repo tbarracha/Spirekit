@@ -5,7 +5,7 @@
 // and paging parameters for Entity Framework repository queries.
 // -----------------------------------------------------------------------------
 
-namespace Spirekit.API.EntityFramework.Repositories;
+namespace Spirekit.API.EntityFramework.Pagination;
 
 /// <summary>
 /// Represents a paginated result with metadata for total count and page boundaries.
