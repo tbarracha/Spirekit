@@ -1,6 +1,7 @@
 ﻿// -----------------------------------------------------------------------------
 // Author: Tiago Barracha <ti.barracha@gmail.com>
 // Created with AI assistance (ChatGPT)
+//
 // Description: Encapsulates paginated query results with metadata including total count
 // and paging parameters for Entity Framework repository queries.
 // -----------------------------------------------------------------------------

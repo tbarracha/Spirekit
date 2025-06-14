@@ -3,7 +3,9 @@
 // Created with AI assistance (ChatGPT)
 // -----------------------------------------------------------------------------
 
+using Microsoft.EntityFrameworkCore;
 using Spirekit.Core.Constants;
+using Spirekit.Core.Interfaces;
 using System.Linq.Expressions;
 
 namespace Spirekit.API.EntityFramework.Repositories;
@@ -13,7 +15,7 @@ namespace Spirekit.API.EntityFramework.Repositories;
 /// </summary>
 /// <typeparam name="T">Entity type.</typeparam>
 /// <typeparam name="TId">Primary key type.</typeparam>
-public interface IRepository<T, TId> where T : class
+public interface IRepository<T, TId> where T : class, ICreatedAt, IUpdatedAt, IStateFlag
 {
     // --- Read ---
 

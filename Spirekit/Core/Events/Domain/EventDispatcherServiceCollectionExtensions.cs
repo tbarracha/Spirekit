@@ -6,7 +6,7 @@ namespace Spirekit.Events.Domain.Extensions
     {
         public static IServiceCollection AddDomainEventDispatcher(this IServiceCollection services)
         {
-            services.AddSingleton<IEventDispatcher, InMemoryEventDispatcher>();
+            services.AddScoped<IEventDispatcher, InMemoryEventDispatcher>();
 
             // Get all types in all loaded assemblies
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();

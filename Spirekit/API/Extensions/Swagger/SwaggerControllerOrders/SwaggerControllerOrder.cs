@@ -13,13 +13,19 @@ public sealed class SwaggerControllerOrder
     public SwaggerControllerOrder(IEnumerable<Type> controllerTypes)
     {
         _orderLookup = controllerTypes
-            .Select(t => new
+            .Select(t =>
             {
-                Name = ResolveControllerName(t.Name),
-                Order = t.GetCustomAttribute<SwaggerControllerOrderAttribute>()!.Order
+                var attr = t.GetCustomAttribute<SwaggerControllerOrderAttribute>();
+                var order = attr?.Order ?? int.MaxValue;
+                return new
+                {
+                    Name = ResolveControllerName(t.Name),
+                    Order = order
+                };
             })
             .ToDictionary(x => x.Name, x => x.Order, StringComparer.OrdinalIgnoreCase);
     }
+
 
     public int GetOrder(string controllerName) =>
         _orderLookup.TryGetValue(controllerName, out var order) ? order : int.MaxValue;

@@ -1,6 +1,7 @@
 ﻿// -----------------------------------------------------------------------------
 // Author: Tiago Barracha <ti.barracha@gmail.com>
 // Created with AI assistance (ChatGPT)
+//
 // Description: Provides a generic base repository implementation with support for 
 // pagination, batch operations, and soft deletion using Entity Framework Core.
 // -----------------------------------------------------------------------------
