@@ -30,7 +30,7 @@
 using System.IO.Compression;
 using System.Text.RegularExpressions;
 
-namespace Spirekit.Mappings.CrossLanguage;
+namespace Spirekit.Mappings.Language;
 
 /// <summary>
 /// Converts .NET DTO classes into TypeScript interfaces.
