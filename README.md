@@ -1,51 +1,57 @@
 # SpireKit
 
-**SpireKit** is a modular, reusable base library designed to unify and streamline shared logic across all Genspire .NET projects. It provides core building blocks such as base entity definitions, repository patterns, utility extensions, and standardized interfaces.
+**SpireKit** is a modular .NET library that centralizes reusable backend components for all \*Spire projects. It includes base entities, repository patterns, domain events, CLI utilities, and more — designed for direct project reference (NuGet support coming soon).
 
 ---
 
-## 📦 Features
+## 📦 Key Features
 
-- 🧱 Base entity and interface contracts (`ICreatedAt`, `IUpdatedAt`, `IStateFlag`)
-- 🧮 Generic repository implementations for Entity Framework Core
-- 🧰 Common utilities and extension methods
-- 📐 Shared constants, enums, and value types
-- 📦 Designed for easy integration via NuGet
+* 🧱 **Entity Framework Core Support**
+  Base entities, generic repositories, pagination, and multi-context services.
 
----
+* 🧪 **Domain Events**
+  In-memory event dispatching for decoupled business logic.
 
-## 🔧 Installation
+* 🖥 **Console Utilities**
+  Command-driven CLI tools with stateful menus and logging.
 
-You can reference SpireKit in your projects either by:
+* 🔁 **TypeScript DTO Mapper**
+  Auto-generate TypeScript interfaces from backend models.
 
-### 1. Direct Project Reference
-```bash
-dotnet add reference ../SpireKit/SpireKit.csproj
-````
-
-### 2. Via NuGet (coming soon)
-
-```bash
-dotnet add package SpireKit
-```
+* ⚙️ **Utilities & Extensions**
+  Includes `GuidUtility`, Swagger UI enhancements, and controller ordering.
 
 ---
 
-## 🗂 Project Structure
+## 📁 Project Overview
 
 ```
 SpireKit/
-├── Entities/
-├── Interfaces/
-├── Repositories/
-├── Extensions/
-├── Constants/
-└── SpireKit.csproj
+├── API/
+│   ├── EntityFramework/         → EF Core entities, repositories, services
+│   └── Extensions/Swagger/      → Swagger helpers and filters
+├── Cli/                         → Console command system
+├── Core/                        → Interfaces, constants, domain events
+├── Mappings/                    → Cross-language mappers (e.g. TypeScript)
+├── Utils/                       → General-purpose utilities
+└── Spirekit.csproj
 ```
 
 ---
 
-## ✅ Usage Example
+## 🔧 Usage
+
+Until NuGet support is added, reference the project directly:
+
+```bash
+dotnet add reference ../Spirekit/Spirekit.csproj
+```
+
+---
+
+## ✅ Example
+
+### 🔹 Entity + Repository
 
 ```csharp
 public class User : BaseEntityClass<Guid>, ICreatedAt, IUpdatedAt, IStateFlag
@@ -64,12 +70,25 @@ public class UserRepository : BaseRepository<User, Guid, AppDbContext>
 
 ---
 
-## 🛡 License
+### 🔸 DTO → TypeScript Mapping
 
-MIT License — feel free to use, modify, and distribute.
+```csharp
+public class UserDto
+{
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+}
+```
 
----
+After using `TypescriptDtoMapper`, this generates:
 
-## 👨‍💻 Maintained by
+```ts
+export interface UserDto {
+  id: string;
+  username: string;
+  email: string;
+}
+```
 
-[Genspire Projects](https://github.com/yourusername)
+> Supports options for camelCase conversion, nullable detection, and primitive type mapping.
