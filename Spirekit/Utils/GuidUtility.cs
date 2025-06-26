@@ -15,7 +15,7 @@
 //
 // -----------------------------------------------------------------------------
 
-namespace Spirekit.Helpers;
+namespace Spirekit.Utils;
 
 public static class GuidUtility
 {
