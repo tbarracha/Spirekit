@@ -1,7 +1,6 @@
-﻿
-using SpireCore.API.Services;
+﻿using SpireCore.API.Services;
 
-namespace SpireApi.Application.Services;
+namespace SpireApi.Application.Features.Hello.Services;
 
 public interface IHelloService
 {

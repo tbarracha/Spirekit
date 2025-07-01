@@ -2,7 +2,7 @@
 using SpireCore.API.Operations;
 using SpireApi.Contracts.Hello;
 
-namespace SpireApi.Application.Operations.Hello;
+namespace SpireApi.Application.Features.Hello.Operations.Hello;
 
 [OperationGroup("Hello")]
 [OperationRoute("hello/world")]

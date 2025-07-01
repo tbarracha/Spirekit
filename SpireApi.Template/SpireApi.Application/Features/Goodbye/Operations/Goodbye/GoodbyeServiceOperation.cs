@@ -1,9 +1,9 @@
 ﻿
 using SpireCore.API.Operations;
 using SpireApi.Contracts.Hello;
-using SpireApi.Application.Services;
+using SpireApi.Application.Features.Goodbye.Services;
 
-namespace SpireApi.Application.Operations.Goodbye;
+namespace SpireApi.Application.Features.Goodbye.Operations.Goodbye;
 
 [OperationRoute("goodbye/world/service")]
 public class GoodbyeServiceOperation : IOperation<HelloRequest, HelloResponse>
