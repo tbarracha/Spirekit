@@ -2,7 +2,7 @@
 using SpireCore.API.Operations;
 using SpireApi.Contracts.Hello;
 
-namespace DddAutoOpsDemo.Application.Operations.Goodbye;
+namespace SpireApi.Application.Operations.Goodbye;
 
 [OperationRoute("goodbye/world")]
 [OperationMethod(OperationMethodType.GET)]

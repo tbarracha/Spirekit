@@ -41,6 +41,16 @@ public static class OperationEndpointMapper
             })
         };
 
+        // TELL SWAGGER ABOUT RESPONSE TYPE:
+        builder.Produces<TRes>(StatusCodes.Status200OK);
+
+        // Optionally, if you want to enrich with summary/description:
+        builder.WithOpenApi(op =>
+        {
+            op.Responses["200"].Description = $"Success ({typeof(TRes).Name})";
+            return op;
+        });
+
         return builder;
     }
 

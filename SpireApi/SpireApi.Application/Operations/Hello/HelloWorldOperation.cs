@@ -2,9 +2,10 @@
 using SpireCore.API.Operations;
 using SpireApi.Contracts.Hello;
 
-namespace DddAutoOpsDemo.Application.Operations.Hello;
+namespace SpireApi.Application.Operations.Hello;
 
 [OperationGroup("Hello")]
+[OperationRoute("hello/world")]
 public class HelloWorldOperation : IOperation<HelloRequest, HelloResponse>
 {
     public Task<HelloResponse> ExecuteAsync(HelloRequest request)

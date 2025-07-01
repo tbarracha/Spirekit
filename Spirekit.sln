@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpireCore", "SpireCore\SpireCore.csproj", "{998E6721-3FEE-468D-16B6-9681C3C7AD8D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SpireApi", "SpireApi", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		spireApiREADME.md = spireApiREADME.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpireApi.Host", "SpireApi\SpireApi.Host\SpireApi.Host.csproj", "{610E2E72-74FA-E2A5-AB8C-B5ED37B93BFE}"
 EndProject
