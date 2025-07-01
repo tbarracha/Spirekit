@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace SpireCore.Events.Domain
+namespace SpireCore.Events.Dispatcher
 {
     public static class EventDispatcherServiceCollectionExtensions
     {

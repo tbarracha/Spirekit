@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SpireCore.Interfaces;
+using SpireCore.Abstractions.Interfaces;
 
 namespace SpireCore.API.EntityFramework.Entities;
 

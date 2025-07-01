@@ -1,4 +1,4 @@
-﻿namespace SpireCore.Events.Domain;
+﻿namespace SpireCore.Events.Dispatcher;
 
 public interface IEventHandler<in TEvent> where TEvent : IDomainEvent
 {

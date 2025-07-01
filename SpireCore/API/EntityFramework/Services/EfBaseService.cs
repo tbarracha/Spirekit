@@ -2,25 +2,23 @@
 // Author: Tiago Barracha <ti.barracha@gmail.com>
 // Created with AI assistance (ChatGPT)
 //
-// Description: Provides a generic base service for Entity Framework with support
-// for multiple DbContexts, transactional operations, CRUD, pagination, filtering,
-// and soft deletion/restoration. Dynamically resolves the correct context for
-// each entity type and caches this mapping for fast runtime performance.
-// Designed for use in domain/application services spanning multiple databases.
+// Description: Provides a generic base service for Entity Framework with 
+// transactional support, CRUD operations, pagination, filtering, and soft
+// deletion/restoration. Designed for use in domain/application services.
 // -----------------------------------------------------------------------------
 //
 // USAGE:
 //
-// 1. Create your domain/application service by inheriting from BaseMultiContextService:
-//
-//    public class AppUserAccountService : BaseMultiContextService
+// 1. Create your domain/application service by inheriting from BaseService:
+// 
+//    public class AppUserAccountService : BaseService
 //    {
-//        public AppUserAccountService(List<DbContext> contexts) : base(contexts) {}
-//        // Add your domain logic, reuse generic methods, etc.
+//        public AppUserAccountService(AppDbContext context) : base(context) {}
+//        // Add your domain logic, reuse BaseService methods, etc.
 //    }
 //
 // 2. Use the provided generic methods for common entity operations:
-//
+// 
 //    var user = await service.GetByIdAsync<User, Guid>(userId);
 //    var page = await service.ListPagedAsync<User>(1, 20);
 //    var filtered = await service.GetFilteredAsync<User>(u => u.Email == email);
@@ -28,92 +26,43 @@
 //    await service.SoftRestoreAsync<User, Guid>(userId);
 //
 // 3. Compose or extend additional repositories/services as needed in your own class.
-//    You can manage entities from multiple contexts with a single service instance.
-//
-// 4. Register your service with Dependency Injection in Program.cs (or Startup.cs):
-//
-//    services.AddScoped<AppUserAccountService>(sp =>
-//        new AppUserAccountService(new List<DbContext>
-//        {
-//            sp.GetRequiredService<AppDbContext>(),
-//            sp.GetRequiredService<AuditDbContext>(),
-//            // ...add other contexts as needed
-//        })
-//    );
-//
-// NOTE:
-// - Each entity type can be managed by only one context. The mapping is built at construction
-//   and throws if any entity appears in multiple contexts.
-// - Transactions and CRUD operations are always routed to the correct context for the entity.
 //
 // -----------------------------------------------------------------------------
 
 
+
 using Microsoft.EntityFrameworkCore;
+using SpireCore.Abstractions.Interfaces;
 using SpireCore.Constants;
-using SpireCore.Interfaces;
 using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;
 
+namespace SpireCore.API.EntityFramework.Services;
+
 /// <summary>
-/// Provides a base service for managing multiple EF Core DbContexts,
-/// with fast entity-to-context resolution, generic CRUD, filtering, pagination,
-/// and per-context transactional support.
+/// Provides generic CRUD, filtering, and soft-delete/restore operations with transactional support for EF entities.
 /// </summary>
-public abstract class BaseMultiContextService
+public abstract class EfBaseService
 {
-    private readonly Dictionary<Type, DbContext> _entityTypeToContext;
+    protected readonly DbContext _context;
 
     /// <summary>
-    /// Initializes the multi-context service and builds a fast type-to-context lookup.
-    /// Throws if any entity type is registered in more than one context.
+    /// Constructs the base service with the supplied DbContext.
     /// </summary>
-    /// <param name="contexts">The list of managed DbContexts.</param>
-    protected BaseMultiContextService(List<DbContext> contexts)
+    protected EfBaseService(DbContext context)
     {
-        _entityTypeToContext = new Dictionary<Type, DbContext>();
-
-        foreach (var context in contexts)
-        {
-            var entityTypes = context.Model.GetEntityTypes().Select(t => t.ClrType);
-            foreach (var type in entityTypes)
-            {
-                if (_entityTypeToContext.ContainsKey(type))
-                    throw new InvalidOperationException(
-                        $"Type {type.Name} is already registered with another DbContext.");
-
-                _entityTypeToContext[type] = context;
-            }
-        }
+        _context = context;
     }
 
     /// <summary>
-    /// Gets the DbContext responsible for managing the specified entity type.
+    /// Runs a function within a transaction, committing on success or rolling back on error.
     /// </summary>
-    /// <typeparam name="T">Entity type</typeparam>
-    protected DbContext GetContextForType<T>() where T : class
+    protected async Task<TResult> InTransactionAsync<TResult>(Func<Task<TResult>> action)
     {
-        if (_entityTypeToContext.TryGetValue(typeof(T), out var context))
-            return context;
-        throw new InvalidOperationException(
-            $"No DbContext found for entity type {typeof(T).Name}");
-    }
-
-    /// <summary>
-    /// Runs a function within a transaction on the context that manages entity type T.
-    /// Commits on success, rolls back on error.
-    /// </summary>
-    /// <typeparam name="T">Entity type used to resolve the DbContext</typeparam>
-    /// <typeparam name="TResult">Result type</typeparam>
-    /// <param name="action">Action to execute, receives the resolved DbContext</param>
-    protected async Task<TResult> InTransactionAsync<T, TResult>(Func<DbContext, Task<TResult>> action)
-        where T : class
-    {
-        var context = GetContextForType<T>();
-        using var transaction = await context.Database.BeginTransactionAsync();
+        using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            var result = await action(context);
+            var result = await action();
             await transaction.CommitAsync();
             return result;
         }
@@ -129,13 +78,16 @@ public abstract class BaseMultiContextService
     /// <summary>
     /// Returns all entities of type T matching the filter and state.
     /// </summary>
+    /// <typeparam name="T">Entity type</typeparam>
+    /// <param name="filter">Predicate for filtering entities</param>
+    /// <param name="state">Desired entity state (default: ACTIVE)</param>
     public virtual async Task<IReadOnlyList<T>> GetFilteredAsync<T>(
         Expression<Func<T, bool>> filter,
         string state = StateFlags.ACTIVE)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        var ctx = GetContextForType<T>();
-        return await ctx.Set<T>()
+        var dbSet = _context.Set<T>();
+        return await dbSet
             .Where(e => e.StateFlag == state)
             .Where(filter)
             .ToListAsync();
@@ -144,22 +96,26 @@ public abstract class BaseMultiContextService
     /// <summary>
     /// Returns an entity by id and state.
     /// </summary>
+    /// <typeparam name="T">Entity type</typeparam>
+    /// <typeparam name="TId">Entity key type</typeparam>
+    /// <param name="id">Entity id</param>
+    /// <param name="state">Desired entity state (default: ACTIVE)</param>
     public virtual async Task<T?> GetByIdAsync<T, TId>(TId id, string state = StateFlags.ACTIVE)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        var ctx = GetContextForType<T>();
-        return await ctx.Set<T>()
-            .FirstOrDefaultAsync(e => EF.Property<TId>(e, "Id").Equals(id) && e.StateFlag == state);
+        var dbSet = _context.Set<T>();
+        return await dbSet.FirstOrDefaultAsync(e => EF.Property<TId>(e, "Id").Equals(id) && e.StateFlag == state);
     }
 
     /// <summary>
     /// Lists all entities of type T with the given state.
     /// </summary>
+    /// <typeparam name="T">Entity type</typeparam>
+    /// <param name="state">Desired entity state (default: ACTIVE)</param>
     public virtual async Task<IReadOnlyList<T>> ListAsync<T>(string state = StateFlags.ACTIVE)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        var ctx = GetContextForType<T>();
-        return await ctx.Set<T>()
+        return await _context.Set<T>()
             .Where(e => e.StateFlag == state)
             .ToListAsync();
     }
@@ -167,14 +123,18 @@ public abstract class BaseMultiContextService
     /// <summary>
     /// Returns a paged list of entities of type T for the given state.
     /// </summary>
+    /// <typeparam name="T">Entity type</typeparam>
+    /// <param name="page">1-based page number</param>
+    /// <param name="pageSize">Page size</param>
+    /// <param name="state">Desired entity state (default: ACTIVE)</param>
     public virtual async Task<PaginatedResult<T>> ListPagedAsync<T>(int page, int pageSize, string state = StateFlags.ACTIVE)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
 
-        var ctx = GetContextForType<T>();
-        var query = ctx.Set<T>().Where(e => e.StateFlag == state);
+        var dbSet = _context.Set<T>();
+        var query = dbSet.Where(e => e.StateFlag == state);
 
         var totalCount = await query.CountAsync();
         var items = await query
@@ -188,6 +148,11 @@ public abstract class BaseMultiContextService
     /// <summary>
     /// Returns a paged list of entities of type T filtered by predicate and state.
     /// </summary>
+    /// <typeparam name="T">Entity type</typeparam>
+    /// <param name="filter">Predicate for filtering entities</param>
+    /// <param name="page">1-based page number</param>
+    /// <param name="pageSize">Page size</param>
+    /// <param name="state">Desired entity state (default: ACTIVE)</param>
     public virtual async Task<PaginatedResult<T>> ListPagedFilteredAsync<T>(
         Expression<Func<T, bool>> filter,
         int page,
@@ -198,8 +163,8 @@ public abstract class BaseMultiContextService
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
 
-        var ctx = GetContextForType<T>();
-        var query = ctx.Set<T>().Where(e => e.StateFlag == state).Where(filter);
+        var dbSet = _context.Set<T>();
+        var query = dbSet.Where(e => e.StateFlag == state).Where(filter);
 
         var totalCount = await query.CountAsync();
         var items = await query
@@ -218,12 +183,12 @@ public abstract class BaseMultiContextService
     public virtual async Task<T> AddAsync<T>(T entity)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, T>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
             entity.CreatedAt = DateTime.UtcNow;
             entity.UpdatedAt = DateTime.UtcNow;
-            await ctx.Set<T>().AddAsync(entity);
-            await ctx.SaveChangesAsync();
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         });
     }
@@ -234,7 +199,7 @@ public abstract class BaseMultiContextService
     public virtual async Task<IReadOnlyList<T>> AddRangeAsync<T>(IEnumerable<T> entities)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, IReadOnlyList<T>>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
             var entityList = entities.ToList();
             var utcNow = DateTime.UtcNow;
@@ -245,8 +210,8 @@ public abstract class BaseMultiContextService
                 entity.UpdatedAt = utcNow;
             }
 
-            await ctx.Set<T>().AddRangeAsync(entityList);
-            await ctx.SaveChangesAsync();
+            await _context.Set<T>().AddRangeAsync(entityList);
+            await _context.SaveChangesAsync();
 
             return entityList;
         });
@@ -260,11 +225,11 @@ public abstract class BaseMultiContextService
     public virtual async Task<T> UpdateAsync<T>(T entity)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, T>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
             entity.UpdatedAt = DateTime.UtcNow;
-            ctx.Set<T>().Update(entity);
-            await ctx.SaveChangesAsync();
+            _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
             return entity;
         });
     }
@@ -275,7 +240,7 @@ public abstract class BaseMultiContextService
     public virtual async Task<IReadOnlyList<T>> UpdateRangeAsync<T>(IEnumerable<T> entities)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, IReadOnlyList<T>>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
             var entityList = entities.ToList();
             var utcNow = DateTime.UtcNow;
@@ -283,8 +248,8 @@ public abstract class BaseMultiContextService
             foreach (var entity in entityList)
                 entity.UpdatedAt = utcNow;
 
-            ctx.Set<T>().UpdateRange(entityList);
-            await ctx.SaveChangesAsync();
+            _context.Set<T>().UpdateRange(entityList);
+            await _context.SaveChangesAsync();
 
             return entityList;
         });
@@ -298,12 +263,12 @@ public abstract class BaseMultiContextService
     public virtual async Task<T> DeleteAsync<T>(T entity)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, T>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
             entity.StateFlag = StateFlags.DELETED;
             entity.UpdatedAt = DateTime.UtcNow;
-            ctx.Set<T>().Update(entity);
-            await ctx.SaveChangesAsync();
+            _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
             return entity;
         });
     }
@@ -314,7 +279,7 @@ public abstract class BaseMultiContextService
     public virtual async Task<IReadOnlyList<T>> DeleteRangeAsync<T>(IEnumerable<T> entities)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, IReadOnlyList<T>>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
             var entityList = entities.ToList();
             var utcNow = DateTime.UtcNow;
@@ -325,8 +290,8 @@ public abstract class BaseMultiContextService
                 entity.UpdatedAt = utcNow;
             }
 
-            ctx.Set<T>().UpdateRange(entityList);
-            await ctx.SaveChangesAsync();
+            _context.Set<T>().UpdateRange(entityList);
+            await _context.SaveChangesAsync();
 
             return entityList;
         });
@@ -338,16 +303,16 @@ public abstract class BaseMultiContextService
     public virtual async Task<T?> SoftDeleteAsync<T, TId>(TId id)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, T?>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
-            var dbSet = ctx.Set<T>();
+            var dbSet = _context.Set<T>();
             var entity = await dbSet.FirstOrDefaultAsync(e => EF.Property<TId>(e, "Id").Equals(id));
             if (entity is null) return null;
 
             entity.StateFlag = StateFlags.DELETED;
             entity.UpdatedAt = DateTime.UtcNow;
             dbSet.Update(entity);
-            await ctx.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return entity;
         });
@@ -361,16 +326,16 @@ public abstract class BaseMultiContextService
     public virtual async Task<T?> SoftRestoreAsync<T, TId>(TId id, string restoreState = StateFlags.ACTIVE)
         where T : class, ICreatedAt, IUpdatedAt, IStateFlag
     {
-        return await InTransactionAsync<T, T?>(async ctx =>
+        return await InTransactionAsync(async () =>
         {
-            var dbSet = ctx.Set<T>();
+            var dbSet = _context.Set<T>();
             var entity = await dbSet.FirstOrDefaultAsync(e => EF.Property<TId>(e, "Id").Equals(id));
             if (entity is null) return null;
 
             entity.StateFlag = restoreState;
             entity.UpdatedAt = DateTime.UtcNow;
             dbSet.Update(entity);
-            await ctx.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return entity;
         });

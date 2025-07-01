@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SpireCore.Events.Domain;
+namespace SpireCore.Events.Dispatcher;
 
 public class InMemoryEventDispatcher : IEventDispatcher
 {

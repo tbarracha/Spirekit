@@ -1,4 +1,4 @@
-﻿namespace SpireCore.Interfaces;
+﻿namespace SpireCore.Abstractions.Interfaces;
 
 public interface IHasId
 {

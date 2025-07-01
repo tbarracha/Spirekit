@@ -25,9 +25,9 @@
 // -----------------------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
+using SpireCore.Abstractions.Interfaces;
 using SpireCore.Constants;
 using SpireCore.Events;
-using SpireCore.Interfaces;
 using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;
 

@@ -4,8 +4,8 @@
 // -----------------------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
+using SpireCore.Abstractions.Interfaces;
 using SpireCore.Constants;
-using SpireCore.Interfaces;
 using System.Linq.Expressions;
 
 namespace SpireCore.API.EntityFramework.Repositories;

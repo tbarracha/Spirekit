@@ -1,5 +1,5 @@
-﻿using SpireCore.Constants;
-using SpireCore.Interfaces;
+﻿using SpireCore.Abstractions.Interfaces;
+using SpireCore.Constants;
 
 namespace SpireCore.API.EntityFramework.Entities;
 
