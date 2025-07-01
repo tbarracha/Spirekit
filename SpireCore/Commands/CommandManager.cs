@@ -79,7 +79,8 @@ public class CommandManager
     /// </summary>
     public CommandResult RunInteractive()
     {
-        HandleHelp(); // Show help at session start
+        PrintWelcome(true);
+        PrintAvailableCommands(_root, true);
 
         while (true)
         {
