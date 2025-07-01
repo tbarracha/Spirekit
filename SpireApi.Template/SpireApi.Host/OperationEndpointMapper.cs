@@ -10,9 +10,7 @@ public static class OperationEndpointMapper
     {
         var groupAttr = typeof(TOp).GetCustomAttribute<OperationGroupAttribute>();
 
-        var groupName = groupAttr?.GroupName
-            ?? typeof(TOp).Namespace?.Split('.').Reverse().FirstOrDefault()
-            ?? "misc";
+        var groupName = OperationGroupAttribute.GetGroupName(typeof(TOp));
 
         var builder = method switch
         {
