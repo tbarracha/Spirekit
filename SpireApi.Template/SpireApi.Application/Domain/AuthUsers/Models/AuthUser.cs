@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SpireCore.Abstractions.Interfaces;
 using SpireCore.Constants;
 
-namespace SpireApi.Application.Domain.AppUsers.Models;
+namespace SpireApi.Application.Domain.AuthUsers.Models;
 
 public class AuthUser : IdentityUser<Guid>, ICreatedAt, IUpdatedAt, IStateFlag
 {

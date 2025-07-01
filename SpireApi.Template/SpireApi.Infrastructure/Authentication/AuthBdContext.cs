@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Persistance;
 
-namespace SpireApi.Host.Persistance;
+namespace SpireApi.Infrastructure.Authentication;
 
 public class AuthBdContext : BaseAuthDbContext
 {

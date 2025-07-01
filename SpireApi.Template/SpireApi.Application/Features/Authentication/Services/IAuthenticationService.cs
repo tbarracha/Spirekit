@@ -1,4 +1,4 @@
-﻿using SpireApi.Application.Domain.AppUsers.Models;
+﻿using SpireApi.Application.Domain.AuthUsers.Models;
 using System.Security.Claims;
 
 namespace SpireApi.Application.Features.Authentication.Services;

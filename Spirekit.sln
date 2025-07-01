@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpireApi.Contracts", "Spire
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpireApi.Host", "SpireApi.Template\SpireApi.Host\SpireApi.Host.csproj", "{89A92848-E6C3-0879-1DBE-56151ACEDF22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpireApi.Infrastructure", "SpireApi.Template\SpireApi.Infrastructure\SpireApi.Infrastructure.csproj", "{0A395180-5B5A-45D9-A51F-C88D644F6EBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{89A92848-E6C3-0879-1DBE-56151ACEDF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89A92848-E6C3-0879-1DBE-56151ACEDF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89A92848-E6C3-0879-1DBE-56151ACEDF22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A395180-5B5A-45D9-A51F-C88D644F6EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A395180-5B5A-45D9-A51F-C88D644F6EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A395180-5B5A-45D9-A51F-C88D644F6EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A395180-5B5A-45D9-A51F-C88D644F6EBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +55,7 @@ Global
 		{58B1A906-18AD-D9A8-6717-EDAC7A33B39E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{F5746F6E-D3FB-190C-59C5-793B5D758048} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{89A92848-E6C3-0879-1DBE-56151ACEDF22} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{0A395180-5B5A-45D9-A51F-C88D644F6EBF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04C82E91-55E9-4DED-A719-0E7A461612CD}

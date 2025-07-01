@@ -1,4 +1,4 @@
-﻿using SpireApi.Application.Domain.AppUsers.Models;
+﻿using SpireApi.Application.Domain.AuthUsers.Models;
 using SpireCore.API.EntityFramework.Entities;
 
 namespace SpireApi.Application.Domain.RefreshTokens.Models;
@@ -10,8 +10,8 @@ public class RefreshToken : BaseEntityClass
     public string Token { get; set; } = default!;
     public DateTime ExpiresAt { get; set; }
 
-    public Guid AppUserId { get; set; }
-    public AuthUser User { get; set; } = default!;
+    public Guid AuthUserId { get; set; }
+    public AuthUser AuthUser { get; set; } = default!;
 
     public bool IsRevoked { get; set; } = false;
 }

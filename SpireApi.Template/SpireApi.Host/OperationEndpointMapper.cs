@@ -51,18 +51,4 @@ public static class OperationEndpointMapper
 
         return builder;
     }
-
-    public static bool IsSimpleQueryType(Type type)
-    {
-        if (type.IsPrimitive || type == typeof(string) || type == typeof(Guid))
-            return true;
-
-        if (!type.IsClass || type == typeof(string)) return false;
-
-        return type.GetProperties().All(p =>
-        {
-            var pt = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType;
-            return pt.IsPrimitive || pt == typeof(string) || pt == typeof(Guid);
-        });
-    }
 }

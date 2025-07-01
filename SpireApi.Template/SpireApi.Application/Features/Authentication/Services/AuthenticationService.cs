@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using SpireApi.Application.Domain.AppUsers.Models;
+using SpireApi.Application.Domain.AuthUsers.Models;
 using SpireApi.Application.Domain.AuthAudit;
 using SpireApi.Application.Domain.RefreshTokens.Models;
 using SpireApi.Application.Domain.RefreshTokens.Repositories;
@@ -115,7 +115,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
             throw new Exception("Invalid or expired refresh token.");
 
         await _refreshRepo.RevokeTokenAsync(record);
-        return GenerateJwt(record.User!);
+        return GenerateJwt(record.AuthUser!);
     }
 
     private string GenerateJwt(AuthUser user)
@@ -152,7 +152,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
         {
             Token = token,
             ExpiresAt = expires,
-            AppUserId = user.Id
+            AuthUserId = user.Id
         };
 
         await _refreshRepo.AddAsync(refreshToken);
@@ -165,7 +165,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
 
         var audit = new AuthAudit
         {
-            AppUserId = user.Id,
+            AuthUserId = user.Id,
             Type = type,
             WasSuccessful = success,
             IpAddress = GetIpAddress(),

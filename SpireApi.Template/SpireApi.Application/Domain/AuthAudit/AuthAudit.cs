@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SpireApi.Application.Domain.AppUsers.Models;
+using SpireApi.Application.Domain.AuthUsers.Models;
 using SpireCore.Abstractions.Interfaces;
 
 namespace SpireApi.Application.Domain.AuthAudit;
@@ -9,8 +9,8 @@ public class AuthAudit : ICreatedAt
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
-    public Guid AppUserId { get; set; }
-    public AuthUser AppUser { get; set; } = default!;
+    public Guid AuthUserId { get; set; }
+    public AuthUser AuthUser { get; set; } = default!;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -50,9 +50,9 @@ public class AuthAudit : ICreatedAt
             builder.Property(x => x.CreatedAt)
                    .IsRequired();
 
-            builder.HasOne(x => x.AppUser)
+            builder.HasOne(x => x.AuthUser)
                    .WithMany()
-                   .HasForeignKey(x => x.AppUserId)
+                   .HasForeignKey(x => x.AuthUserId)
                    .OnDelete(DeleteBehavior.Cascade);
         }
     }

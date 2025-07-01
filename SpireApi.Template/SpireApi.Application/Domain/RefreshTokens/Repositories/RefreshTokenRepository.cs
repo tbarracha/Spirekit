@@ -12,13 +12,13 @@ public class RefreshTokenRepository : BaseRepository<RefreshToken, Guid, BaseAut
 
     public override async Task<RefreshToken?> GetByIdAsync(Guid id)
     {
-        return await _dbSet.Include(r => r.User)
+        return await _dbSet.Include(r => r.AuthUser)
                            .FirstOrDefaultAsync(r => r.Id == id && r.StateFlag == StateFlags.ACTIVE);
     }
 
     public async Task<RefreshToken?> GetValidTokenAsync(string token)
     {
-        return await _dbSet.Include(r => r.User)
+        return await _dbSet.Include(r => r.AuthUser)
                            .FirstOrDefaultAsync(r =>
                                r.Token == token &&
                                !r.IsRevoked &&

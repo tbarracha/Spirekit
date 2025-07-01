@@ -1,10 +1,10 @@
-﻿namespace SpireCore.API.Operations;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace SpireCore.API.Operations;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class OperationAuthorizeAttribute : Attribute
+public class OperationAuthorizeAttribute : AuthorizeAttribute
 {
-    public string? Policy { get; }
-
     public OperationAuthorizeAttribute(string? policy = null)
     {
         Policy = policy;
