@@ -1,4 +1,4 @@
-﻿namespace SpireApi.Contracts.Hello;
+﻿namespace SpireApi.Contracts.Dtos.Hello;
 
 public class HelloResponse
 {

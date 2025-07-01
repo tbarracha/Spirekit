@@ -6,12 +6,12 @@ using SpireApi.Application.Domain.AuthAudit;
 
 namespace SpireApi.Application.Persistance;
 
-public abstract class BaseAuthDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
+public abstract class BaseAuthDbContext : IdentityDbContext<AuthUser, IdentityRole<Guid>, Guid>
 {
     protected BaseAuthDbContext(DbContextOptions options) : base(options) { }
 
     // === Identity Core ===
-    public new DbSet<AppUser> Users => Set<AppUser>();
+    public new DbSet<AuthUser> Users => Set<AuthUser>();
     public DbSet<AuthAudit> AuthAudits => Set<AuthAudit>();
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -19,6 +19,6 @@ public abstract class BaseAuthDbContext : IdentityDbContext<AppUser, IdentityRol
         base.OnModelCreating(builder);
 
         // Register all IEntityTypeConfiguration<T> implementations (for all entities)
-        builder.ApplyConfigurationsFromAssembly(typeof(AppUser).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(AuthUser).Assembly);
     }
 }

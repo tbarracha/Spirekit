@@ -6,7 +6,7 @@ using SpireCore.Constants;
 
 namespace SpireApi.Application.Domain.AppUsers.Models;
 
-public class AppUser : IdentityUser<Guid>, ICreatedAt, IUpdatedAt, IStateFlag
+public class AuthUser : IdentityUser<Guid>, ICreatedAt, IUpdatedAt, IStateFlag
 {
     // Official/internal use
     public string FirstName { get; set; } = string.Empty;
@@ -29,11 +29,11 @@ public class AppUser : IdentityUser<Guid>, ICreatedAt, IUpdatedAt, IStateFlag
 
     public bool IsInitialPasswordChanged { get; set; } = false;
 
-    public class Configuration : IEntityTypeConfiguration<AppUser>
+    public class Configuration : IEntityTypeConfiguration<AuthUser>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
+        public void Configure(EntityTypeBuilder<AuthUser> builder)
         {
-            builder.ToTable("AppUsers");
+            builder.ToTable("AuthUsers");
 
             builder.Property(u => u.FirstName)
                    .IsRequired()

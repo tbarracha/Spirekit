@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SpireApi.Contracts.Hello;
+namespace SpireApi.Contracts.Dtos.Hello;
 
 public class HelloRequest
 {

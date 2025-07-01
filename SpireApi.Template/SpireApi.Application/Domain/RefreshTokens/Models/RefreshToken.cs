@@ -11,7 +11,7 @@ public class RefreshToken : BaseEntityClass
     public DateTime ExpiresAt { get; set; }
 
     public Guid AppUserId { get; set; }
-    public AppUser User { get; set; } = default!;
+    public AuthUser User { get; set; } = default!;
 
     public bool IsRevoked { get; set; } = false;
 }

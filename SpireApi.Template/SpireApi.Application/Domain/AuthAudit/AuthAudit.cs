@@ -10,7 +10,7 @@ public class AuthAudit : ICreatedAt
     public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid AppUserId { get; set; }
-    public AppUser AppUser { get; set; } = default!;
+    public AuthUser AppUser { get; set; } = default!;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

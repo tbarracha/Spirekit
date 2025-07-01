@@ -85,8 +85,17 @@ public static class SwaggerAutoOpenExtension
             opt.RoutePrefix = string.Empty; // root
         });
 
-        if (autoOpen && app.Environment.IsDevelopment())
-            app.OpenSwaggerUI();
+        if (app.Environment.IsDevelopment())
+        {
+            if (autoOpen)
+                app.OpenSwaggerUI();
+
+            app.MapGet("/", ctx =>
+            {
+                ctx.Response.Redirect("/swagger");
+                return Task.CompletedTask;
+            });
+        }
     }
 
     /// <summary>Launches the default browser pointing at the root of the app.</summary>

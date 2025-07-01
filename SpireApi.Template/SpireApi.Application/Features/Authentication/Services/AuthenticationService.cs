@@ -7,6 +7,7 @@ using SpireApi.Application.Domain.AuthAudit;
 using SpireApi.Application.Domain.RefreshTokens.Models;
 using SpireApi.Application.Domain.RefreshTokens.Repositories;
 using SpireApi.Application.Persistance;
+using SpireCore.API.Services;
 using SpireCore.Events.Dispatcher;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,10 +15,10 @@ using System.Text;
 
 namespace SpireApi.Application.Features.Authentication.Services;
 
-public class AuthenticationService
+public class AuthenticationService : IAuthenticationService, ITransientService
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AuthUser> _userManager;
+    private readonly SignInManager<AuthUser> _signInManager;
     private readonly IConfiguration _config;
     private readonly IEventDispatcher _eventDispatcher;
     private readonly RefreshTokenRepository _refreshRepo;
@@ -25,8 +26,8 @@ public class AuthenticationService
     private readonly BaseAuthDbContext _dbContext;
 
     public AuthenticationService(
-        UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager,
+        UserManager<AuthUser> userManager,
+        SignInManager<AuthUser> signInManager,
         IConfiguration config,
         IEventDispatcher eventDispatcher,
         RefreshTokenRepository refreshRepo,
@@ -44,7 +45,7 @@ public class AuthenticationService
 
     public async Task<(string AccessToken, string RefreshToken)> RegisterAsync(string email, string password, string firstName, string lastName)
     {
-        var user = new AppUser
+        var user = new AuthUser
         {
             UserName = email,
             Email = email,
@@ -117,7 +118,7 @@ public class AuthenticationService
         return GenerateJwt(record.User!);
     }
 
-    private string GenerateJwt(AppUser user)
+    private string GenerateJwt(AuthUser user)
     {
         var claims = new[]
         {
@@ -142,7 +143,7 @@ public class AuthenticationService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private async Task<string> GenerateRefreshTokenAsync(AppUser user)
+    private async Task<string> GenerateRefreshTokenAsync(AuthUser user)
     {
         var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         var expires = DateTime.UtcNow.AddDays(30);
@@ -158,7 +159,7 @@ public class AuthenticationService
         return token;
     }
 
-    private async Task LogAuthAudit(AppUser? user, string type, bool success, string? failureReason = null)
+    private async Task LogAuthAudit(AuthUser? user, string type, bool success, string? failureReason = null)
     {
         if (user == null) return;
 
@@ -182,16 +183,16 @@ public class AuthenticationService
     private string? GetUserAgent()
         => _httpContextAccessor.HttpContext?.Request?.Headers["User-Agent"].ToString();
 
-    public async Task<AppUser?> GetByIdAsync(Guid id)
+    public async Task<AuthUser?> GetByIdAsync(Guid id)
         => await _userManager.FindByIdAsync(id.ToString());
 
-    public async Task<AppUser?> GetCurrentUserAsync(ClaimsPrincipal user)
+    public async Task<AuthUser?> GetCurrentUserAsync(ClaimsPrincipal user)
     {
         var id = user.FindFirstValue(ClaimTypes.NameIdentifier);
         return id == null ? null : await _userManager.FindByIdAsync(id);
     }
 
-    public async Task<AppUser?> GetUserByTokenAsync(string jwtToken)
+    public async Task<AuthUser?> GetUserByTokenAsync(string jwtToken)
     {
         var userId = AuthTokenHelper.GetUserIdFromToken(jwtToken, _config);
         return userId.HasValue ? await _userManager.FindByIdAsync(userId.Value.ToString()) : null;
