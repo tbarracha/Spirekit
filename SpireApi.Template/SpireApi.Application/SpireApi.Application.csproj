@@ -35,9 +35,4 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Authentication\Operations\" />
-  </ItemGroup>
-
-
 </Project>

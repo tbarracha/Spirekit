@@ -3,7 +3,7 @@ using SpireCore.API.Operations;
 using SpireApi.Contracts.Hello;
 using SpireApi.Application.Features.Goodbye.Services;
 
-namespace SpireApi.Application.Features.Goodbye.Operations.Goodbye;
+namespace SpireApi.Application.Features.Goodbye.Operations;
 
 [OperationRoute("goodbye/world/service")]
 public class GoodbyeServiceOperation : IOperation<HelloRequest, HelloResponse>
