@@ -18,9 +18,16 @@ public static class OperationExtensions
         var opTypes = AppDomain.CurrentDomain
             .GetAssemblies()
             .SelectMany(x => x.GetTypes())
-            .Where(t => t.IsClass && !t.IsAbstract &&
-                t.Namespace?.Contains(".Operations.") == true &&
-                t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOperation<,>)))
+            .Where(t =>
+                t.IsClass &&
+                !t.IsAbstract &&
+                (
+                    (t.Namespace?.Contains(".Operations.") == true) ||
+                    (t.Namespace?.Contains(".Operations") == true)
+                ) &&
+                t.GetInterfaces().Any(i =>
+                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOperation<,>))
+            )
             .ToList();
 
         foreach (var opType in opTypes)
@@ -37,9 +44,7 @@ public static class OperationExtensions
             var groupAttr = opType.GetCustomAttribute<OperationGroupAttribute>();
             var authAttr = opType.GetCustomAttribute<OperationAuthorizeAttribute>();
 
-            var groupName = groupAttr?.GroupName
-                ?? opType.Namespace?.Split('.').SkipWhile(p => p != "Operations").Skip(1).FirstOrDefault()
-                ?? "misc";
+            var groupName = OperationGroupAttribute.GetGroupName(opType);
 
             var operationName = opType.Name.Replace("Operation", "").ToLower();
 
@@ -72,11 +77,16 @@ public static class OperationExtensions
         var opTypes = AppDomain.CurrentDomain
             .GetAssemblies()
             .SelectMany(x => x.GetTypes())
-            .Where(t => t.IsClass &&
-                        !t.IsAbstract &&
-                        t.Namespace?.Contains(".Operations.") == true &&
-                        t.GetInterfaces().Any(i =>
-                            i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOperation<,>)))
+            .Where(t =>
+                t.IsClass &&
+                !t.IsAbstract &&
+                (
+                    (t.Namespace?.Contains(".Operations.") == true) ||
+                    (t.Namespace?.Contains(".Operations") == true)
+                ) &&
+                t.GetInterfaces().Any(i =>
+                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IOperation<,>))
+            )
             .ToList();
 
         Console.WriteLine(">> Registered operations:");
@@ -86,9 +96,7 @@ public static class OperationExtensions
             var routeAttr = type.GetCustomAttribute<OperationRouteAttribute>();
             var methodAttr = type.GetCustomAttribute<OperationMethodAttribute>();
 
-            var groupName = groupAttr?.GroupName
-                ?? type.Namespace?.Split('.').SkipWhile(p => p != "Operations").Skip(1).FirstOrDefault()
-                ?? "misc";
+            var groupName = OperationGroupAttribute.GetGroupName(type);
 
             var operationName = type.Name.Replace("Operation", "").ToLower();
             var route = routeAttr?.Route ?? $"{groupName.ToLower()}/{operationName}";
