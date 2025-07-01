@@ -4,14 +4,14 @@ using SpireApi.Contracts.Hello;
 
 namespace DddAutoOpsDemo.Application.Operations.Hello;
 
-[OperationGroup("hello")]
+[OperationGroup("Hello")]
 public class HelloWorldOperation : IOperation<HelloRequest, HelloResponse>
 {
     public Task<HelloResponse> ExecuteAsync(HelloRequest request)
     {
         return Task.FromResult(new HelloResponse
         {
-            Message = $"Hello, {request.Name}!"
+            Message = $"Hello, {request.Name} {request.LastName}!"
         });
     }
 }
