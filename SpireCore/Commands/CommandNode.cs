@@ -9,7 +9,7 @@ public class CommandNode
 {
     public string Name { get; }
     public string Description { get; }
-    public ICommand? Command { get; }
+    public ICommand Command { get; }
 
     // Subnodes keyed by name
     private readonly Dictionary<string, CommandNode> _subNodes = new();

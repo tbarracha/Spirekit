@@ -25,5 +25,5 @@ public class CommandContext
     /// <summary>
     /// Returns the argument at the specified index, or null if out of range.
     /// </summary>
-    public string? GetArg(int index) => index < Args.Length ? Args[index] : null;
+    public string GetArg(int index) => index < Args.Length ? Args[index] : null;
 }

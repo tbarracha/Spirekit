@@ -25,5 +25,5 @@ public interface ICommand
     /// Executes the command with the given context.
     /// Returns an exit code (0 = success).
     /// </summary>
-    int Execute(CommandContext context);
+    CommandResult Execute(CommandContext context);
 }

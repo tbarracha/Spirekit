@@ -24,7 +24,7 @@ public abstract class BaseCommand : ICommand
     /// <summary>
     /// Command logic (must be implemented in derived).
     /// </summary>
-    public abstract int Execute(CommandContext context);
+    public abstract CommandResult Execute(CommandContext context);
 
     /// <summary>
     /// Optional utility for printing commands for internal custom commands.

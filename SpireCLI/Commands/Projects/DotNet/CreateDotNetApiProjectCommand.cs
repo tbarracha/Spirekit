@@ -3,17 +3,21 @@ using System.Diagnostics;
 
 namespace SpireCLI.Commands.Projects.DotNet;
 
+/// <summary>
+/// Scaffolds a new .NET API solution with Application, Contracts, and API layers.
+/// </summary>
 public class CreateDotNetApiProjectCommand : BaseCommand
 {
     public override string Name => "new-api";
     public override string Description => "Scaffold a new .NET API solution with Application, Contracts, and API layers.";
 
-    public override int Execute(CommandContext context)
+    public override CommandResult Execute(CommandContext context)
     {
         if (context.Args.Length == 0)
         {
-            Console.Error.WriteLine("[ERROR] You must provide a project name: dotnet new-api MyProject");
-            return 1;
+            var err = "[ERROR] You must provide a project name: dotnet new-api MyProject";
+            Console.Error.WriteLine(err);
+            return CommandResult.Error(err);
         }
 
         var projName = context.Args[0];
@@ -21,31 +25,36 @@ public class CreateDotNetApiProjectCommand : BaseCommand
 
         if (Directory.Exists(rootPath))
         {
-            Console.Error.WriteLine($"[ERROR] Directory '{projName}' already exists.");
-            return 1;
+            var err = $"[ERROR] Directory '{projName}' already exists.";
+            Console.Error.WriteLine(err);
+            return CommandResult.Error(err);
         }
 
         Directory.CreateDirectory(rootPath);
 
-        Run("dotnet", $"new classlib -n {projName}.Application", rootPath);
-        Run("dotnet", $"new classlib -n {projName}.Contracts", rootPath);
-        Run("dotnet", $"new webapi -n {projName}.API", rootPath);
+        if (!Run("dotnet", $"new classlib -n {projName}.Application", rootPath, out var error1)) return CommandResult.Error(error1);
+        if (!Run("dotnet", $"new classlib -n {projName}.Contracts", rootPath, out var error2)) return CommandResult.Error(error2);
+        if (!Run("dotnet", $"new webapi -n {projName}.API", rootPath, out var error3)) return CommandResult.Error(error3);
 
         var apiPath = Path.Combine(rootPath, $"{projName}.API");
         var appPath = Path.Combine(rootPath, $"{projName}.Application");
         var contractsPath = Path.Combine(rootPath, $"{projName}.Contracts");
 
-        Run("dotnet", $"add {apiPath} reference {contractsPath}", rootPath);
-        Run("dotnet", $"add {apiPath} reference {appPath}", rootPath);
-        Run("dotnet", $"add {appPath} reference {contractsPath}", rootPath);
+        if (!Run("dotnet", $"add {apiPath} reference {contractsPath}", rootPath, out var error4)) return CommandResult.Error(error4);
+        if (!Run("dotnet", $"add {apiPath} reference {appPath}", rootPath, out var error5)) return CommandResult.Error(error5);
+        if (!Run("dotnet", $"add {appPath} reference {contractsPath}", rootPath, out var error6)) return CommandResult.Error(error6);
 
+        var successMsg = $"\n[DONE] Project '{projName}' created successfully!";
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"\n[DONE] Project '{projName}' created successfully!");
+        Console.WriteLine(successMsg);
         Console.ResetColor();
-        return 0;
+        return CommandResult.Success(successMsg);
     }
 
-    private void Run(string file, string args, string workingDir)
+    /// <summary>
+    /// Runs a process and returns true if successful; captures error otherwise.
+    /// </summary>
+    private bool Run(string file, string args, string workingDir, out string error)
     {
         var psi = new ProcessStartInfo
         {
@@ -62,11 +71,15 @@ public class CreateDotNetApiProjectCommand : BaseCommand
 
         if (process.ExitCode != 0)
         {
-            Console.Error.WriteLine(process.StandardError.ReadToEnd());
+            error = process.StandardError.ReadToEnd();
+            Console.Error.WriteLine(error);
+            return false;
         }
         else
         {
             Console.WriteLine(process.StandardOutput.ReadToEnd());
+            error = string.Empty;
+            return true;
         }
     }
 }

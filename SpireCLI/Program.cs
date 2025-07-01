@@ -5,4 +5,4 @@
 var manager = CommandManagerBuilder.BuildCommandManager();
 
 // 2) Run
-return manager.Run(args);
+return manager.Run(args).ExitCode;

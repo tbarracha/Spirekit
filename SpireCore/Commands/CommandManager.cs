@@ -33,7 +33,7 @@ public class CommandManager
     /// <summary>
     /// Main entrypoint. Parses args and runs appropriate mode (help, interactive, command).
     /// </summary>
-    public int Run(string[] args)
+    public CommandResult Run(string[] args)
     {
         Console.WriteLine("\n");
 
@@ -42,7 +42,7 @@ public class CommandManager
         {
             PrintWelcome(true);
             PrintAvailableCommands(_root, true);
-            return 0;
+            return CommandResult.Success();
         }
 
         // Launch interactive mode if requested
@@ -54,20 +54,30 @@ public class CommandManager
     }
 
     /// <summary>
-    /// Runs a command immediately and returns its result code.
+    /// Runs a command immediately and returns its CommandResult.
     /// </summary>
-    public int RunOneShot(string[] args)
+    public CommandResult RunOneShot(string[] args)
     {
         var context = new CommandContext(args, this, _root);
         var result = RunCommand(context);
         Console.WriteLine("\n");
+
+        // Print any message (success or error)
+        if (!string.IsNullOrWhiteSpace(result.Message))
+        {
+            if (result.ExitCode == 0)
+                Console.WriteLine(result.Message);
+            else
+                Console.Error.WriteLine(result.Message);
+        }
+
         return result;
     }
 
     /// <summary>
     /// Runs the CLI in interactive mode (REPL).
     /// </summary>
-    public int RunInteractive()
+    public CommandResult RunInteractive()
     {
         HandleHelp(); // Show help at session start
 
@@ -89,26 +99,36 @@ public class CommandManager
             }
 
             var context = new CommandContext(args, this, _root, isInteractive: true);
-            RunCommand(context);
+            var result = RunCommand(context);
+
+            // Print any message (success or error)
+            if (!string.IsNullOrWhiteSpace(result.Message))
+            {
+                if (result.ExitCode == 0)
+                    Console.WriteLine(result.Message);
+                else
+                    Console.Error.WriteLine(result.Message);
+            }
+
             Console.WriteLine("\n");
         }
 
-        return 0;
+        return CommandResult.Success();
     }
 
     /// <summary>
     /// Handles showing the available commands (used for help).
     /// </summary>
-    private int HandleHelp()
+    private CommandResult HandleHelp()
     {
         PrintAvailableCommands(_root);
-        return 0;
+        return CommandResult.Success();
     }
 
     /// <summary>
     /// Resolves and executes the requested command, handling errors and unknowns.
     /// </summary>
-    private int RunCommand(CommandContext context)
+    private CommandResult RunCommand(CommandContext context)
     {
         var node = _root;
         var remaining = context.Args.ToList();
@@ -129,14 +149,23 @@ public class CommandManager
                 ? node.Description
                 : node.Name;
 
-            Console.Error.WriteLine($"[ERROR] Unknown command or missing action under '{identifier}'.");
+            var msg = $"[ERROR] Unknown command or missing action under '{identifier}'.";
+            Console.Error.WriteLine(msg);
             Console.WriteLine();
             PrintAvailableCommands(_root);
-            return 1;
+            return CommandResult.Error(msg);
         }
 
         var commandContext = new CommandContext(remaining.ToArray(), this, _root, context.IsInteractive);
-        return node.Command.Execute(commandContext);
+        try
+        {
+            var result = node.Command.Execute(commandContext);
+            return result ?? CommandResult.Success();
+        }
+        catch (Exception ex)
+        {
+            return CommandResult.Error("An error occurred while executing the command: " + ex.Message, exitCode: 1);
+        }
     }
 
     /// <summary>
@@ -157,6 +186,7 @@ public class CommandManager
                     fullName += $" ({string.Join(", ", c.Aliases)})";
                 return (c.Indent + c.Prefix + (string.IsNullOrWhiteSpace(c.Prefix) ? "" : " ") + fullName).Length;
             })
+            .DefaultIfEmpty(0)
             .Max();
 
         // Print header
