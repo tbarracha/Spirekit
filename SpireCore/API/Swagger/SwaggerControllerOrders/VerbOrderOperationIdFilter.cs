@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace SpireCore.API.Extensions.Swagger.SwaggerControllerOrders;
+namespace SpireCore.API.Swagger.SwaggerControllerOrders;
 
 public class VerbOrderOperationIdFilter : IOperationFilter
 {

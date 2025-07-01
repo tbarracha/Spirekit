@@ -1,5 +1,4 @@
-﻿
-namespace SpireCore.API.Extensions.Swagger.SwaggerControllerOrders;
+﻿namespace SpireCore.API.Swagger.SwaggerControllerOrders;
 
 /// <summary>
 /// Apply to a controller to specify the order it should appear in Swagger UI.

@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SpireCore\SpireCore.csproj" />
-    <ProjectReference Include="..\Spirekit\SpireCore.csproj" />
   </ItemGroup>
 
 </Project>

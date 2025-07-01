@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SpireCore.API.Extensions.Swagger.SwaggerControllerOrders;
+namespace SpireCore.API.Swagger.SwaggerControllerOrders;
 
 /// <summary>
 /// Builds a lookup (controller-name ➜ sort-order) by scanning assemblies

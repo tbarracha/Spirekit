@@ -2,10 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using SpireCore.API.Extensions.Swagger.SwaggerControllerOrders;
+using SpireCore.API.Swagger.SwaggerControllerOrders;
 using System.Diagnostics;
 
-namespace SpireCore.API.Extensions.Swagger;
+namespace SpireCore.API.Swagger;
 
 public static class SwaggerAutoOpenExtension
 {

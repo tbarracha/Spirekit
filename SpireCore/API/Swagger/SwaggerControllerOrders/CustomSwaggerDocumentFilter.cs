@@ -2,7 +2,7 @@
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace SpireCore.API.Extensions.Swagger.SwaggerControllerOrders;
+namespace SpireCore.API.Swagger.SwaggerControllerOrders;
 
 /// <summary>
 /// Re-orders the swagger <c>tags</c> list so that groups (controllers)
