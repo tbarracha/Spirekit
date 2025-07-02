@@ -26,8 +26,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{9DB167FB-47C0-4A81-A665-A6C962CE10A9}"
 	ProjectSection(SolutionItems) = preProject
 		Scripts\Export-TemplateFromSpireApi.ps1 = Scripts\Export-TemplateFromSpireApi.ps1
-		Scripts\Remove-AllChildFolders.ps1 = Scripts\Remove-AllChildFolders.ps1
 		Scripts\Show-ProjectTree.ps1 = Scripts\Show-ProjectTree.ps1
+		Scripts\Remove-AllTemplateItems.ps1 = Scripts\Remove-AllTemplateItems.ps1
 	EndProjectSection
 EndProject
 Global

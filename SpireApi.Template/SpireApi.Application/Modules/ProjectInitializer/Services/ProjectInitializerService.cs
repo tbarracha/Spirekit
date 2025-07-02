@@ -6,9 +6,7 @@ namespace SpireApi.Application.Modules.ProjectInitializer.Services;
 
 public class ProjectInitializerService : IProjectInitializerService, ITransientService
 {
-    // Optionally, these could be injected/configured
-    private const string BaseTemplatesRoot = "ProjectTemplates"; // e.g., under your solution root
-    private const string ModulesRoot = "Modules"; // e.g., relative to template or solution root
+    private const string BaseTemplatesRoot = "SpireApi.Template/Template"; // Always relative to project root!
 
     public async Task<InitializedProject> InitializeProjectAsync(ProjectInitializerRequest request)
     {
@@ -16,31 +14,27 @@ public class ProjectInitializerService : IProjectInitializerService, ITransientS
         var tempFolder = Path.Combine(Path.GetTempPath(), $"project_init_{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempFolder);
 
-        // 2. Copy base template
-        var templateFolder = Path.Combine(BaseTemplatesRoot, request.ProjectType);
-        if (!Directory.Exists(templateFolder))
-            throw new DirectoryNotFoundException($"Project template '{request.ProjectType}' not found.");
+        // 2. Check if a {Namespace}.sln exists in BaseTemplatesRoot
+        string solutionRoot = FindSolutionRoot();
+        string templateRoot = Path.Combine(solutionRoot, "SpireApi.Template", "Template");
 
-        CopyDirectory(templateFolder, tempFolder);
+        string namespacePlaceholder = "{Namespace}";
+        string solutionPattern = $"{namespacePlaceholder}.sln";
+        string solutionFile = Directory.GetFiles(templateRoot, solutionPattern, SearchOption.TopDirectoryOnly).FirstOrDefault();
 
-        // 3. Add modules
-        var includedModules = new List<string>();
-        foreach (var module in request.Modules.Where(m => m.Enabled))
-        {
-            var moduleSource = Path.Combine(ModulesRoot, module.Name);
-            if (Directory.Exists(moduleSource))
-            {
-                var moduleTarget = Path.Combine(tempFolder, "Modules", module.Name);
-                CopyDirectory(moduleSource, moduleTarget);
-                includedModules.Add(module.Name);
-            }
-            // else, optionally log or throw if missing
-        }
+        if (solutionFile == null)
+            throw new FileNotFoundException($"Template solution '{solutionPattern}' not found in {templateRoot}");
 
-        // 4. Replace namespace tokens (e.g., "MyCompany.Template")
-        ReplaceNamespace(tempFolder, "TemplateNamespace", request.Namespace);
+        // 3. Copy template root (everything) to temp
+        CopyDirectory(templateRoot, tempFolder);
 
-        // 5. Zip project
+        // 4. Replace all {Namespace} in all file/folder names and all contents
+        ReplaceNamespaceInDirectory(tempFolder, namespacePlaceholder, request.Namespace);
+
+        // 5. Prune modules (if needed)
+        PruneModules(tempFolder, request.Namespace, request.Modules?.Where(m => m.Enabled).Select(m => m.Name).ToList());
+
+        // 6. Zip project
         var zipPath = Path.Combine(Path.GetTempPath(), $"{request.Namespace}_{DateTime.UtcNow:yyyyMMddHHmmss}.zip");
         ZipFile.CreateFromDirectory(tempFolder, zipPath);
         var zipBytes = await File.ReadAllBytesAsync(zipPath);
@@ -49,18 +43,35 @@ public class ProjectInitializerService : IProjectInitializerService, ITransientS
         Directory.Delete(tempFolder, recursive: true);
         File.Delete(zipPath);
 
-        // 6. Return result
+        // 7. Return result
         return new InitializedProject
         {
             ProjectType = request.ProjectType,
             FileName = Path.GetFileName(zipPath),
             ZipFile = zipBytes,
             TempFolderPath = tempFolder,
-            IncludedModules = includedModules
+            IncludedModules = request.Modules?.Where(m => m.Enabled).Select(m => m.Name).ToList() ?? new List<string>()
         };
     }
 
-    // --- Helpers ---
+    private static string FindSolutionRoot(string? startDir = null)
+    {
+        var dir = new DirectoryInfo(startDir ?? Directory.GetCurrentDirectory());
+        while (dir != null)
+        {
+            // If you want to look for the .sln, use this:
+            if (dir.GetFiles("*.sln").Any())
+                return dir.FullName;
+
+            // Or just check for the folder directly:
+            if (Directory.Exists(Path.Combine(dir.FullName, "SpireApi.Template", "Template")))
+                return dir.FullName;
+
+            dir = dir.Parent;
+        }
+        throw new DirectoryNotFoundException("Could not find solution root (no .sln or SpireApi.Template found)!");
+    }
+
 
     // Recursively copy all files and subdirs
     private static void CopyDirectory(string sourceDir, string targetDir)
@@ -74,16 +85,70 @@ public class ProjectInitializerService : IProjectInitializerService, ITransientS
             CopyDirectory(subdir, Path.Combine(targetDir, Path.GetFileName(subdir)));
     }
 
-    // Recursively replace namespace tokens in text files
-    private static void ReplaceNamespace(string directory, string token, string replacement)
+    /// <summary>
+    /// Recursively replace all folder/file names and file contents with the new namespace.
+    /// </summary>
+    private static void ReplaceNamespaceInDirectory(string rootDir, string token, string replacement)
     {
-        foreach (var file in Directory.EnumerateFiles(directory, "*.*", SearchOption.AllDirectories))
+        // 1. Rename directories and files
+        foreach (var dir in Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories).OrderByDescending(d => d.Length))
         {
-            // You might want to filter for .cs, .csproj, .sln, .json, etc.
-            var text = File.ReadAllText(file);
-            if (text.Contains(token))
+            var dirName = Path.GetFileName(dir);
+            if (dirName.Contains(token))
             {
-                File.WriteAllText(file, text.Replace(token, replacement));
+                var newDir = Path.Combine(Path.GetDirectoryName(dir)!, dirName.Replace(token, replacement));
+                Directory.Move(dir, newDir);
+            }
+        }
+
+        foreach (var file in Directory.GetFiles(rootDir, "*", SearchOption.AllDirectories))
+        {
+            var fileName = Path.GetFileName(file);
+            if (fileName.Contains(token))
+            {
+                var newFile = Path.Combine(Path.GetDirectoryName(file)!, fileName.Replace(token, replacement));
+                File.Move(file, newFile);
+            }
+        }
+
+        // 2. Replace in all file contents (.cs, .csproj, .sln, .json, .xml, .md, etc.)
+        var patterns = new[] { "*.cs", "*.csproj", "*.sln", "*.json", "*.xml", "*.md" };
+        foreach (var pattern in patterns)
+        {
+            foreach (var file in Directory.GetFiles(rootDir, pattern, SearchOption.AllDirectories))
+            {
+                var text = File.ReadAllText(file);
+                if (text.Contains(token))
+                {
+                    File.WriteAllText(file, text.Replace(token, replacement));
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Remove any modules that are not in the includedModules list, if a Modules folder exists.
+    /// </summary>
+    private static void PruneModules(string rootDir, string namespaceName, List<string>? includedModules)
+    {
+        if (includedModules == null || includedModules.Count == 0)
+            return;
+
+        // Find {Namespace}.Application/Modules
+        var appFolder = Directory.GetDirectories(rootDir, $"{namespaceName}.Application", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        if (appFolder != null)
+        {
+            var modulesPath = Path.Combine(appFolder, "Modules");
+            if (Directory.Exists(modulesPath))
+            {
+                foreach (var dir in Directory.GetDirectories(modulesPath))
+                {
+                    var moduleName = Path.GetFileName(dir);
+                    if (!includedModules.Contains(moduleName, StringComparer.OrdinalIgnoreCase))
+                    {
+                        Directory.Delete(dir, recursive: true);
+                    }
+                }
             }
         }
     }

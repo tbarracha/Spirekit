@@ -1,4 +1,5 @@
-﻿using SpireApi.Contracts.Dtos.Modules.ProjectInitializer;
+﻿using SpireApi.Application.Modules.ProjectInitializer.Dtos;
+using SpireCore.API.Operations.Dtos;
 
 namespace SpireApi.Application.Modules.ProjectInitializer.Domain.Models;
 
@@ -24,7 +25,8 @@ public static class ProjectInitializerMapper
         {
             ProjectType = model.ProjectType,
             FileName = model.FileName,
-            ZipFile = model.ZipFile
+            ContentType = "application/zip",
+            Base64Data = Convert.ToBase64String(model.ZipFile)
         };
     }
 }

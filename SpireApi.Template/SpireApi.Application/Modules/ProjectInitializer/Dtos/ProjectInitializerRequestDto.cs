@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SpireApi.Contracts.Dtos.Modules.ProjectInitializer;
+namespace SpireApi.Application.Modules.ProjectInitializer.Dtos;
 
 public class ProjectInitializerRequestDto
 {

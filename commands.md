@@ -2,5 +2,5 @@
 
 ./Scripts/Export-TemplateFromSpireApi.ps1
 
-./Scripts/Remove-AllChildFolders.ps1
+./Scripts/Remove-AllTemplateItems.ps1
 
