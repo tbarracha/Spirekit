@@ -6,11 +6,11 @@ namespace SpireApi.Application.Features.Hello.Operations;
 
 [OperationGroup("Hello")]
 [OperationRoute("hello/world")]
-public class HelloWorldOperation : IOperation<HelloRequest, HelloResponse>
+public class HelloWorldOperation : IOperation<HelloRequestDto, HelloResponseDto>
 {
-    public Task<HelloResponse> ExecuteAsync(HelloRequest request)
+    public Task<HelloResponseDto> ExecuteAsync(HelloRequestDto request)
     {
-        return Task.FromResult(new HelloResponse
+        return Task.FromResult(new HelloResponseDto
         {
             Message = $"Hello, {request.Name} {request.LastName}!"
         });

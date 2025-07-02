@@ -7,7 +7,7 @@ namespace SpireApi.Application.Features.Hello.Operations;
 
 [OperationGroup("Hello")]
 [OperationRoute("hello/world/service")]
-public class HelloServiceOperation : IOperation<HelloRequest, HelloResponse>
+public class HelloServiceOperation : IOperation<HelloRequestDto, HelloResponseDto>
 {
     private readonly IHelloService _helloService;
 
@@ -16,9 +16,9 @@ public class HelloServiceOperation : IOperation<HelloRequest, HelloResponse>
         _helloService = helloService;
     }
 
-    public Task<HelloResponse> ExecuteAsync(HelloRequest request)
+    public Task<HelloResponseDto> ExecuteAsync(HelloRequestDto request)
     {
-        return Task.FromResult(new HelloResponse
+        return Task.FromResult(new HelloResponseDto
         {
             Message = _helloService.GetHello(request.Name)
         });

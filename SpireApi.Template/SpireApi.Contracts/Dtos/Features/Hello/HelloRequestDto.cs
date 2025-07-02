@@ -2,7 +2,7 @@
 
 namespace SpireApi.Contracts.Dtos.Features.Hello;
 
-public class HelloRequest
+public class HelloRequestDto
 {
     [DefaultValue("Bruce")]
     public string Name { get; set; } = string.Empty;
