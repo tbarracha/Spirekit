@@ -1,7 +1,7 @@
-﻿using SpireApi.Application.Features.Authentication.Domain.AuthUsers.Models;
+﻿using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
 using SpireCore.API.EntityFramework.Entities;
 
-namespace SpireApi.Application.Features.Authentication.Domain.RefreshTokens.Models;
+namespace SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
 
 public class RefreshToken : BaseEntityClass
 {

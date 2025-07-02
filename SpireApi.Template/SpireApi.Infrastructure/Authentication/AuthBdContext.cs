@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Infrastructure;
+using SpireApi.Application.Modules.Authentication.Infrastructure;
 
 namespace SpireApi.Infrastructure.Authentication;
 

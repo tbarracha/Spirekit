@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using SpireApi.Application.Domain.AuthUsers.Models;
-using SpireApi.Application.Domain.AuthAudit;
-using SpireApi.Application.Domain.RefreshTokens.Models;
-using SpireApi.Application.Domain.RefreshTokens.Repositories;
-using SpireApi.Application.Infrastructure;
 using SpireCore.API.Services;
 using SpireCore.Events.Dispatcher;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Repositories;
+using SpireApi.Application.Modules.Authentication.Infrastructure;
+using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
+using SpireApi.Application.Modules.Authentication.Domain.AuthAudit;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
 
-namespace SpireApi.Application.Features.Authentication.Services;
+namespace SpireApi.Application.Modules.Authentication.Services;
 
 public class AuthenticationService : IAuthenticationService, ITransientService
 {

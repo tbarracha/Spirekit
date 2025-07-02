@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using SpireApi.Application.Domain.AuthUsers.Models;
-using SpireApi.Application.Domain.RefreshTokens.Repositories;
-using SpireApi.Application.Features.Authentication.Services;
-using SpireApi.Application.Infrastructure;
+using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Repositories;
+using SpireApi.Application.Modules.Authentication.Infrastructure;
+using SpireApi.Application.Modules.Authentication.Services;
 using System.Text;
 
-namespace SpireApi.Application.Features.Authentication;
+namespace SpireApi.Application.Modules.Authentication.Configuration;
 
 public static class AuthServiceExtensions
 {

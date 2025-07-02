@@ -1,9 +1,10 @@
 ﻿using System.IO.Compression;
 using SpireApi.Application.Modules.ProjectInitializer.Domain.Models;
+using SpireCore.API.Services;
 
 namespace SpireApi.Application.Modules.ProjectInitializer.Services;
 
-public class ProjectInitializerService : IProjectInitializerService
+public class ProjectInitializerService : IProjectInitializerService, ITransientService
 {
     // Optionally, these could be injected/configured
     private const string BaseTemplatesRoot = "ProjectTemplates"; // e.g., under your solution root

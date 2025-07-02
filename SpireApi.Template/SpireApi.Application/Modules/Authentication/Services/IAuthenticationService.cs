@@ -1,7 +1,7 @@
-﻿using SpireApi.Application.Features.Authentication.Domain.AuthUsers.Models;
+﻿using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
 using System.Security.Claims;
 
-namespace SpireApi.Application.Features.Authentication.Services;
+namespace SpireApi.Application.Modules.Authentication.Services;
 
 public interface IAuthenticationService
 {

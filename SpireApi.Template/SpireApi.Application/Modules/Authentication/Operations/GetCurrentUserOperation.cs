@@ -1,9 +1,9 @@
-﻿using SpireApi.Application.Features.Authentication.Services;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using SpireCore.API.Operations;
-using SpireApi.Application.Features.Authentication.Domain.AuthUsers.Models;
+using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
+using SpireApi.Application.Modules.Authentication.Services;
 
-namespace SpireApi.Application.Features.Authentication.Operations;
+namespace SpireApi.Application.Modules.Authentication.Operations;
 
 [OperationAuthorize]
 public class GetCurrentUserOperation : AuthOperation<ClaimsPrincipal, AuthUser?>

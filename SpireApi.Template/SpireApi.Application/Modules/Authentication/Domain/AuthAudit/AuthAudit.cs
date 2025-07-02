@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SpireApi.Application.Features.Authentication.Domain.AuthUsers.Models;
+using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
 using SpireCore.Abstractions.Interfaces;
 
-namespace SpireApi.Application.Features.Authentication.Domain.AuthAudit;
+namespace SpireApi.Application.Modules.Authentication.Domain.AuthAudit;
 
 public class AuthAudit : ICreatedAt
 {

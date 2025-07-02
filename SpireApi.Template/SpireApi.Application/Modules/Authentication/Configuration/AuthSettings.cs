@@ -1,4 +1,4 @@
-﻿namespace SpireApi.Application.Modules.Authentication;
+﻿namespace SpireApi.Application.Modules.Authentication.Configuration;
 
 public class AuthSettings
 {

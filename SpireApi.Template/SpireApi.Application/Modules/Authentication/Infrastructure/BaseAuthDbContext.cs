@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Domain.AuthUsers.Models;
-using SpireApi.Application.Domain.AuthAudit;
-using SpireApi.Application.Domain.RefreshTokens.Models;
+using SpireApi.Application.Modules.Authentication.Domain.AuthAudit;
+using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
 
-namespace SpireApi.Application.Infrastructure;
+namespace SpireApi.Application.Modules.Authentication.Infrastructure;
 
 public abstract class BaseAuthDbContext : IdentityDbContext<AuthUser, IdentityRole<Guid>, Guid>
 {

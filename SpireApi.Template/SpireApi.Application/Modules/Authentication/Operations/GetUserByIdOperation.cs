@@ -1,8 +1,8 @@
-﻿using SpireApi.Application.Features.Authentication.Domain.AuthUsers.Models;
-using SpireApi.Application.Features.Authentication.Services;
+﻿using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
+using SpireApi.Application.Modules.Authentication.Services;
 using SpireCore.API.Operations;
 
-namespace SpireApi.Application.Features.Authentication.Operations;
+namespace SpireApi.Application.Modules.Authentication.Operations;
 
 [OperationAuthorize]
 public class GetUserByIdOperation : AuthOperation<Guid, AuthUser?>

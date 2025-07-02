@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Features.Authentication;
-using SpireApi.Application.Infrastructure;
+using SpireApi.Application.Modules.Authentication.Configuration;
+using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireApi.Infrastructure.Authentication;
 using SpireCore.API.Services;
 using SpireCore.API.Swagger;

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Domain.RefreshTokens.Models;
-using SpireApi.Application.Infrastructure;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
+using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireCore.API.EntityFramework.Repositories;
 using SpireCore.Constants;
 
-namespace SpireApi.Application.Domain.RefreshTokens.Repositories;
+namespace SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Repositories;
 
 public class RefreshTokenRepository : BaseRepository<RefreshToken, Guid, BaseAuthDbContext>
 {
