@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Domain.RefreshTokens.Models;
-using SpireApi.Application.Persistance;
+using SpireApi.Application.Infrastructure;
 using SpireCore.API.EntityFramework.Repositories;
 using SpireCore.Constants;
 

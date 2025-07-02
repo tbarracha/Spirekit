@@ -5,7 +5,7 @@ using SpireApi.Application.Domain.AuthUsers.Models;
 using SpireApi.Application.Domain.AuthAudit;
 using SpireApi.Application.Domain.RefreshTokens.Models;
 
-namespace SpireApi.Application.Persistance;
+namespace SpireApi.Application.Infrastructure;
 
 public abstract class BaseAuthDbContext : IdentityDbContext<AuthUser, IdentityRole<Guid>, Guid>
 {

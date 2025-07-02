@@ -6,7 +6,7 @@ using SpireApi.Application.Domain.AuthUsers.Models;
 using SpireApi.Application.Domain.AuthAudit;
 using SpireApi.Application.Domain.RefreshTokens.Models;
 using SpireApi.Application.Domain.RefreshTokens.Repositories;
-using SpireApi.Application.Persistance;
+using SpireApi.Application.Infrastructure;
 using SpireCore.API.Services;
 using SpireCore.Events.Dispatcher;
 using System.IdentityModel.Tokens.Jwt;

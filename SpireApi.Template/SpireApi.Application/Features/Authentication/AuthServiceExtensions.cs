@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using SpireApi.Application.Domain.AuthUsers.Models;
 using SpireApi.Application.Domain.RefreshTokens.Repositories;
 using SpireApi.Application.Features.Authentication.Services;
-using SpireApi.Application.Persistance;
+using SpireApi.Application.Infrastructure;
 using System.Text;
 
 namespace SpireApi.Application.Features.Authentication;
