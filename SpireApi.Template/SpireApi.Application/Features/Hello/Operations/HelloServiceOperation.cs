@@ -1,7 +1,7 @@
 ﻿
 using SpireCore.API.Operations;
 using SpireApi.Application.Features.Hello.Services;
-using SpireApi.Contracts.Dtos.Hello;
+using SpireApi.Contracts.Dtos.Features.Hello;
 
 namespace SpireApi.Application.Features.Hello.Operations;
 

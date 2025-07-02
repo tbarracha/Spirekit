@@ -20,7 +20,7 @@ builder.Services.AddLifetimeServices();
 
 // --- Centralized authentication/authorization/identity ---
 builder.Services.AddDomainAuthServices();
-builder.Services.AddAspDotNetAuth(builder.Configuration);
+builder.Services.AddAspNetCoreAuth(builder.Configuration);
 
 var app = builder.Build();
 
