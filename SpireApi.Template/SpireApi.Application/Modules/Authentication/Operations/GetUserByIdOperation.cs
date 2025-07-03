@@ -1,6 +1,6 @@
 ﻿using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
 using SpireApi.Application.Modules.Authentication.Domain.Services;
-using SpireCore.API.Operations.Attributes;
+using SpireApi.Shared.Operations.Attributes;
 
 namespace SpireApi.Application.Modules.Authentication.Operations;
 

@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using SpireCore.API.Operations.Attributes;
+using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Application.Modules.Authentication.Domain.Services;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
 

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SpireCore\SpireCore.csproj" />
+    <ProjectReference Include="..\SpireApi.Shared\SpireApi.Shared.csproj" />
   </ItemGroup>
 
 </Project>

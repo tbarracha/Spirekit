@@ -1,4 +1,4 @@
-﻿using SpireCore.API.Operations.Dtos;
+﻿using SpireApi.Shared.Operations.Dtos;
 
 namespace SpireApi.Application.Modules.ProjectInitializer.Dtos;
 

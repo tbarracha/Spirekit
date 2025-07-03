@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
-using SpireCore.API.EntityFramework.Repositories;
+using SpireApi.Shared.EntityFramework.Repositories;
 using SpireCore.Constants;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;

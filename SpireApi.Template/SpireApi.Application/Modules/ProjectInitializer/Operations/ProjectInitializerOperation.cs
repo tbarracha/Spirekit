@@ -2,8 +2,8 @@
 using SpireApi.Application.Modules.ProjectInitializer.Domain.Models;
 using SpireApi.Application.Modules.ProjectInitializer.Domain.Services;
 using SpireApi.Application.Modules.ProjectInitializer.Dtos;
-using SpireCore.API.Operations;
-using SpireCore.API.Operations.Attributes;
+using SpireApi.Shared.Operations;
+using SpireApi.Shared.Operations.Attributes;
 
 namespace SpireApi.Application.Modules.ProjectInitializer.Operations;
 

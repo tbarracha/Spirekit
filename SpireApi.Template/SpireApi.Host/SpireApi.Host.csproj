@@ -27,6 +27,7 @@
     <ProjectReference Include="..\SpireApi.Application\SpireApi.Application.csproj" />
     <ProjectReference Include="..\SpireApi.Contracts\SpireApi.Contracts.csproj" />
     <ProjectReference Include="..\SpireApi.Infrastructure\SpireApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\SpireApi.Shared\SpireApi.Shared.csproj" />
   </ItemGroup>
 
 </Project>

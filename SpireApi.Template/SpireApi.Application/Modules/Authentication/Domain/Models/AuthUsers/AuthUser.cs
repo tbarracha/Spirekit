@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SpireApi.Shared.JWT.UserIdentity;
 using SpireCore.Abstractions.Interfaces;
-using SpireCore.API.JWT.UserIdentity;
 using SpireCore.Constants;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;

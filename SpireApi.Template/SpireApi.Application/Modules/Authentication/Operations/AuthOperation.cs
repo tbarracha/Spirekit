@@ -1,5 +1,5 @@
 ﻿using SpireApi.Application.Modules.Authentication.Domain.Services;
-using SpireCore.API.Operations;
+using SpireApi.Shared.Operations;
 
 namespace SpireApi.Application.Modules.Authentication.Operations;
 

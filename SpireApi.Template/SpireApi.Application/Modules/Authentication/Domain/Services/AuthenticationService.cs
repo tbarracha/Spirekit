@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using SpireCore.API.Services;
 using SpireCore.Events.Dispatcher;
 using System.Security.Claims;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
 using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
-using SpireCore.API.JWT.UserIdentity;
+using SpireApi.Shared.Services;
+using SpireApi.Shared.JWT.UserIdentity;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Services;
 

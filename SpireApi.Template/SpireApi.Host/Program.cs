@@ -2,12 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Modules.Authentication.Configuration;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireApi.Infrastructure.Authentication;
-using SpireCore.API.JWT.MicroServiceIdentity;
-using SpireCore.API.JWT.UserIdentity;
-using SpireCore.API.JWT;
-using SpireCore.API.Services;
-using SpireCore.API.Swagger;
+using SpireApi.Shared.JWT;
+using SpireApi.Shared.JWT.UserIdentity;
+using SpireApi.Shared.JWT.MicroServiceIdentity;
 using SpireCore.Events.Dispatcher;
+using SpireApi.Shared.Services;
+using SpireApi.Shared.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
