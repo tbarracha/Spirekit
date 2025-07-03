@@ -1,4 +1,4 @@
-﻿namespace SpireCore.API.Operations;
+﻿namespace SpireCore.API.Operations.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
 public sealed class OperationRouteAttribute : Attribute

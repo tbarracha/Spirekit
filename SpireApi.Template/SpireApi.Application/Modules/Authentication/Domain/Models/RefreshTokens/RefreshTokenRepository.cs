@@ -1,20 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireCore.API.EntityFramework.Repositories;
 using SpireCore.Constants;
 
-namespace SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Repositories;
+namespace SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 
 public class RefreshTokenRepository : BaseRepository<RefreshToken, Guid, BaseAuthDbContext>
 {
     public RefreshTokenRepository(BaseAuthDbContext context) : base(context) { }
-
-    public override async Task<RefreshToken?> GetByIdAsync(Guid id)
-    {
-        return await _dbSet.Include(r => r.AuthUser)
-                           .FirstOrDefaultAsync(r => r.Id == id && r.StateFlag == StateFlags.ACTIVE);
-    }
 
     public async Task<RefreshToken?> GetValidTokenAsync(string token)
     {

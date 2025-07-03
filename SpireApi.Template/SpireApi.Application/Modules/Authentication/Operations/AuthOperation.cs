@@ -1,4 +1,4 @@
-﻿using SpireApi.Application.Modules.Authentication.Services;
+﻿using SpireApi.Application.Modules.Authentication.Domain.Services;
 using SpireCore.API.Operations;
 
 namespace SpireApi.Application.Modules.Authentication.Operations;

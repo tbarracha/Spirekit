@@ -1,4 +1,4 @@
-﻿namespace SpireCore.API.Operations;
+﻿namespace SpireCore.API.Operations.Attributes;
 
 public enum OperationMethodType
 {

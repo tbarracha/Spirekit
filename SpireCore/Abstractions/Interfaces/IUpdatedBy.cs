@@ -2,5 +2,10 @@
 
 public interface IUpdatedBy
 {
-    DateTime UpdatedBy { get; set; }
+    string UpdatedBy { get; set; }
+}
+
+public interface IUpdatedBy<TId>
+{
+    TId UpdatedBy { get; set; }
 }

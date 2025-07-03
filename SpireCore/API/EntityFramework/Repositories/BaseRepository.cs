@@ -1,60 +1,31 @@
-﻿// -----------------------------------------------------------------------------
-// Author: Tiago Barracha <ti.barracha@gmail.com>
-// Created with AI assistance (ChatGPT)
-//
-// Description: Provides a generic base repository implementation with support for 
-// pagination, batch operations, and soft deletion using Entity Framework Core.
-// -----------------------------------------------------------------------------
-//
-// USAGE:
-//
-// 1. Create your concrete repository by inheriting from BaseRepository:
-// 
-//   public class UserRepository : BaseRepository<User, Guid, AppDbContext>
-//   {
-//       public UserRepository(AppDbContext context) : base(context) {}
-//
-//       public override Task<User?> GetByIdAsync(Guid id) =>
-//           _dbSet.FirstOrDefaultAsync(u => u.Id == id && u.StateFlag == StateFlags.ACTIVE);
-//   }
-//
-// 2. Register IRepository<T, TId> as a scoped service if needed:
-// 
-//   services.AddScoped<IRepository<User, Guid>, UserRepository>();
-//
-// -----------------------------------------------------------------------------
-
-using Microsoft.EntityFrameworkCore;
-using SpireCore.Abstractions.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using SpireCore.Constants;
-using SpireCore.Events;
 using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;
 
 namespace SpireCore.API.EntityFramework.Repositories;
 
 /// <summary>
-/// Provides a generic base implementation for common data access operations (CRUD) 
+/// Provides a generic base implementation for common data access operations (CRUD)
 /// over a specific entity type using Entity Framework Core.
 /// </summary>
-/// <typeparam name="T">The entity type. Must implement ICreatedAt, IUpdatedAt, and IStateFlag.</typeparam>
-/// <typeparam name="TId">The primary key type of the entity.</typeparam>
-/// <typeparam name="TContext">The EF Core DbContext type for the current repository scope.</typeparam>
+/// <typeparam name="T">
+/// The entity type for this repository (must implement <see cref="IRepoEntity{TId}"/>).
+/// </typeparam>
+/// <typeparam name="TId">
+/// The type of the primary key for the entity (e.g., <c>Guid</c>, <c>int</c>).
+/// </typeparam>
+/// <typeparam name="TContext">
+/// The DbContext type this repository will use (must inherit from <see cref="DbContext"/>).
+/// </typeparam>
 public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IPagination<T>
-    where T : class, ICreatedAt, IUpdatedAt, IStateFlag
+    where T : class, IRepoEntity<TId>
     where TContext : DbContext
 {
     protected readonly TContext _context;
     protected readonly DbSet<T> _dbSet;
 
     public IQueryable<T> Query() => _dbSet.AsQueryable();
-
-    public LazyEventEmitter<T> OnAfterAdd { get; } = new();
-    public LazyEventEmitter<List<T>> OnAfterAddRange { get; } = new();
-    public LazyEventEmitter<T> OnAfterUpdate { get; } = new();
-    public LazyEventEmitter<List<T>> OnAfterUpdateRange { get; } = new();
-    public LazyEventEmitter<T> OnAfterDelete { get; } = new();
-    public LazyEventEmitter<List<T>> OnAfterDeleteRange { get; } = new();
 
     protected BaseRepository(TContext context)
     {
@@ -64,25 +35,47 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
 
     // --- Read ---
 
-    public abstract Task<T?> GetByIdAsync(TId id);
-
-    public virtual async Task<IReadOnlyList<T>> ListAsync(string state = StateFlags.ACTIVE)
-    => await _dbSet.Where(e => e.StateFlag == state).ToListAsync();
-
-    public virtual async Task<IReadOnlyList<T>> ListFilteredAsync(Expression<Func<T, bool>> filter, string state = StateFlags.ACTIVE)
+    public virtual async Task<T?> GetByIdAsync(TId id, string? state = StateFlags.ACTIVE)
     {
-        return await _dbSet
-            .Where(e => e.StateFlag == state)
-            .Where(filter)
-            .ToListAsync();
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+        return await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
     }
 
-    public virtual async Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize, string state = StateFlags.ACTIVE)
+    public virtual async Task<T?> GetFilteredAsync(Expression<Func<T, bool>> predicate, string? state = StateFlags.ACTIVE)
+    {
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+        return await query.FirstOrDefaultAsync(predicate);
+    }
+
+    public virtual async Task<IReadOnlyList<T>> ListFilteredAsync(Expression<Func<T, bool>> filter, string? state = StateFlags.ACTIVE)
+    {
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+        return await query.Where(filter).ToListAsync();
+    }
+
+    public virtual async Task<IReadOnlyList<T>> ListAsync(string? state = StateFlags.ACTIVE)
+    {
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+        return await query.ToListAsync();
+    }
+
+    public virtual async Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize, string? state = StateFlags.ACTIVE)
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
 
-        var query = _dbSet.Where(e => e.StateFlag == state);
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+
         var totalCount = await query.CountAsync();
         var items = await query
             .Skip((page - 1) * pageSize)
@@ -96,14 +89,15 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         Expression<Func<T, bool>> filter,
         int page,
         int pageSize,
-        string state = StateFlags.ACTIVE)
+        string? state = StateFlags.ACTIVE)
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
 
-        var query = _dbSet
-            .Where(e => e.StateFlag == state)
-            .Where(filter);
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+        query = query.Where(filter);
 
         var totalCount = await query.CountAsync();
         var items = await query
@@ -113,8 +107,6 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
 
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
-
-
 
     // --- Create ---
 
@@ -126,7 +118,6 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
 
-        OnAfterAdd.Emit(entity);
         return entity;
     }
 
@@ -144,8 +135,6 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         await _dbSet.AddRangeAsync(entityList);
         await _context.SaveChangesAsync();
 
-        OnAfterAddRange.Emit(entityList);
-
         return entityList;
     }
 
@@ -157,7 +146,6 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
 
-        OnAfterUpdate.Emit(entity);
         return entity;
     }
 
@@ -172,8 +160,6 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         _dbSet.UpdateRange(entityList);
         await _context.SaveChangesAsync();
 
-        OnAfterUpdateRange.Emit(entityList);
-
         return entityList;
     }
 
@@ -186,7 +172,6 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
 
-        OnAfterDelete.Emit(entity);
         return entity;
     }
 
@@ -204,8 +189,6 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         _dbSet.UpdateRange(entityList);
         await _context.SaveChangesAsync();
 
-        OnAfterDeleteRange.Emit(entityList);
-
         return entityList;
     }
 
@@ -219,7 +202,19 @@ public abstract class BaseRepository<T, TId, TContext> : IRepository<T, TId>, IP
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
 
-        OnAfterDelete.Emit(entity);
+        return entity;
+    }
+
+    public virtual async Task<T?> RestoreAsync(TId id)
+    {
+        var entity = await GetByIdAsync(id, StateFlags.DELETED);
+        if (entity is null) return null;
+
+        entity.StateFlag = StateFlags.ACTIVE;
+        entity.UpdatedAt = DateTime.UtcNow;
+        _dbSet.Update(entity);
+        await _context.SaveChangesAsync();
+
         return entity;
     }
 }

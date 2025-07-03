@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SpireCore.API.Operations;
+namespace SpireCore.API.Operations.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class OperationGroupAttribute : Attribute

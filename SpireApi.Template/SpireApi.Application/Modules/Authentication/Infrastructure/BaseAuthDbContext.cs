@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Modules.Authentication.Domain.AuthAudit;
-using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
-using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
+using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 
 namespace SpireApi.Application.Modules.Authentication.Infrastructure;
 

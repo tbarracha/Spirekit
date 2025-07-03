@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
-using SpireCore.API.Operations;
-using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
-using SpireApi.Application.Modules.Authentication.Services;
+using SpireCore.API.Operations.Attributes;
+using SpireApi.Application.Modules.Authentication.Domain.Services;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
 
 namespace SpireApi.Application.Modules.Authentication.Operations;
 

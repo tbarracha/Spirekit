@@ -1,19 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using SpireCore.API.Services;
 using SpireCore.Events.Dispatcher;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Repositories;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
-using SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
-using SpireApi.Application.Modules.Authentication.Domain.AuthAudit;
-using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
+using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
+using SpireCore.API.JWT.UserIdentity;
 
-namespace SpireApi.Application.Modules.Authentication.Services;
+namespace SpireApi.Application.Modules.Authentication.Domain.Services;
 
 public class AuthenticationService : IAuthenticationService, ITransientService
 {
@@ -24,6 +21,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
     private readonly RefreshTokenRepository _refreshRepo;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly BaseAuthDbContext _dbContext;
+    private readonly IJwtService _jwtService;
 
     public AuthenticationService(
         UserManager<AuthUser> userManager,
@@ -32,7 +30,8 @@ public class AuthenticationService : IAuthenticationService, ITransientService
         IEventDispatcher eventDispatcher,
         RefreshTokenRepository refreshRepo,
         IHttpContextAccessor httpContextAccessor,
-        BaseAuthDbContext dbContext)
+        BaseAuthDbContext dbContext,
+        IJwtService jwtService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -41,6 +40,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
         _refreshRepo = refreshRepo;
         _httpContextAccessor = httpContextAccessor;
         _dbContext = dbContext;
+        _jwtService = jwtService;
     }
 
     public async Task<(string AccessToken, string RefreshToken)> RegisterAsync(string email, string password, string firstName, string lastName)
@@ -60,7 +60,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
         if (!result.Succeeded)
             throw new Exception("Registration failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
 
-        var accessToken = GenerateJwt(user);
+        var accessToken = _jwtService.GenerateJwt(user);
         var refreshToken = await GenerateRefreshTokenAsync(user);
 
         return (accessToken, refreshToken);
@@ -102,7 +102,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
 
         await LogAuthAudit(user, AuthAuditType.Login, true);
 
-        var accessToken = GenerateJwt(user);
+        var accessToken = _jwtService.GenerateJwt(user);
         var refreshToken = await GenerateRefreshTokenAsync(user);
 
         return (accessToken, refreshToken);
@@ -115,32 +115,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
             throw new Exception("Invalid or expired refresh token.");
 
         await _refreshRepo.RevokeTokenAsync(record);
-        return GenerateJwt(record.AuthUser!);
-    }
-
-    private string GenerateJwt(AuthUser user)
-    {
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim("email", user.Email ?? string.Empty),
-            new Claim("firstName", user.FirstName),
-            new Claim("lastName", user.LastName),
-            new Claim("state", user.StateFlag ?? string.Empty)
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
-            signingCredentials: creds
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return _jwtService.GenerateJwt(record.AuthUser!);
     }
 
     private async Task<string> GenerateRefreshTokenAsync(AuthUser user)
@@ -188,7 +163,7 @@ public class AuthenticationService : IAuthenticationService, ITransientService
 
     public async Task<AuthUser?> GetCurrentUserAsync(ClaimsPrincipal user)
     {
-        var id = user.FindFirstValue(ClaimTypes.NameIdentifier);
+        var id = user.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
         return id == null ? null : await _userManager.FindByIdAsync(id);
     }
 

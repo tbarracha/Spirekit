@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace SpireApi.Application.Modules.Authentication.Services;
+namespace SpireApi.Application.Modules.Authentication.Domain.Services;
 
 public static class AuthTokenHelper
 {

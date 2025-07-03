@@ -2,7 +2,7 @@
 using SpireApi.Application.Modules.ProjectInitializer.Domain.Models;
 using SpireCore.API.Services;
 
-namespace SpireApi.Application.Modules.ProjectInitializer.Services;
+namespace SpireApi.Application.Modules.ProjectInitializer.Domain.Services;
 
 public class ProjectInitializerService : IProjectInitializerService, ITransientService
 {

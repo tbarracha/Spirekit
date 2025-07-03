@@ -2,15 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SpireCore.Abstractions.Interfaces;
+using SpireCore.API.JWT.UserIdentity;
 using SpireCore.Constants;
 
-namespace SpireApi.Application.Modules.Authentication.Domain.AuthUsers.Models;
+namespace SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
 
-public class AuthUser : IdentityUser<Guid>, ICreatedAt, IUpdatedAt, IStateFlag
+public class AuthUser : IdentityUser<Guid>, ICreatedAt, IUpdatedAt, IStateFlag, IJwtUser
 {
     // Official/internal use
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+
+    public string? DisplayName { get; set; } = string.Empty;
     public DateTime? DateOfBirth { get; set; }
 
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpireCore.API.Operations;
+using SpireCore.API.Operations.Attributes;
 using System.Reflection;
 
 public static class OperationEndpointMapper
