@@ -1,11 +1,12 @@
 ﻿using SpireApi.Shared.EntityFramework.Repositories;
 using SpireCore.Constants;
+using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;
 
 /// <summary>
 /// Generic repository interface for CRUD operations, with optional pagination.
 /// </summary>
-public interface IRepository<T, TId> where T : class, IRepoEntity<TId>
+public interface IRepository<T, TId> : IPagination<T> where T : class, IRepoEntity<TId>
 {
 
 

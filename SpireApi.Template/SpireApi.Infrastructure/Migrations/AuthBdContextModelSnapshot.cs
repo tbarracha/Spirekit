@@ -11,7 +11,7 @@ using SpireApi.Infrastructure.Authentication;
 
 namespace SpireApi.Infrastructure.Migrations
 {
-    [DbContext(typeof(AuthBdContext))]
+    [DbContext(typeof(AuthDbContext))]
     partial class AuthBdContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

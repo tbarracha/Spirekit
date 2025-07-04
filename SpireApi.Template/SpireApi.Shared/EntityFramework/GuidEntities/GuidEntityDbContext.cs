@@ -5,7 +5,7 @@ namespace SpireApi.Application.Shared.Entities;
 
 public class GuidEntityDbContext : DbContext
 {
-    public GuidEntityDbContext(DbContextOptions<GuidEntityDbContext> options)
+    public GuidEntityDbContext(DbContextOptions options)
         : base(options)
     {
     }

@@ -5,14 +5,14 @@ using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 using SpireApi.Application.Modules.Authentication.Domain.Services;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
 
-namespace SpireApi.Application.Modules.Authentication.Configuration;
+namespace SpireApi.Application.Modules.Authentication;
 
 public static class AuthServiceExtensions
 {
     /// <summary>
     /// Registers only domain authentication services (repositories, interfaces, custom logic).
     /// </summary>
-    public static IServiceCollection AddDomainAuthServices(this IServiceCollection services)
+    public static IServiceCollection AddAuthModuleServices(this IServiceCollection services)
     {
         // Identity registration (always added)
         services.AddIdentity<AuthUser, IdentityRole<Guid>>()

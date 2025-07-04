@@ -37,9 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\Iam\Domain\Models\Users\" />
-    <Folder Include="Modules\Iam\Domain\Services\" />
-    <Folder Include="Modules\Iam\Operations\" />
     <Folder Include="Modules\Iam\Dtos\" />
     <Folder Include="Modules\ProjectInitializer\Configuration\" />
   </ItemGroup>

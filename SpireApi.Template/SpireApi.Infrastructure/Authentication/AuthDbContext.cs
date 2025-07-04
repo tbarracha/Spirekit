@@ -3,7 +3,7 @@ using SpireApi.Application.Modules.Authentication.Infrastructure;
 
 namespace SpireApi.Infrastructure.Authentication;
 
-public class AuthBdContext : BaseAuthDbContext
+public class AuthDbContext : BaseAuthDbContext
 {
-    public AuthBdContext(DbContextOptions<AuthBdContext> options) : base(options) { }
+    public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) { }
 }

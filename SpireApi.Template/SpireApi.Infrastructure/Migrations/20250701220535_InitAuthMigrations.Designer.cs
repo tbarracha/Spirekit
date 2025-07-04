@@ -12,7 +12,7 @@ using SpireApi.Infrastructure.Authentication;
 
 namespace SpireApi.Infrastructure.Migrations
 {
-    [DbContext(typeof(AuthBdContext))]
+    [DbContext(typeof(AuthDbContext))]
     [Migration("20250701220535_InitAuthMigrations")]
     partial class InitAuthMigrations
     {

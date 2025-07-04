@@ -1,7 +1,4 @@
-﻿// File: Application.Modules.Iam.Domain.Models.Groups.GroupType.cs
-using SpireApi.Application.Shared.Entities;
-
-namespace SpireApi.Application.Modules.Iam.Domain.Models.Groups;
+﻿namespace SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 
 public class GroupType : GuidEntityBy
 {

@@ -21,6 +21,6 @@ public abstract class BaseAuthDbContext : IdentityDbContext<AuthUser, IdentityRo
         base.OnModelCreating(builder);
 
         // Register all IEntityTypeConfiguration<T> implementations (for all entities)
-        builder.ApplyConfigurationsFromAssembly(typeof(AuthUser).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(BaseAuthDbContext).Assembly);
     }
 }
