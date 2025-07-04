@@ -61,15 +61,16 @@ public class CommandNode
     /// <summary>
     /// Looks up a subnode by name or alias.
     /// </summary>
+    // In CommandNode
     public bool TryGetSubNode(string name, out CommandNode node)
     {
-        if (_subNodes.TryGetValue(name, out node))
-            return true;
+        // Case-insensitive match for subcommand names and aliases
+        node = SubNodes
+            .FirstOrDefault(n =>
+                n.Name.Equals(name, StringComparison.OrdinalIgnoreCase) ||
+                n.Command?.Aliases?.Any(a => a.Equals(name, StringComparison.OrdinalIgnoreCase)) == true);
 
-        if (_aliases.TryGetValue(name, out node))
-            return true;
-
-        return false;
+        return node != null;
     }
 
     /// <summary>

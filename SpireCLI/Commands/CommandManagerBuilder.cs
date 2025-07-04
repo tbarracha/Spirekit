@@ -14,6 +14,12 @@ public static class CommandManagerBuilder
         root.AddSubNode(new CommandNode(new HelpCommand()));
         root.AddSubNode(new CommandNode(new VersionCommand()));
 
+        // AI commands
+        var aiSubNode = new CommandNode("ai", "AI Command Group");
+        root.AddSubNode(aiSubNode);
+
+        aiSubNode.AddSubNode(new CommandNode(new OllamaChatCommand()));
+
         return new CommandManager(root);
     }
 }

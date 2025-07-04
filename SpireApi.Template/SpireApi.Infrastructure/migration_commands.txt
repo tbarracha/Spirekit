@@ -1,12 +1,28 @@
-﻿# Create new migration
-dotnet ef migrations add <MigrationName> --context AuthDbContext --output-dir Migrations
+﻿// -----------
+// Auth
+// -----------
 
-# Update the database
-dotnet ef database update --context AuthDbContext
-
-# List migrations
-dotnet ef migrations list --project SpireApi.Infrastructure --startup-project SpireApi.Host
+// Create a new migration for AuthDbContext
+dotnet ef migrations add <MigrationName> --context AuthDbContext --output-dir Migrations/Auth --project SpireApi.Infrastructure --startup-project SpireApi.Host
 
 
-// edit here:
-dotnet ef migrations add InitAuthMigrations --context AuthDbContext --output-dir Migrations
+// Update the Auth database schema
+dotnet ef database update --context AuthDbContext --project SpireApi.Infrastructure --startup-project SpireApi.Host
+
+// List AuthDbContext migrations
+dotnet ef migrations list --context AuthDbContext --project SpireApi.Infrastructure --startup-project SpireApi.Host
+
+
+
+// -----------
+// Iam
+// -----------
+// Create a new migration for IamDbContext
+dotnet ef migrations add <MigrationName> --context IamDbContext --output-dir Migrations/Iam --project SpireApi.Infrastructure --startup-project SpireApi.Host
+
+
+// Update the IAM database schema
+dotnet ef database update --context IamDbContext --project SpireApi.Infrastructure --startup-project SpireApi.Host
+
+// List IamDbContext migrations
+dotnet ef migrations list --context IamDbContext --project SpireApi.Infrastructure --startup-project SpireApi.Host
