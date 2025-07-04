@@ -3,6 +3,9 @@ using SpireApi.Application.Modules.Iam.Domain.Models.Groups.Repositories;
 using SpireApi.Application.Modules.Iam.Domain.Models.Roles.Repositories;
 using SpireApi.Application.Modules.Iam.Domain.Models.Permissions.Repositories;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
+using SpireApi.Application.Modules.Iam.Infrastructure;
+using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
+using SpireApi.Application.Modules.Iam.Domain.Models.Permissions;
 
 namespace SpireApi.Application.Modules.Iam;
 
@@ -14,17 +17,18 @@ public static class IamServiceExtensions
     public static IServiceCollection AddIamModuleServices(this IServiceCollection services)
     {
         // --- Groups ---
-        services.AddScoped<IRepository<Group, Guid>, GroupRepository>();
-        services.AddScoped<GroupMemberRepository>();
-        services.AddScoped<GroupTypeRepository>();
+        //services.AddScoped<IRepository<Group, Guid>, GroupRepository>();
+        services.AddScoped<BaseIamEntityRepository<Group>, GroupRepository>();
+        services.AddScoped<BaseIamEntityRepository<GroupMember>, GroupMemberRepository>();
+        services.AddScoped<BaseIamEntityRepository<GroupType>, GroupTypeRepository>();
 
         // --- Roles ---
-        services.AddScoped<RoleRepository>();
-        services.AddScoped<RolePermissionRepository>();
+        services.AddScoped<BaseIamEntityRepository<Role>, RoleRepository>();
+        services.AddScoped<BaseIamEntityRepository<RolePermission>, RolePermissionRepository>();
 
         // --- Permissions ---
-        services.AddScoped<PermissionRepository>();
-        services.AddScoped<PermissionScopeRepository>();
+        services.AddScoped<BaseIamEntityRepository<Permission>, PermissionRepository>();
+        services.AddScoped<BaseIamEntityRepository<PermissionScope>, PermissionScopeRepository>();
 
         return services;
     }

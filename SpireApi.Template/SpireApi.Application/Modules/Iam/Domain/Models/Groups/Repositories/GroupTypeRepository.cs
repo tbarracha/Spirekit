@@ -1,11 +1,10 @@
-﻿using SpireApi.Application.Shared.Entities;
+﻿using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Iam.Domain.Models.Groups.Repositories;
 
-public class GroupTypeRepository : GuidEntityByRepository<GroupType>
+public class GroupTypeRepository : BaseIamEntityRepository<GroupType>
 {
-    // Constructor for DI
-    public GroupTypeRepository(GuidEntityDbContext context) : base(context)
+    public GroupTypeRepository(BaseIamDbContext context) : base(context)
     {
     }
 

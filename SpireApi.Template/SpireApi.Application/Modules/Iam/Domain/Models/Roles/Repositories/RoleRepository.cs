@@ -1,11 +1,10 @@
-﻿using SpireApi.Application.Shared.Entities;
+﻿using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Iam.Domain.Models.Roles.Repositories;
 
-public class RoleRepository : GuidEntityByRepository<Role>
+public class RoleRepository : BaseIamEntityRepository<Role>
 {
-    // Constructor for DI
-    public RoleRepository(GuidEntityDbContext context) : base(context)
+    public RoleRepository(BaseIamDbContext context) : base(context)
     {
     }
 

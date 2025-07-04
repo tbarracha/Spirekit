@@ -1,22 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
-using SpireApi.Application.Shared.Entities;
+using SpireApi.Application.Modules.Authentication.Infrastructure;
+using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
 
-public class AuthAudit : GuidEntity
+public class AuthAudit : BaseAuthEntity
 {
     public Guid AuthUserId { get; set; }
     public AuthUser AuthUser { get; set; } = default!;
 
     public string Type { get; set; } = string.Empty; // AuthAuditType.Login, etc.
-
     public bool WasSuccessful { get; set; }
-
     public string? IpAddress { get; set; }
     public string? UserAgent { get; set; }
-
     public string? FailureReason { get; set; }
 
     /// <summary>
@@ -24,10 +22,10 @@ public class AuthAudit : GuidEntity
     /// </summary>
     public override void ConfigureEntity<T>(EntityTypeBuilder<T> builder)
     {
-        // Call base with generic type
+        // Call the base configuration
         base.ConfigureEntity(builder);
 
-        // Now you can safely cast builder to EntityTypeBuilder<AuthAudit> if needed
+        // If this builder is for AuthAudit, configure properties specific to AuthAudit
         if (builder is EntityTypeBuilder<AuthAudit> auditBuilder)
         {
             auditBuilder.ToTable("AuthAudits");

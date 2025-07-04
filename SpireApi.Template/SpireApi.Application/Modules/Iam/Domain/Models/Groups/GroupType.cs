@@ -1,6 +1,8 @@
-﻿namespace SpireApi.Application.Modules.Iam.Domain.Models.Groups;
+﻿using SpireApi.Application.Modules.Iam.Infrastructure;
 
-public class GroupType : GuidEntityBy
+namespace SpireApi.Application.Modules.Iam.Domain.Models.Groups;
+
+public class GroupType : BaseIamEntity
 {
     public string Name { get; set; } = default!; // e.g., "Team", "Project", "Organization"
     public string? Description { get; set; }

@@ -14,28 +14,36 @@ public static class OperationEndpointMapper
 
         var builder = method switch
         {
-            "GET" => app.MapGet(route, async ([FromServices] TOp op, [AsParameters] TReq req) =>
+            "GET" => app.MapGet(route, async (
+                [FromServices] OperationMiddleware middleware,
+                [FromServices] TOp op,
+                [AsParameters] TReq req) =>
             {
-                var result = await op.ExecuteAsync(req);
-                return result;
+                return await middleware.ExecuteAsync(op, req);
             }),
 
-            "DELETE" => app.MapDelete(route, async ([FromServices] TOp op, [AsParameters] TReq req) =>
+            "DELETE" => app.MapDelete(route, async (
+                [FromServices] OperationMiddleware middleware,
+                [FromServices] TOp op,
+                [AsParameters] TReq req) =>
             {
-                var result = await op.ExecuteAsync(req);
-                return result;
+                return await middleware.ExecuteAsync(op, req);
             }),
 
-            "PUT" => app.MapPut(route, async ([FromServices] TOp op, [FromBody] TReq req) =>
+            "PUT" => app.MapPut(route, async (
+                [FromServices] OperationMiddleware middleware,
+                [FromServices] TOp op,
+                [FromBody] TReq req) =>
             {
-                var result = await op.ExecuteAsync(req);
-                return result;
+                return await middleware.ExecuteAsync(op, req);
             }),
 
-            _ => app.MapPost(route, async ([FromServices] TOp op, [FromBody] TReq req) =>
+            _ => app.MapPost(route, async (
+                [FromServices] OperationMiddleware middleware,
+                [FromServices] TOp op,
+                [FromBody] TReq req) =>
             {
-                var result = await op.ExecuteAsync(req);
-                return result;
+                return await middleware.ExecuteAsync(op, req);
             })
         };
 

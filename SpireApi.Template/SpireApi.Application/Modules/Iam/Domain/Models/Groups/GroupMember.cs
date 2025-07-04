@@ -1,8 +1,9 @@
 ﻿using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
+using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Iam.Domain.Models.Groups
 {
-    public class GroupMember : GuidEntityBy
+    public class GroupMember : BaseIamEntity
     {
         public Guid GroupId { get; set; }
         public Group Group { get; set; } = default!;

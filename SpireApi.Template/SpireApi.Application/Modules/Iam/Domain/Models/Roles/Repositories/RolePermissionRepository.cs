@@ -1,11 +1,10 @@
-﻿using SpireApi.Application.Shared.Entities;
+﻿using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Iam.Domain.Models.Roles.Repositories;
 
-public class RolePermissionRepository : GuidEntityByRepository<RolePermission>
+public class RolePermissionRepository : BaseIamEntityRepository<RolePermission>
 {
-    // Constructor for DI
-    public RolePermissionRepository(GuidEntityDbContext context) : base(context)
+    public RolePermissionRepository(BaseIamDbContext context) : base(context)
     {
     }
 

@@ -5,7 +5,7 @@ using SpireCore.Constants;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 
-public class RefreshTokenRepository : BaseRepository<RefreshToken, Guid, BaseAuthDbContext>
+public class RefreshTokenRepository : BaseEntityRepository<RefreshToken, Guid, BaseAuthDbContext>
 {
     public RefreshTokenRepository(BaseAuthDbContext context) : base(context) { }
 

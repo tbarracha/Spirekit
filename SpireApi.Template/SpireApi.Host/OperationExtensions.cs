@@ -12,6 +12,8 @@ public static class OperationExtensions
             .AsSelf()
             .AsImplementedInterfaces()
             .WithTransientLifetime());
+
+        services.AddScoped<OperationMiddleware>();
     }
 
     /// <summary>

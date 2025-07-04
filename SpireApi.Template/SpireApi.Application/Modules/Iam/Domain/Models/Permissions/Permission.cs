@@ -1,9 +1,10 @@
 ﻿
 using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
+using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Iam.Domain.Models.Permissions;
 
-public class Permission : GuidEntityBy
+public class Permission : BaseIamEntity
 {
     public string Name { get; set; } = default!;
     public string? Description { get; set; }

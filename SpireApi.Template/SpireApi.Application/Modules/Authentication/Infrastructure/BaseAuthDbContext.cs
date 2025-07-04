@@ -7,9 +7,9 @@ using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 
 namespace SpireApi.Application.Modules.Authentication.Infrastructure;
 
-public abstract class BaseAuthDbContext : IdentityDbContext<AuthUser, IdentityRole<Guid>, Guid>
+public class BaseAuthDbContext : IdentityDbContext<AuthUser, IdentityRole<Guid>, Guid>
 {
-    protected BaseAuthDbContext(DbContextOptions options) : base(options) { }
+    public BaseAuthDbContext(DbContextOptions options) : base(options) { }
 
     // === Identity Core ===
     public new DbSet<AuthUser> Users => Set<AuthUser>();

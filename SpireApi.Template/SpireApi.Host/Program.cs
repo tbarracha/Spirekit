@@ -3,9 +3,7 @@ using SpireApi.Application.Modules.Authentication;
 using SpireApi.Application.Modules.Authentication.Configuration;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireApi.Application.Modules.Iam;
-using SpireApi.Application.Modules.Iam.Domain.Models.Groups.Repositories;
 using SpireApi.Application.Modules.Iam.Infrastructure;
-using SpireApi.Application.Shared.Entities;
 using SpireApi.Infrastructure.Authentication;
 using SpireApi.Infrastructure.Iam;
 using SpireApi.Shared.JWT;
@@ -34,11 +32,6 @@ var iamConnString = builder.Configuration["Modules:Iam:ConnectionString"]
 
 builder.Services.AddDbContext<BaseIamDbContext, IamDbContext>(options =>
     options.UseNpgsql(iamConnString));
-
-builder.Services.AddScoped<GuidEntityDbContext>(sp => sp.GetRequiredService<IamDbContext>());
-builder.Services.AddScoped<BaseIamDbContext>(sp => sp.GetRequiredService<IamDbContext>());
-
-
 
 builder.Services.AddDomainEventDispatcher();
 

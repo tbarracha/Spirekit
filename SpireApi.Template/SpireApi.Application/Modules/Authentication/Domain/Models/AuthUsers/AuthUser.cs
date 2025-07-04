@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SpireApi.Shared.EntityFramework.Entities.Abstractions;
 using SpireApi.Shared.JWT.UserIdentity;
-using SpireCore.Abstractions.Interfaces;
 using SpireCore.Constants;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
 
-public class AuthUser : IdentityUser<Guid>, ICreatedAt, IUpdatedAt, IStateFlag, IJwtUser
+public class AuthUser : IdentityUser<Guid>, IEntity<Guid>, IJwtUser
 {
     // Official/internal use
     public string FirstName { get; set; } = string.Empty;

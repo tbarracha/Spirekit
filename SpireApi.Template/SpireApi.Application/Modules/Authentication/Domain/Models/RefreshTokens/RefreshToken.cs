@@ -1,9 +1,10 @@
 ﻿using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
-using SpireApi.Application.Shared.Entities;
+using SpireApi.Application.Modules.Authentication.Infrastructure;
+using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 
-public class RefreshToken : GuidEntity
+public class RefreshToken : BaseAuthEntity
 {
     public string Token { get; set; } = default!;
     public DateTime ExpiresAt { get; set; }

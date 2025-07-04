@@ -2,11 +2,10 @@
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
 using SpireApi.Application.Modules.Iam.Domain.Models.Permissions;
-using SpireApi.Application.Shared.Entities;
 
 namespace SpireApi.Application.Modules.Iam.Infrastructure
 {
-    public abstract class BaseIamDbContext : GuidEntityDbContext
+    public abstract class BaseIamDbContext : DbContext
     {
         protected BaseIamDbContext(DbContextOptions options) : base(options) { }
 
