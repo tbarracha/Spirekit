@@ -21,7 +21,7 @@ public class DeletePermissionScopeOperation
 
     public override async Task<bool> ExecuteAsync(AuditableRequestDto<DeletePermissionScopeDto> request)
     {
-        var entity = await _repository.GetByIdAsync(request.data.Id);
+        var entity = await _repository.GetByIdAsync(request.Data.Id);
         if (entity == null) return false;
 
         await _repository.DeleteAsync(entity);

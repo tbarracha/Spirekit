@@ -24,7 +24,7 @@ public class ListRolesPagedOperation : BaseRoleCrudOperation<ListRolesPagedDto, 
 
     public override async Task<PaginatedResult<Role>> ExecuteAsync(AuditableRequestDto<ListRolesPagedDto> request)
     {
-        var filter = request.data;
+        var filter = request.Data;
         var query = _repository.Query();
 
         if (!string.IsNullOrWhiteSpace(filter.Name))

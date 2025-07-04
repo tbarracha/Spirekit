@@ -23,7 +23,7 @@ public class CreateGroupOperation
 
     public override async Task<Group> ExecuteAsync(AuditableRequestDto<CreateGroupDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var group = new Group
         {
             Name = dto.Name,

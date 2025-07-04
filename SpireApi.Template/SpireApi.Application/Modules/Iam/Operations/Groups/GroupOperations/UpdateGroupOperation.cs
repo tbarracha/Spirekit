@@ -24,7 +24,7 @@ public class UpdateGroupOperation
 
     public override async Task<Group?> ExecuteAsync(AuditableRequestDto<UpdateGroupDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var group = await _repository.GetByIdAsync(dto.Id);
         if (group == null) return null;
 

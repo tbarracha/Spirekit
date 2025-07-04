@@ -31,7 +31,7 @@ public class ListGroupMembersPagedOperation
 
     public override async Task<PaginatedResult<GroupMember>> ExecuteAsync(AuditableRequestDto<ListGroupMembersPagedDto> request)
     {
-        var filter = request.data;
+        var filter = request.Data;
         var query = _repository.Query();
 
         if (filter.GroupId.HasValue)

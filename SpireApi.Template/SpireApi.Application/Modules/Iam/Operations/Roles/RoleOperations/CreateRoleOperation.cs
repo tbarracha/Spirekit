@@ -21,7 +21,7 @@ public class CreateRoleOperation : BaseRoleCrudOperation<CreateRoleDto, Role>
 
     public override async Task<Role> ExecuteAsync(AuditableRequestDto<CreateRoleDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = new Role
         {
             Name = dto.Name,

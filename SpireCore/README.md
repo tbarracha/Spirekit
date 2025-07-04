@@ -1,162 +1,281 @@
 # SpireKit
 
-> **Monolith First, Microservices When Proven**
-> *“Prove you need complexity before you pay for it.”*
+> **“Prove you need complexity before you pay for it.”**
+> *Build a robust monolith, split only when you’ve proven the need.*
 
-**SpireKit** is a foundational .NET library for building modular backends that scale from a maintainable monolith to decomposable microservices—without needless upfront complexity.
-It centralizes reusable backend building blocks: robust entities, repositories, domain events, CLI utilities, DTO mappers, and more. Reference it directly for now; NuGet coming soon.
-
----
-
-## 🏗️ Project Philosophy
-
-* **Start simple, scale when needed:**
-  Build your core product as a clean, maintainable monolith.
-  Break into microservices only *after* complexity and team size demand it.
-* **All code, no magic:**
-  Everything in SpireKit is visible, overridable, and designed for direct reference.
-* **Maximum reuse, minimal coupling:**
-  Modules are swappable and self-contained, so future migration is easy.
+**SpireKit** is a .NET backend foundation designed for sustainable scale. You get modular building blocks, a clean domain-first API model, and the freedom to stay monolithic until microservices are truly justified.
 
 ---
 
-## 📦 Key Features
+## 🏛️ Sections Overview
 
-* 🧱 **EF Core Entities & Repositories**
-  Base entities (class & record), audit/state patterns, generic repositories, paginated queries, and multi-DbContext support.
-* 🧪 **Domain Events**
-  In-memory event dispatcher for clean, decoupled business logic.
-* 🖥 **Console/CLI System**
-  Command-driven menus, composable CLI trees, and contextual logging.
-* 🔁 **TypeScript DTO Mapper**
-  Automate TypeScript interface generation from C# DTOs—no manual duplication.
-* ⚙️ **General Utilities**
-  Guid helpers, state flag constants, Swagger enhancements, controller ordering, and more.
+* **SpireCore:**
+  Pure contracts, interfaces, events, and shared utilities.
+* **SpireAPI:**
+  DDD-inspired architecture—atomic Operations, endpoint auto-mapping, EF infrastructure, JWT, Swagger, DTO-to-TypeScript.
+* **SpireCLI:**
+  Composable, command-based CLI for all backend/admin tooling.
 
 ---
 
-## 🗂️ Project Structure
+## 🧱 SpireCore
+
+**Purpose:**
+The shared backbone for all SpireKit modules.
+
+**What you’ll find:**
+
+* **Abstractions:**
+  `ICreatedAt`, `IStateFlag`, `IHasId`, etc.
+* **Events:**
+  In-memory domain event dispatcher (`EventEmitter`, `IEventDispatcher`).
+* **Utilities:**
+  Guid helpers, constants, pagination contracts.
+
+**What you won’t find:**
+No entities, repositories, or DB logic.
+*All other SpireKit modules depend on SpireCore.*
+
+---
+
+## 📦 SpireAPI
+
+### Project Folder Structure
+
+SpireAPI is made up of several projects for clear separation of concerns:
+
+* **Spire.Api.Application** — Domain, modules, and application logic
+* **Spire.Api.Contracts** — DTOs and contracts shared across layers
+* **Spire.Api.Host** — The API host/startup project
+* **Spire.Api.Infrastructure** — Infrastructure, persistence, and EF Core
+* **Spire.Api.Shared** — Shared utilities, cross-cutting concerns
+
+A PowerShell `Export-TemplateFromSpireApi.ps1` script is provided to copy the current project into a `/Templates` folder, update namespaces, and optionally remove modules (all modules are included by default).
+
+---
+
+### 🧩 Modules & Vertical Structure
+
+**SpireAPI** is organized into clear, self-contained **modules**.
+Each module represents a distinct business subdomain and contains everything it needs: domain models, services, operations (endpoints), infrastructure, and DTOs.
+
+**This “vertical slice” design means:**
+
+* Features and modules are *loosely coupled* and highly cohesive.
+* Each module can be developed, tested, and reasoned about independently.
+* When your project grows, modules can be split off into standalone microservices—**with minimal rewrite**.
+
+---
+
+#### **Module Anatomy**
+
+Example: `Modules/Iam`
+A typical module contains:
 
 ```
-SpireKit/
-|   README.md
-|   SpireCore.csproj
-|
-+-- Abstractions/         # Core interfaces (e.g., ICreatedAt, IStateFlag)
-|   \-- Interfaces/
-|
-+-- API/
-|   +-- EntityFramework/
-|   |   +-- DbContexts/
-|   |   +-- Entities/
-|   |   +-- Repositories/
-|   |   \-- Services/
-|   +-- JWT/
-|   |   +-- ServiceIdentity/
-|   |   \-- UserIdentity/
-|   +-- Operations/
-|   |   +-- Attributes/
-|   |   \-- Dtos/
-|   +-- Services/
-|   \-- Swagger/
-|       \-- SwaggerControllerOrders/
-|
-+-- Commands/             # CLI system core
-+-- Constants/            # e.g. StateFlags.cs
-+-- Events/
-|   \-- Dispatcher/
-+-- Lists/
-|   \-- Pagination/
-+-- Mappings/
-|   \-- Language/         # TypeScript mapper
-+-- Utils/
-\-- structure.txt
+Modules/
+└── Iam/
+    ├── Domain/
+    │   ├── Models/           # Business objects/entities
+    │   ├── Services/         # Core domain logic
+    ├── Dtos/                 # Module-specific Data Transfer Objects
+    ├── Infrastructure/       # Persistence, DbContext, repository implementations
+    └── Operations/           # All API endpoints for this module, organized by feature
+```
+
+**Common structure in every module:**
+
+| Folder            | Purpose                                                 |
+| ----------------- | ------------------------------------------------------- |
+| `Domain/Models`   | Core entities and value objects for the module          |
+| `Domain/Services` | Domain/application services (business logic, not infra) |
+| `Dtos`            | Input/output types for API and internal logic           |
+| `Infrastructure`  | Persistence (DbContext, repositories, migrations, etc)  |
+| `Operations`      | All endpoint classes (atomic, auto-mapped Operations)   |
+
+> **Vertical Slices:**
+> Each module’s `Operations` folder exposes its API endpoints, written as `IOperation` classes.
+> Domain, services, and infrastructure are kept together—no hidden cross-module dependencies.
+
+---
+
+#### **Ready for Microservices**
+
+* **Modules are self-contained:** All logic, endpoints, and storage are within the module boundary.
+* **Move to microservices:** When you outgrow the monolith, a module can be “lifted out” and run as a separate API/microservice.
+  Only integration wiring needs updating.
+* **Start simple, split only when needed:** Don’t over-complicate until there’s real scale or team pressure.
+
+---
+
+**This modular, vertical architecture makes SpireKit perfect for modern DDD:**
+
+* Every business capability is “plug and play.”
+* Boundaries are explicit and enforceable.
+* Migration to microservices, if/when needed, is straightforward.
+
+---
+
+### 🌐 Domain-Driven Operations (API Endpoints)
+
+**Atomic Operations = HTTP Endpoints**
+
+* Write Operations as classes (not controller actions) implementing `IOperation<TRequest, TResponse>`.
+* Each Operation is a vertical, single-responsibility slice of domain logic—testable, composable, and explicit.
+* Think “actions” or “use cases,” not “REST resource plumbing.”
+
+**Automatic Endpoint Mapping**
+
+* All Operations are discovered and registered as HTTP endpoints at startup.
+* No controller or route boilerplate.
+* Route, HTTP verb, grouping, permissions, and output types are controlled by attributes.
+
+---
+
+#### **Comprehensive Operation Example**
+
+```csharp
+using SpireApi.Contracts.Dtos.Features.Hello;
+using SpireApi.Shared.Operations;
+using SpireApi.Shared.Operations.Attributes;
+
+namespace SpireApi.Application.Features.Hello.Operations;
+
+// Group for Swagger/docs and logical organization
+[OperationGroup("Hello")]   
+
+// Route will be POST /api/hello/world
+[OperationRoute("hello/world")]
+[OperationMethod(OperationMethodType.POST)]
+
+// Optionally require authorization
+[OperationAuthorize("UserPolicy")]
+
+// Optionally specify file output type
+// [OperationProducesFile(OperationFileContentType.Json)]
+public class HelloWorldOperation : IOperation<HelloRequestDto, HelloResponseDto>
+{
+    public Task<HelloResponseDto> ExecuteAsync(HelloRequestDto request)
+    {
+        // Domain logic is self-contained, atomic, and testable
+        return Task.FromResult(new HelloResponseDto
+        {
+            Message = $"Hello, {request.Name} {request.LastName}!"
+        });
+    }
+}
+```
+
+* **No controllers required.** The system auto-wires this Operation as an HTTP POST endpoint.
+* **Attributes drive everything:**
+
+  * `OperationRoute`: The HTTP route (relative to /api/).
+  * `OperationMethod`: HTTP verb (GET, POST, etc.).
+  * `OperationAuthorize`: Policy-based auth.
+  * `OperationGroup`: Logical grouping for docs and navigation.
+  * `OperationProducesFile`: Specify file/content output (optional).
+
+---
+
+**Why this matters:**
+
+* All business logic lives in a domain-focused, atomic class—*not* scattered across service and controller layers.
+* Endpoints are minimal, explicit, and easily tested in isolation.
+* Rich metadata and permissions are declarative, not hidden in code.
+* **True DDD:** Your application’s API surface becomes a direct reflection of your business use cases.
+
+---
+
+**Sample DTO for above Operation:**
+
+```csharp
+// Request DTO
+public class HelloRequestDto
+{
+    public string Name { get; set; }
+    public string LastName { get; set; }
+}
+
+// Response DTO
+public class HelloResponseDto
+{
+    public string Message { get; set; }
+}
+```
+
+**Auto-generates to TypeScript:**
+
+```ts
+export interface HelloRequestDto {
+  name: string;
+  lastName: string;
+}
+export interface HelloResponseDto {
+  message: string;
+}
+```
+
+> **You focus on your domain and atomic operations.
+> SpireKit handles the HTTP surface, wiring, and docs.**
+
+---
+
+## 🖥 SpireCLI
+
+**Purpose:**
+A modular command pattern for all CLI/admin/devops tooling.
+
+**Features:**
+
+* Command/Result system (`ICommand`, `CommandManager`)
+* Contextual, navigable menus
+* Easily extensible for your automation workflows
+
+**Example:**
+
+```csharp
+public class HelloCommand : ICommand
+{
+    public string Name => "hello";
+    public async Task<CommandResult> ExecuteAsync(CommandContext ctx)
+    {
+        Console.WriteLine("Hello, world!");
+        return CommandResult.Success();
+    }
+}
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Usage
 
-Until NuGet support is live, **add a project reference**:
+Until NuGet is ready, reference directly:
 
 ```bash
 dotnet add reference ../SpireKit/SpireCore.csproj
 ```
 
-> (Path may vary depending on your solution layout.)
+(Adjust path as needed.)
 
 ---
 
-## ✅ Usage Examples
+## 📝 The SpireKit Philosophy
 
-### Entity + Repository
-
-```csharp
-// Inherit full audit/state support for any entity:
-public class User : BaseEntityClass<Guid>, ICreatedAt, IUpdatedAt, IStateFlag
-{
-    public string Username { get; set; }
-    public string Email { get; set; }
-}
-
-// Plug into the generic repository:
-public class UserRepository : BaseRepository<User, Guid, AppDbContext>
-{
-    public UserRepository(AppDbContext ctx) : base(ctx) { }
-}
-```
+* **Start monolithic, split out only when the pain is real.**
+* **Domain logic is king: Write your business logic once, close to the domain.**
+* **Atomic, testable, and self-documenting endpoints via Operations.**
+* **Zero magic, maximum extensibility and clarity.**
+* **Complexity only when it pays for itself.**
 
 ---
 
-### DTO → TypeScript Mapping
+## 🧩 Roadmap
 
-```csharp
-public class UserDto
-{
-    public Guid Id { get; set; }
-    public string Username { get; set; }
-    public string Email { get; set; }
-}
-```
-
-After running `TypescriptDtoMapper`:
-
-```ts
-export interface UserDto {
-  id: string;
-  username: string;
-  email: string;
-}
-```
-
-*Supports camelCase, nullability, and primitive mapping out of the box.*
+* NuGet support
+* Real-world DDD and migration samples
+* Recipes for moving from monolith to microservices
 
 ---
 
-## 📝 Philosophy in Practice
-
-* **No premature microservices:**
-  The project structure, CLI system, and repository patterns are all designed for seamless migration to microservices *only when justified*.
-* **Everything is override-friendly:**
-  You can swap out or extend any core part as your product matures.
-* **“Own complexity only when it pays you back.”**
-
----
-
-## 🧩 Planned
-
-* **NuGet packaging** for clean consumption.
-* **Example solution** for rapid adoption.
-* **Docs**
-
----
-
-## 🗣 Feedback
-
-> SpireKit is used daily in production for backend and AI-centric projects.
-> Suggestions or PRs welcome!
-
----
-
-**Build clean. Build simple. Only split when you must.**
-— *The SpireKit Philosophy*
+**Build simple. Refactor when you must. Put the domain first.**
+— The SpireKit Philosophy

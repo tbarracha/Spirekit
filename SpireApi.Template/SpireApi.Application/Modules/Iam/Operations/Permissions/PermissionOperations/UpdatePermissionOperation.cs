@@ -24,7 +24,7 @@ public class UpdatePermissionOperation
 
     public override async Task<Permission?> ExecuteAsync(AuditableRequestDto<UpdatePermissionDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = await _repository.GetByIdAsync(dto.Id);
         if (entity == null) return null;
 

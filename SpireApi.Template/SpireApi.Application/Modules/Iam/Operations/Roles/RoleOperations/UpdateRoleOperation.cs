@@ -22,7 +22,7 @@ public class UpdateRoleOperation : BaseRoleCrudOperation<UpdateRoleDto, Role?>
 
     public override async Task<Role?> ExecuteAsync(AuditableRequestDto<UpdateRoleDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = await _repository.GetByIdAsync(dto.Id);
         if (entity == null) return null;
 

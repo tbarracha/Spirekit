@@ -21,7 +21,7 @@ public class CreateGroupTypeOperation
 
     public override async Task<GroupType> ExecuteAsync(AuditableRequestDto<CreateGroupTypeDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = new GroupType
         {
             Name = dto.Name,

@@ -23,7 +23,7 @@ public class CreatePermissionOperation
 
     public override async Task<Permission> ExecuteAsync(AuditableRequestDto<CreatePermissionDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = new Permission
         {
             Name = dto.Name,

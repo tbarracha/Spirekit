@@ -25,7 +25,7 @@ public class ListPermissionScopesPagedOperation
 
     public override async Task<PaginatedResult<PermissionScope>> ExecuteAsync(AuditableRequestDto<ListPermissionScopesPagedDto> request)
     {
-        var filter = request.data;
+        var filter = request.Data;
         var query = _repository.Query();
 
         if (!string.IsNullOrWhiteSpace(filter.Name))

@@ -21,6 +21,6 @@ public class GetPermissionScopeByIdOperation
 
     public override async Task<PermissionScope?> ExecuteAsync(AuditableRequestDto<GetPermissionScopeByIdDto> request)
     {
-        return await _repository.GetByIdAsync(request.data.Id);
+        return await _repository.GetByIdAsync(request.Data.Id);
     }
 }

@@ -20,6 +20,6 @@ public class GetGroupByIdOperation
 
     public override async Task<Group?> ExecuteAsync(AuditableRequestDto<GetGroupByIdDto> request)
     {
-        return await _repository.GetByIdAsync(request.data.Id);
+        return await _repository.GetByIdAsync(request.Data.Id);
     }
 }

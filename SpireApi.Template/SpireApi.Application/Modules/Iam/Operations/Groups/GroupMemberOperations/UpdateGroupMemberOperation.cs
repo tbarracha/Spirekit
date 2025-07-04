@@ -25,7 +25,7 @@ public class UpdateGroupMemberOperation
 
     public override async Task<GroupMember?> ExecuteAsync(AuditableRequestDto<UpdateGroupMemberDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = await _repository.GetByIdAsync(dto.Id);
         if (entity == null) return null;
 

@@ -20,7 +20,7 @@ public class DeleteGroupOperation
 
     public override async Task<bool> ExecuteAsync(AuditableRequestDto<DeleteGroupDto> request)
     {
-        var group = await _repository.GetByIdAsync(request.data.Id);
+        var group = await _repository.GetByIdAsync(request.Data.Id);
         if (group == null) return false;
         await _repository.DeleteAsync(group);
         return true;

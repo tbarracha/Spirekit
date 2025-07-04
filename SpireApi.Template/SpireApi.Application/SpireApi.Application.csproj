@@ -38,7 +38,6 @@
 
   <ItemGroup>
     <Folder Include="Modules\Iam\Dtos\" />
-    <Folder Include="Modules\ProjectInitializer\Configuration\" />
   </ItemGroup>
 
 </Project>

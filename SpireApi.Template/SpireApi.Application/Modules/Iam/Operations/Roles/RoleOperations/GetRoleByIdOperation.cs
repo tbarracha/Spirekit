@@ -19,6 +19,6 @@ public class GetRoleByIdOperation : BaseRoleCrudOperation<GetRoleByIdDto, Role?>
 
     public override async Task<Role?> ExecuteAsync(AuditableRequestDto<GetRoleByIdDto> request)
     {
-        return await _repository.GetByIdAsync(request.data.Id);
+        return await _repository.GetByIdAsync(request.Data.Id);
     }
 }

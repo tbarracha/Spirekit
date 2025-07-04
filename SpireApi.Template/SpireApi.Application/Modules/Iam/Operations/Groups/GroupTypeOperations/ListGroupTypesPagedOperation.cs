@@ -26,7 +26,7 @@ public class ListGroupTypesPagedOperation
 
     public override async Task<PaginatedResult<GroupType>> ExecuteAsync(AuditableRequestDto<ListGroupTypesPagedDto> request)
     {
-        var filter = request.data;
+        var filter = request.Data;
         var query = _repository.Query();
 
         if (!string.IsNullOrWhiteSpace(filter.Name))

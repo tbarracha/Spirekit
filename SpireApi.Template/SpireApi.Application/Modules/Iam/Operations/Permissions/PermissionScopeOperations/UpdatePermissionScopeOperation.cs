@@ -23,7 +23,7 @@ public class UpdatePermissionScopeOperation
 
     public override async Task<PermissionScope?> ExecuteAsync(AuditableRequestDto<UpdatePermissionScopeDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = await _repository.GetByIdAsync(dto.Id);
         if (entity == null) return null;
 

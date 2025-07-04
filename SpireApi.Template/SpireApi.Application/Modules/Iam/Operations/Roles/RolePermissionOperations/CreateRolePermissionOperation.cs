@@ -20,7 +20,7 @@ public class CreateRolePermissionOperation : BaseRolePermissionCrudOperation<Cre
 
     public override async Task<RolePermission> ExecuteAsync(AuditableRequestDto<CreateRolePermissionDto> request)
     {
-        var dto = request.data;
+        var dto = request.Data;
         var entity = new RolePermission
         {
             RoleId = dto.RoleId,
