@@ -7,18 +7,18 @@ using SpireCore.Events.Dispatcher;
 
 namespace SpireApi.Application.Modules.Iam.EventHandling;
 
-public class SyncIamUserOnRegisteredHandler : IEventHandler<UserRegisteredEvent>
+public class OnAuthUserRegisteredHandler : IEventHandler<AuthUserRegisteredEvent>
 {
     private readonly IamUserRepository _iamUserRepository;
     private readonly IamService _iamService;
 
-    public SyncIamUserOnRegisteredHandler(IamUserRepository iamUserRepository, IamService iamService)
+    public OnAuthUserRegisteredHandler(IamUserRepository iamUserRepository, IamService iamService)
     {
         _iamUserRepository = iamUserRepository;
         _iamService = iamService;
     }
 
-    public async Task HandleEventAsync(UserRegisteredEvent @event, CancellationToken cancellationToken = default)
+    public async Task HandleEventAsync(AuthUserRegisteredEvent @event, CancellationToken cancellationToken = default)
     {
         var exists = await _iamUserRepository.GetFilteredAsync(
             u => u.AuthUserId == @event.AuthUserId,

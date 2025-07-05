@@ -66,7 +66,7 @@ public class AuthenticationService : IAuthUserIdentityService, ITransientService
         var accessToken = _jwtService.GenerateUserJwt(user);
         var refreshToken = await GenerateRefreshTokenAsync(user);
 
-        await _eventDispatcher.PublishEventAsync(new UserRegisteredEvent
+        await _eventDispatcher.PublishEventAsync(new AuthUserRegisteredEvent
         {
             AuthUserId = user.Id,
             Email = user.Email!,
@@ -121,7 +121,7 @@ public class AuthenticationService : IAuthUserIdentityService, ITransientService
         var refreshToken = await GenerateRefreshTokenAsync(user);
 
         // Dispatch LoggedIn event as side effect (optional)
-        await _eventDispatcher.PublishEventAsync(new UserLoggedInEvent
+        await _eventDispatcher.PublishEventAsync(new AuthUserLoggedInEvent
         {
             AuthUserId = user.Id,
 

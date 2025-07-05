@@ -3,7 +3,7 @@ using SpireCore.Events.Dispatcher;
 
 namespace SpireApi.Contracts.Events.Authentication;
 
-public abstract class UserAuthEventBase : IJwtUserIdentity, IDomainEvent
+public abstract class AuthUserEventBase : IJwtUserIdentity, IDomainEvent
 {
     public Guid Id { get; set; }
     public Guid AuthUserId { get; set; }

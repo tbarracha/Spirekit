@@ -1,6 +1,6 @@
 ﻿namespace SpireApi.Contracts.Events.Authentication;
 
-public class UserLoggedInEvent : UserAuthEventBase
+public class AuthUserLoggedInEvent : AuthUserEventBase
 {
     public DateTime LoggedInAt { get; set; }
 }
