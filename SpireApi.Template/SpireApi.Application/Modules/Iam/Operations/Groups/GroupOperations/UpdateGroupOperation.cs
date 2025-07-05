@@ -15,8 +15,8 @@ public class UpdateGroupDto
     public Guid GroupTypeId { get; set; }
 }
 
-[OperationGroup("Group")]
-[OperationRoute("group/update")]
+[OperationGroup("IAM Groups")]
+[OperationRoute("groups/update")]
 public class UpdateGroupOperation
     : BaseGroupCrudOperation<UpdateGroupDto, Group?>
 {

@@ -1,4 +1,5 @@
 ﻿using SpireApi.Shared.Operations;
+using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Shared.Services;
 
 namespace SpireApi.Application.Modules.Iam.Infrastructure;

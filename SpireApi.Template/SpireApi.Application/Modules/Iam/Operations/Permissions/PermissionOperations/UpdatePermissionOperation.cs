@@ -14,7 +14,7 @@ public class UpdatePermissionDto
     public Guid? PermissionScopeId { get; set; }
 }
 
-[OperationGroup("Permission")]
+[OperationGroup("IAM Permissions")]
 [OperationRoute("permission/update")]
 public class UpdatePermissionOperation
     : BasePermissionCrudOperation<UpdatePermissionDto, Permission?>

@@ -8,22 +8,22 @@ using SpireCore.Lists.Pagination;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Permissions.PermissionScopeOperations;
 
-public class ListPermissionScopesPagedDto
+public class PaginatedPermissionScopesRequestDto
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
     public string? Name { get; set; }
 }
 
-[OperationGroup("Permission Scope")]
-[OperationRoute("permission-scope/list")]
-public class ListPermissionScopesPagedOperation
-    : BasePermissionScopeCrudOperation<ListPermissionScopesPagedDto, PaginatedResult<PermissionScope>>
+[OperationGroup("IAM Permission Scopes")]
+[OperationRoute("permission/scopes/page")]
+public class PaginatedPermissionScopesOperation
+    : BasePermissionScopeCrudOperation<PaginatedPermissionScopesRequestDto, PaginatedResult<PermissionScope>>
 {
-    public ListPermissionScopesPagedOperation(BaseIamEntityRepository<PermissionScope> repository)
+    public PaginatedPermissionScopesOperation(BaseIamEntityRepository<PermissionScope> repository)
         : base(repository) { }
 
-    public override async Task<PaginatedResult<PermissionScope>> ExecuteAsync(AuditableRequestDto<ListPermissionScopesPagedDto> request)
+    public override async Task<PaginatedResult<PermissionScope>> ExecuteAsync(AuditableRequestDto<PaginatedPermissionScopesRequestDto> request)
     {
         var filter = request.Data;
         var query = _repository.Query();

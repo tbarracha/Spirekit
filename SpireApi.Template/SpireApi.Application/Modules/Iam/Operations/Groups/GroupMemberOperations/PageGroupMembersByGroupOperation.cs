@@ -1,5 +1,4 @@
-﻿// --------- ListGroupMembersPagedOperation.cs ---------
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Shared.Operations.Attributes;
@@ -8,34 +7,35 @@ using SpireCore.Lists.Pagination;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups.GroupMemberOperations;
 
-public class ListGroupMembersPagedDto
+public class PageGroupMembersByGroupDto
 {
+    public Guid GroupId { get; set; } // REQUIRED
+
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
 
-    public Guid? GroupId { get; set; }
     public Guid? UserId { get; set; }
     public Guid? RoleId { get; set; }
     public bool? IsActive { get; set; }
     public DateTime? JoinedAfter { get; set; }
     public DateTime? JoinedBefore { get; set; }
-    // Add other filters as needed
 }
 
-[OperationGroup("Group Member")]
-[OperationRoute("group-member/list")]
-public class ListGroupMembersPagedOperation
-    : BaseGroupMemberCrudOperation<ListGroupMembersPagedDto, PaginatedResult<GroupMember>>
+[OperationGroup("IAM Group Members")]
+[OperationRoute("group/member/page-by-group")]
+public class PageGroupMembersByGroupOperation
+    : BaseGroupMemberCrudOperation<PageGroupMembersByGroupDto, PaginatedResult<GroupMember>>
 {
-    public ListGroupMembersPagedOperation(BaseIamEntityRepository<GroupMember> repository) : base(repository) { }
+    public PageGroupMembersByGroupOperation(BaseIamEntityRepository<GroupMember> repository)
+        : base(repository) { }
 
-    public override async Task<PaginatedResult<GroupMember>> ExecuteAsync(AuditableRequestDto<ListGroupMembersPagedDto> request)
+    public override async Task<PaginatedResult<GroupMember>> ExecuteAsync(
+        AuditableRequestDto<PageGroupMembersByGroupDto> request)
     {
         var filter = request.Data;
-        var query = _repository.Query();
+        var query = _repository.Query()
+            .Where(gm => gm.GroupId == filter.GroupId);
 
-        if (filter.GroupId.HasValue)
-            query = query.Where(gm => gm.GroupId == filter.GroupId.Value);
         if (filter.UserId.HasValue)
             query = query.Where(gm => gm.UserId == filter.UserId.Value);
         if (filter.RoleId.HasValue)
@@ -52,6 +52,7 @@ public class ListGroupMembersPagedOperation
             .Skip((filter.Page - 1) * filter.PageSize)
             .Take(filter.PageSize)
             .ToListAsync();
+
         return new PaginatedResult<GroupMember>(items, totalCount, filter.Page, filter.PageSize);
     }
 }

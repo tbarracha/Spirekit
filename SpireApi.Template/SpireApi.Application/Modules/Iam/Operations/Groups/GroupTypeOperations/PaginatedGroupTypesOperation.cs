@@ -8,7 +8,7 @@ using SpireCore.Lists.Pagination;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups.GroupTypeOperations;
 
-public class ListGroupTypesPagedDto
+public class PaginatedGroupTypesRequestDto
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
@@ -17,14 +17,14 @@ public class ListGroupTypesPagedDto
     // Add more filters as needed
 }
 
-[OperationGroup("Group Type")]
-[OperationRoute("group-type/list")]
-public class ListGroupTypesPagedOperation
-    : BaseGroupTypeCrudOperation<ListGroupTypesPagedDto, PaginatedResult<GroupType>>
+[OperationGroup("IAM Group Types")]
+[OperationRoute("group-type/page")]
+public class PaginatedGroupTypesOperation
+    : BaseGroupTypeCrudOperation<PaginatedGroupTypesRequestDto, PaginatedResult<GroupType>>
 {
-    public ListGroupTypesPagedOperation(BaseIamEntityRepository<GroupType> repository) : base(repository) { }
+    public PaginatedGroupTypesOperation(BaseIamEntityRepository<GroupType> repository) : base(repository) { }
 
-    public override async Task<PaginatedResult<GroupType>> ExecuteAsync(AuditableRequestDto<ListGroupTypesPagedDto> request)
+    public override async Task<PaginatedResult<GroupType>> ExecuteAsync(AuditableRequestDto<PaginatedGroupTypesRequestDto> request)
     {
         var filter = request.Data;
         var query = _repository.Query();

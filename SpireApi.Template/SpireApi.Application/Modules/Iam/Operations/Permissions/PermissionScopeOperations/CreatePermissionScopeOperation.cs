@@ -12,8 +12,8 @@ public class CreatePermissionScopeDto
     public string? Description { get; set; }
 }
 
-[OperationGroup("Permission Scope")]
-[OperationRoute("permission-scope/create")]
+[OperationGroup("IAM Permission Scopes")]
+[OperationRoute("permission/scopes/create")]
 public class CreatePermissionScopeOperation
     : BasePermissionScopeCrudOperation<CreatePermissionScopeDto, PermissionScope>
 {

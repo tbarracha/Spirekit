@@ -68,7 +68,7 @@ public abstract class BaseEntityRepository<T, TId, TContext> : IEntityRepository
         return await query.ToListAsync();
     }
 
-    public virtual async Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize, string? state = StateFlags.ACTIVE)
+    public virtual async Task<PaginatedResult<T>> GetPaginatedResultAsync(int page, int pageSize, string? state = StateFlags.ACTIVE)
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
@@ -86,7 +86,7 @@ public abstract class BaseEntityRepository<T, TId, TContext> : IEntityRepository
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
 
-    public virtual async Task<PaginatedResult<T>> ListPagedFilteredAsync(
+    public virtual async Task<PaginatedResult<T>> GetFilteredPaginatedResultAsync(
         Expression<Func<T, bool>> filter,
         int page,
         int pageSize,

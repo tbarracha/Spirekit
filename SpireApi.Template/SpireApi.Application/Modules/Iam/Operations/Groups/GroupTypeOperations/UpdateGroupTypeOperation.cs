@@ -13,7 +13,7 @@ public class UpdateGroupTypeDto
     public string? Description { get; set; }
 }
 
-[OperationGroup("Group Type")]
+[OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/update")]
 public class UpdateGroupTypeOperation
     : BaseGroupTypeCrudOperation<UpdateGroupTypeDto, GroupType?>

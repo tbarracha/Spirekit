@@ -12,7 +12,7 @@ public class CreateGroupTypeDto
     public string? Description { get; set; }
 }
 
-[OperationGroup("Group Type")]
+[OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/create")]
 public class CreateGroupTypeOperation
     : BaseGroupTypeCrudOperation<CreateGroupTypeDto, GroupType>

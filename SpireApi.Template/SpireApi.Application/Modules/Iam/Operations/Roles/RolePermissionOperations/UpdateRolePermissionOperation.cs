@@ -13,8 +13,8 @@ public class UpdateRolePermissionDto
     public Guid? PermissionId { get; set; }
 }
 
-[OperationGroup("Role Permission")]
-[OperationRoute("role-permission/update")]
+[OperationGroup("IAM Role Permissions")]
+[OperationRoute("role/permissions/update")]
 public class UpdateRolePermissionOperation : BaseRolePermissionCrudOperation<UpdateRolePermissionDto, RolePermission?>
 {
     public UpdateRolePermissionOperation(BaseIamEntityRepository<RolePermission> repository) : base(repository) { }

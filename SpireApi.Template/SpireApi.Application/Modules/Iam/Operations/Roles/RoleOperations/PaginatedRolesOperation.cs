@@ -1,4 +1,4 @@
-﻿// --------- ListRolesPagedOperation.cs ---------
+﻿// --------- PaginatedRolesOperation.cs ---------
 using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
 using SpireApi.Application.Modules.Iam.Infrastructure;
@@ -8,7 +8,7 @@ using SpireCore.Lists.Pagination;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Roles.RoleOperations;
 
-public class ListRolesPagedDto
+public class PaginatedRolesRequestDto
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
@@ -16,13 +16,13 @@ public class ListRolesPagedDto
     public Guid? AccountId { get; set; }
 }
 
-[OperationGroup("Role")]
-[OperationRoute("role/list")]
-public class ListRolesPagedOperation : BaseRoleCrudOperation<ListRolesPagedDto, PaginatedResult<Role>>
+[OperationGroup("IAM Roles")]
+[OperationRoute("roles/page")]
+public class PaginatedRolesOperation : BaseRoleCrudOperation<PaginatedRolesRequestDto, PaginatedResult<Role>>
 {
-    public ListRolesPagedOperation(BaseIamEntityRepository<Role> repository) : base(repository) { }
+    public PaginatedRolesOperation(BaseIamEntityRepository<Role> repository) : base(repository) { }
 
-    public override async Task<PaginatedResult<Role>> ExecuteAsync(AuditableRequestDto<ListRolesPagedDto> request)
+    public override async Task<PaginatedResult<Role>> ExecuteAsync(AuditableRequestDto<PaginatedRolesRequestDto> request)
     {
         var filter = request.Data;
         var query = _repository.Query();

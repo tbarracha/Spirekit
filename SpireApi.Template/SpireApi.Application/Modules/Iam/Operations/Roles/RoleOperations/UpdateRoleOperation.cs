@@ -14,8 +14,8 @@ public class UpdateRoleDto
     public Guid? AccountId { get; set; }
 }
 
-[OperationGroup("Role")]
-[OperationRoute("role/update")]
+[OperationGroup("IAM Roles")]
+[OperationRoute("roles/update")]
 public class UpdateRoleOperation : BaseRoleCrudOperation<UpdateRoleDto, Role?>
 {
     public UpdateRoleOperation(BaseIamEntityRepository<Role> repository) : base(repository) { }

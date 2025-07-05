@@ -13,8 +13,8 @@ public class UpdatePermissionScopeDto
     public string? Description { get; set; }
 }
 
-[OperationGroup("Permission Scope")]
-[OperationRoute("permission-scope/update")]
+[OperationGroup("IAM Permission Scopes")]
+[OperationRoute("permission/scopes/update")]
 public class UpdatePermissionScopeOperation
     : BasePermissionScopeCrudOperation<UpdatePermissionScopeDto, PermissionScope?>
 {

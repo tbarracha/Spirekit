@@ -11,8 +11,8 @@ public class GetPermissionScopeByIdDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Permission Scope")]
-[OperationRoute("permission-scope/get")]
+[OperationGroup("IAM Permission Scopes")]
+[OperationRoute("permission/scopes/get")]
 public class GetPermissionScopeByIdOperation
     : BasePermissionScopeCrudOperation<GetPermissionScopeByIdDto, PermissionScope?>
 {

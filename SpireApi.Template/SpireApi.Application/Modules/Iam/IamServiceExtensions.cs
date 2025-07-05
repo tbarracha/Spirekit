@@ -25,6 +25,7 @@ public static class IamServiceExtensions
         // --- Roles ---
         services.AddScoped<BaseIamEntityRepository<Role>, RoleRepository>();
         services.AddScoped<BaseIamEntityRepository<RolePermission>, RolePermissionRepository>();
+        services.AddScoped<BaseIamEntityRepository<UserRole>, UserRoleRepository>();
 
         // --- Permissions ---
         services.AddScoped<BaseIamEntityRepository<Permission>, PermissionRepository>();

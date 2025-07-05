@@ -11,7 +11,7 @@ public class DeleteGroupTypeDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Group Type")]
+[OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/delete")]
 public class DeleteGroupTypeOperation
     : BaseGroupTypeCrudOperation<DeleteGroupTypeDto, bool>

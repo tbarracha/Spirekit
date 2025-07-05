@@ -13,7 +13,7 @@ public class CreatePermissionDto
     public Guid? PermissionScopeId { get; set; }
 }
 
-[OperationGroup("Permission")]
+[OperationGroup("IAM Permissions")]
 [OperationRoute("permission/create")]
 public class CreatePermissionOperation
     : BasePermissionCrudOperation<CreatePermissionDto, Permission>

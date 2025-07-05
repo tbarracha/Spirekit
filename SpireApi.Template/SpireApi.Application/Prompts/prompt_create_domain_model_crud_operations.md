@@ -40,7 +40,7 @@ Given a domain model (a C# class), **generate the base CRUD operation class AND 
     * `[OperationGroup("{Normalized Domain Model Name}")]`
     * `[OperationRoute("{entity-kebab-plural}/{action}")]`
 
-      * The operation route must be a lowercase, kebab-case, REST-style string, using the **plural** kebab-case name of the domain model (e.g., `"group-members/list"`, `"group-types/get"`).
+      * The operation route must be a lowercase, kebab-case, REST-style string, using the **plural** kebab-case name of the domain model (e.g., `"group-members/page"`, `"group-types/get"`).
       * Pattern: `{entity-kebab-plural}/{action}` where:
 
         * `{entity-kebab-plural}` is the plural, kebab-case name of the domain model (e.g. `group-members`, `group-types`).
@@ -108,8 +108,8 @@ public class ListGroupMembersPagedDto
     // Add other filters as needed
 }
 
-[OperationGroup("Group Member")]
-[OperationRoute("group-members/list")]
+[OperationGroup("IAM Group Members")]
+[OperationRoute("group-members/page")]
 public class ListGroupMembersPagedOperation : BaseGroupMemberCrudOperation<ListGroupMembersPagedDto, PaginatedResult<GroupMember>>
 {
     public ListGroupMembersPagedOperation(BaseIamEntityRepository<GroupMember> repository) : base(repository) { }

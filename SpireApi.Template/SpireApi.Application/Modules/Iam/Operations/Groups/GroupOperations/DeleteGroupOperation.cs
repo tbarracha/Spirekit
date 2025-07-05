@@ -11,8 +11,8 @@ public class DeleteGroupDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Group")]
-[OperationRoute("group/delete")]
+[OperationGroup("IAM Groups")]
+[OperationRoute("groups/delete")]
 public class DeleteGroupOperation
     : BaseGroupCrudOperation<DeleteGroupDto, bool>
 {

@@ -13,8 +13,8 @@ public class CreateRoleDto
     public Guid AccountId { get; set; }
 }
 
-[OperationGroup("Role")]
-[OperationRoute("role/create")]
+[OperationGroup("IAM Roles")]
+[OperationRoute("roles/create")]
 public class CreateRoleOperation : BaseRoleCrudOperation<CreateRoleDto, Role>
 {
     public CreateRoleOperation(BaseIamEntityRepository<Role> repository) : base(repository) { }

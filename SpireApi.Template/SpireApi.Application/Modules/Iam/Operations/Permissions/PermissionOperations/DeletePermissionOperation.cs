@@ -11,7 +11,7 @@ public class DeletePermissionDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Permission")]
+[OperationGroup("IAM Permissions")]
 [OperationRoute("permission/delete")]
 public class DeletePermissionOperation
     : BasePermissionCrudOperation<DeletePermissionDto, bool>

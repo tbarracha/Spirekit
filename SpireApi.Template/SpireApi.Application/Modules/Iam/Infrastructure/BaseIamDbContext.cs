@@ -16,6 +16,7 @@ namespace SpireApi.Application.Modules.Iam.Infrastructure
 
         public DbSet<Role> Roles { get; set; } = default!;
         public DbSet<RolePermission> RolePermissions { get; set; } = default!;
+        public DbSet<UserRole> UserRoles { get; set; } = default!;
 
         public DbSet<Permission> Permissions { get; set; } = default!;
         public DbSet<PermissionScope> PermissionScopes { get; set; } = default!;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpireApi.Shared.EntityFramework.Entities.Abstractions;
 using SpireCore.Constants;
+using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;
 
 namespace SpireApi.Shared.EntityFramework.Repositories;
@@ -39,7 +40,34 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return await query.FirstOrDefaultAsync(predicate);
     }
 
-    public virtual async Task<IReadOnlyList<T>> ListFilteredAsync(Expression<Func<T, bool>> filter, string actor, string? state = StateFlags.ACTIVE)
+    public virtual async Task<PaginatedResult<T>> GetFilteredPaginatedResultAsync(
+        Expression<Func<T, bool>> filter,
+        string actor,
+        int page,
+        int pageSize,
+        string? state = StateFlags.ACTIVE)
+    {
+        var query = _dbSet.AsQueryable();
+
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+
+        query = query.Where(e => e.CreatedBy == actor && filter.Compile().Invoke(e));
+
+        var totalCount = await query.CountAsync();
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedResult<T>(items, totalCount, page, pageSize);
+    }
+
+    public virtual async Task<PaginatedResult<T>> GetPaginatedResultAsync(
+        string actor,
+        int page,
+        int pageSize,
+        string? state = StateFlags.ACTIVE)
     {
         var query = _dbSet.AsQueryable();
 
@@ -48,20 +76,15 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
 
         query = query.Where(e => e.CreatedBy == actor);
 
-        return await query.Where(filter).ToListAsync();
+        var totalCount = await query.CountAsync();
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
 
-    public virtual async Task<IReadOnlyList<T>> ListAsync(string actor, string? state = StateFlags.ACTIVE)
-    {
-        var query = _dbSet.AsQueryable();
-
-        if (state != null)
-            query = query.Where(e => e.StateFlag == state);
-
-        query = query.Where(e => e.CreatedBy == actor);
-
-        return await query.ToListAsync();
-    }
 
     // --- Create ---
 

@@ -11,8 +11,8 @@ public class DeleteRolePermissionDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Role Permission")]
-[OperationRoute("role-permission/delete")]
+[OperationGroup("IAM Role Permissions")]
+[OperationRoute("role/permissions/delete")]
 public class DeleteRolePermissionOperation : BaseRolePermissionCrudOperation<DeleteRolePermissionDto, bool>
 {
     public DeleteRolePermissionOperation(BaseIamEntityRepository<RolePermission> repository) : base(repository) { }

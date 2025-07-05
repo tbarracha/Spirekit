@@ -11,7 +11,7 @@ public class GetGroupTypeByIdDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Group Type")]
+[OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/get")]
 public class GetGroupTypeByIdOperation
     : BaseGroupTypeCrudOperation<GetGroupTypeByIdDto, GroupType?>

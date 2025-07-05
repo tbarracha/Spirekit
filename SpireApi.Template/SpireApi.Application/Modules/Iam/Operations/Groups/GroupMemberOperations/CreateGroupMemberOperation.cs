@@ -15,8 +15,8 @@ public class CreateGroupMemberDto
     public DateTime? JoinedAt { get; set; }
 }
 
-[OperationGroup("Group Member")]
-[OperationRoute("group-member/create")]
+[OperationGroup("IAM Group Members")]
+[OperationRoute("group/member/create")]
 public class CreateGroupMemberOperation
     : BaseGroupMemberCrudOperation<CreateGroupMemberDto, GroupMember>
 {

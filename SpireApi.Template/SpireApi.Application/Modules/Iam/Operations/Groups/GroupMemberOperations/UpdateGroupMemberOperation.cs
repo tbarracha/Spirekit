@@ -16,8 +16,8 @@ public class UpdateGroupMemberDto
     public DateTime JoinedAt { get; set; }
 }
 
-[OperationGroup("Group Member")]
-[OperationRoute("group-member/update")]
+[OperationGroup("IAM Group Members")]
+[OperationRoute("group/member/update")]
 public class UpdateGroupMemberOperation
     : BaseGroupMemberCrudOperation<UpdateGroupMemberDto, GroupMember?>
 {

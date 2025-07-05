@@ -11,8 +11,8 @@ public class DeleteRoleDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Role")]
-[OperationRoute("role/delete")]
+[OperationGroup("IAM Roles")]
+[OperationRoute("roles/delete")]
 public class DeleteRoleOperation : BaseRoleCrudOperation<DeleteRoleDto, bool>
 {
     public DeleteRoleOperation(BaseIamEntityRepository<Role> repository) : base(repository) { }

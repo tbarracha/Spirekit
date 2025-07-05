@@ -8,7 +8,7 @@ using SpireCore.Lists.Pagination;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Roles.RolePermissionOperations;
 
-public class ListRolePermissionsPagedDto
+public class PaginatedRolePermissionsRequestDto
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
@@ -16,13 +16,13 @@ public class ListRolePermissionsPagedDto
     public Guid? PermissionId { get; set; }
 }
 
-[OperationGroup("Role Permission")]
-[OperationRoute("role-permission/list")]
-public class ListRolePermissionsPagedOperation : BaseRolePermissionCrudOperation<ListRolePermissionsPagedDto, PaginatedResult<RolePermission>>
+[OperationGroup("IAM Role Permissions")]
+[OperationRoute("role/permissions/page")]
+public class PaginatedRolePermissionsOperation : BaseRolePermissionCrudOperation<PaginatedRolePermissionsRequestDto, PaginatedResult<RolePermission>>
 {
-    public ListRolePermissionsPagedOperation(BaseIamEntityRepository<RolePermission> repository) : base(repository) { }
+    public PaginatedRolePermissionsOperation(BaseIamEntityRepository<RolePermission> repository) : base(repository) { }
 
-    public override async Task<PaginatedResult<RolePermission>> ExecuteAsync(AuditableRequestDto<ListRolePermissionsPagedDto> request)
+    public override async Task<PaginatedResult<RolePermission>> ExecuteAsync(AuditableRequestDto<PaginatedRolePermissionsRequestDto> request)
     {
         var filter = request.Data;
         var query = _repository.Query();

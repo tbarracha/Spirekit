@@ -1,5 +1,6 @@
 ﻿using SpireApi.Shared.EntityFramework.Entities.Abstractions;
 using SpireCore.Constants;
+using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;
 
 namespace SpireApi.Shared.EntityFramework.Repositories;
@@ -7,15 +8,30 @@ namespace SpireApi.Shared.EntityFramework.Repositories;
 public interface IAuditableEntityRepository<T, TId> : IEntityRepository<T, TId>
     where T : class, IAuditableEntity<TId>
 {
+
+
     // --- Read ---
 
     Task<T?> GetByIdAsync(TId id, string actor, string? state = StateFlags.ACTIVE);
 
     Task<T?> GetFilteredAsync(Expression<Func<T, bool>> predicate, string actor, string? state = StateFlags.ACTIVE);
 
-    Task<IReadOnlyList<T>> ListFilteredAsync(Expression<Func<T, bool>> filter, string actor, string? state = StateFlags.ACTIVE);
+    Task<PaginatedResult<T>> GetFilteredPaginatedResultAsync(
+    Expression<Func<T, bool>> filter,
+    string actor,
+    int page,
+    int pageSize,
+    string? state = StateFlags.ACTIVE
+    );
 
-    Task<IReadOnlyList<T>> ListAsync(string actor, string? state = StateFlags.ACTIVE);
+    Task<PaginatedResult<T>> GetPaginatedResultAsync(
+        string actor,
+        int page,
+        int pageSize,
+        string? state = StateFlags.ACTIVE
+    );
+
+
 
     // --- Create ---
 
@@ -23,11 +39,15 @@ public interface IAuditableEntityRepository<T, TId> : IEntityRepository<T, TId>
 
     Task<IReadOnlyList<T>> AddRangeAsync(IEnumerable<T> entities, string actor);
 
+
+
     // --- Update ---
 
     Task<T> UpdateAsync(T entity, string actor);
 
     Task<IReadOnlyList<T>> UpdateRangeAsync(IEnumerable<T> entities, string actor);
+
+
 
     // --- Delete ---
 

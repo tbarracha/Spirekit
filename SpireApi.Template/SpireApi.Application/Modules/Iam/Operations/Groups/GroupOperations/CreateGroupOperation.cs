@@ -14,8 +14,8 @@ public class CreateGroupDto
     public Guid GroupTypeId { get; set; }
 }
 
-[OperationGroup("Group")]
-[OperationRoute("group/create")]
+[OperationGroup("IAM Groups")]
+[OperationRoute("groups/create")]
 public class CreateGroupOperation
     : BaseGroupCrudOperation<CreateGroupDto, Group>
 {

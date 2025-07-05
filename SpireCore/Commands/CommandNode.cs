@@ -32,7 +32,7 @@ public class CommandNode
     }
 
     /// <summary>
-    /// Constructor for group/category nodes.
+    /// Constructor for groups/category nodes.
     /// </summary>
     public CommandNode(string name, string description = "")
     {

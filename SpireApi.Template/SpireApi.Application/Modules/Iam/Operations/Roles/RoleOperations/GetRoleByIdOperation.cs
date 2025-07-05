@@ -11,8 +11,8 @@ public class GetRoleByIdDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Role")]
-[OperationRoute("role/get")]
+[OperationGroup("IAM Roles")]
+[OperationRoute("roles/get")]
 public class GetRoleByIdOperation : BaseRoleCrudOperation<GetRoleByIdDto, Role?>
 {
     public GetRoleByIdOperation(BaseIamEntityRepository<Role> repository) : base(repository) { }

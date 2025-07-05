@@ -11,8 +11,8 @@ public class GetGroupByIdDto
     public Guid Id { get; set; }
 }
 
-[OperationGroup("Group")]
-[OperationRoute("group/get")]
+[OperationGroup("IAM Groups")]
+[OperationRoute("groups/get")]
 public class GetGroupByIdOperation
     : BaseGroupCrudOperation<GetGroupByIdDto, Group?>
 {
