@@ -56,7 +56,7 @@ var featuresConfig = tempProvider.GetRequiredService<IOptions<FeaturesConfigurat
 builder.Services.AddEnabledFeatures(featuresConfig);
 
 builder.Services.AddOperations();
-builder.Services.AddLifetimeServices();
+builder.Services.AddApplicationServices();
 
 // --- Swagger & API Explorer ---
 builder.Services.AddEndpointsApiExplorer();

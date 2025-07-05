@@ -10,7 +10,7 @@ public static class IamServiceExtensions
     public static IServiceCollection AddIamModuleServices(this IServiceCollection services)
     {
         // Register all BaseIamEntityRepository<> subclasses across all assemblies
-        services.AddScopedImplementationsOfGenericType(typeof(BaseIamEntityRepository<>));
+        //services.AddScopedImplementationsOfGenericType(typeof(BaseIamEntityRepository<>));
 
         // Add IAM service layer
         services.AddScoped<IamService>();

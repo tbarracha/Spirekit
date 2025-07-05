@@ -1,6 +1,7 @@
 ﻿using SpireApi.Shared.EntityFramework.Entities.Abstractions;
 using SpireCore.Constants;
 using SpireCore.Lists.Pagination;
+using SpireCore.Services;
 using System.Linq.Expressions;
 
 namespace SpireApi.Shared.EntityFramework.Repositories;
@@ -8,7 +9,7 @@ namespace SpireApi.Shared.EntityFramework.Repositories;
 /// <summary>
 /// Generic repository interface for CRUD operations, with optional pagination.
 /// </summary>
-public interface IEntityRepository<T, TId> : IPagination<T> where T : class, IEntity<TId>
+public interface IEntityRepository<T, TId> : IPagination<T>, ITransientService where T : class, IEntity<TId>
 {
 
 

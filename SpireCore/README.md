@@ -27,10 +27,40 @@ The shared backbone for all SpireKit modules.
 
 * **Abstractions:**
   `ICreatedAt`, `IStateFlag`, `IHasId`, etc.
+
 * **Events:**
   In-memory domain event dispatcher (`EventEmitter`, `IEventDispatcher`).
+
 * **Utilities:**
   Guid helpers, constants, pagination contracts.
+
+* **Automatic DI Registration:**
+  SpireCore enables automatic dependency injection by using marker interfaces:
+
+  ```csharp
+  namespace SpireCore.Services;
+
+  public interface ITransientService { }
+  public interface IScopedService { }
+  public interface ISingletonService { }
+  ```
+
+  Any service, repository, or class implementing one of these interfaces will be automatically discovered and registered with the appropriate lifetime when you call:
+
+  ```csharp
+  builder.Services.AddApplicationServices();
+  ```
+
+  This includes:
+
+  * Concrete service classes
+  * Implemented interfaces
+  * Generic or base class bindings (like abstract repository base types)
+
+  **Examples:**
+
+  * A repository class implementing `ITransientService` gets registered as both `MyRepository` and its interfaces, with transient lifetime.
+  * A service implementing `IScopedService` gets injected per request, automatically.
 
 **What you won’t find:**
 No entities, repositories, or DB logic.
@@ -45,7 +75,7 @@ No entities, repositories, or DB logic.
 SpireAPI is made up of several projects for clear separation of concerns:
 
 * **Spire.Api.Application** — Domain, modules, and application logic
-* **Spire.Api.Contracts** — DTOs and contracts shared across layers
+* **Spire.Api.Contracts** — DTOs and Event contracts shared across layers
 * **Spire.Api.Host** — The API host/startup project
 * **Spire.Api.Infrastructure** — Infrastructure, persistence, and EF Core
 * **Spire.Api.Shared** — Shared utilities, cross-cutting concerns
