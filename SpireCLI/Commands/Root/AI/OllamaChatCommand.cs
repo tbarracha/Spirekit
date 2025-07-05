@@ -199,48 +199,4 @@ internal class OllamaChatCommand : BaseCommand
             Console.ResetColor();
         }
     }
-
-    // ---------------------------------------------
-    // Simple in-memory session & history
-    private class InteractionSession : IInteractionSession
-    {
-        public string Id { get; }
-        public AiClientConfiguration Configuration { get; }
-        public IAiClient Client { get; }
-        public IInteractionHistory History { get; }
-
-        public InteractionSession(string id, AiClientConfiguration cfg, IAiClient cli)
-        {
-            Id = id;
-            Configuration = cfg;
-            Client = cli;
-            History = new InteractionHistory(id);
-        }
-
-        public string GetModelForType(string interactionType) =>
-            Configuration.Models.TryGetValue(interactionType, out var m)
-            ? m
-            : Configuration.Models.GetValueOrDefault("text") ?? "";
-
-        public void AddUserInteraction(IInteraction interaction) => History.AddInteraction(interaction);
-        public void AddAssistantInteraction(IInteraction interaction) => History.AddInteraction(interaction);
-        public IInteraction? GetLastInteraction() => History.Interactions.LastOrDefault();
-    }
-
-    private class InteractionHistory : IInteractionHistory
-    {
-        public string? SessionId { get; }
-        private readonly List<IInteraction> _list = new();
-        public IReadOnlyList<IInteraction> Interactions => _list;
-
-        public InteractionHistory(string? sessionId) => SessionId = sessionId;
-        public void AddInteraction(IInteraction interaction) => _list.Add(interaction);
-        public IReadOnlyList<IInteraction> GetLast(int count, params string[]? roles)
-        {
-            var seq = _list.AsEnumerable();
-            if (roles?.Any() == true)
-                seq = seq.Where(i => roles.Contains(i.Role));
-            return seq.Reverse().Take(count).Reverse().ToList();
-        }
-    }
 }
