@@ -28,7 +28,6 @@ public class UpdateRoleOperation : BaseRoleCrudOperation<UpdateRoleDto, Role?>
 
         if (!string.IsNullOrWhiteSpace(dto.Name)) entity.Name = dto.Name;
         if (dto.Description is not null) entity.Description = dto.Description;
-        if (dto.AccountId.HasValue) entity.AccountId = dto.AccountId.Value;
 
         await _repository.UpdateAsync(entity);
         return entity;

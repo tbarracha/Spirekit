@@ -80,7 +80,7 @@ public class OllamaClient : AIClient
                 if (string.IsNullOrWhiteSpace(jsonLine)) continue;
 
                 var resp = JsonSerializer.Deserialize<OllamaGenerateResponse>(jsonLine);
-                if (resp != null && !string.IsNullOrEmpty(resp.Response))
+                if (resp != null)
                     fullResponse += resp.Response;
                 if (resp?.Done == true)
                     break;
@@ -103,8 +103,6 @@ public class OllamaClient : AIClient
 
         await foreach (var jsonLine in PostStreamAsync("/api/generate", payload, cancellationToken))
         {
-            if (string.IsNullOrWhiteSpace(jsonLine)) continue;
-
             var resp = JsonSerializer.Deserialize<OllamaGenerateResponse>(jsonLine);
             if (resp != null && !string.IsNullOrWhiteSpace(resp.Response))
                 yield return MapOllamaResponseToInteraction(resp);

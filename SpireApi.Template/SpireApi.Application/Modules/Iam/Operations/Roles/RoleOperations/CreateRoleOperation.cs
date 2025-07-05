@@ -26,7 +26,6 @@ public class CreateRoleOperation : BaseRoleCrudOperation<CreateRoleDto, Role>
         {
             Name = dto.Name,
             Description = dto.Description,
-            AccountId = dto.AccountId
         };
 
         await _repository.AddAsync(entity);

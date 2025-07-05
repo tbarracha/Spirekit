@@ -1,4 +1,6 @@
 ﻿using SpireCLI.Commands.Root;
+using SpireCLI.Commands.Root.AI;
+using SpireCLI.Commands.Root.AI.ChatGpt;
 using SpireCore.Commands;
 
 namespace SpireCLI.Commands;
@@ -19,6 +21,7 @@ public static class CommandManagerBuilder
         root.AddSubNode(aiSubNode);
 
         aiSubNode.AddSubNode(new CommandNode(new OllamaChatCommand()));
+        aiSubNode.AddSubNode(new CommandNode(new ChatGptBrowserChatCommand()));
 
         return new CommandManager(root);
     }

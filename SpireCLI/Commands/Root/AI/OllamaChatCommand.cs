@@ -8,7 +8,7 @@ using SpireCore.Commands;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SpireCLI.Commands.Root;
+namespace SpireCLI.Commands.Root.AI;
 
 internal class OllamaChatCommand : BaseCommand
 {

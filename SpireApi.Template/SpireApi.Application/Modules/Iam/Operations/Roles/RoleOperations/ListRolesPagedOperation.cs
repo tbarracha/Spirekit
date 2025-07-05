@@ -29,8 +29,6 @@ public class ListRolesPagedOperation : BaseRoleCrudOperation<ListRolesPagedDto, 
 
         if (!string.IsNullOrWhiteSpace(filter.Name))
             query = query.Where(r => r.Name.Contains(filter.Name));
-        if (filter.AccountId.HasValue)
-            query = query.Where(r => r.AccountId == filter.AccountId.Value);
 
         var totalCount = await query.CountAsync();
         var items = await query
