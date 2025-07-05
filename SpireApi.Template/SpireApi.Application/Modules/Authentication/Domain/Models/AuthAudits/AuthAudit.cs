@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
-using SpireApi.Application.Modules.Iam.Infrastructure;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
 
 public class AuthAudit : BaseAuthEntity
 {
     public Guid AuthUserId { get; set; }
-    public AuthUser AuthUser { get; set; } = default!;
+    public AuthUserIdentity AuthUser { get; set; } = default!;
 
     public string Type { get; set; } = string.Empty; // AuthAuditType.Login, etc.
     public bool WasSuccessful { get; set; }
@@ -57,6 +56,7 @@ public class AuthAudit : BaseAuthEntity
 public static class AuthAuditType
 {
     public const string Login = "Login";
+    public const string Logout = "Logout";
     public const string Register = "Register";
     public const string PasswordChange = "PasswordChange";
     public const string PasswordReset = "PasswordReset";

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
 using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 using SpireApi.Application.Modules.Authentication.Domain.Services;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
@@ -15,12 +15,12 @@ public static class AuthServiceExtensions
     public static IServiceCollection AddAuthModuleServices(this IServiceCollection services)
     {
         // Identity registration (always added)
-        services.AddIdentity<AuthUser, IdentityRole<Guid>>()
+        services.AddIdentity<AuthUserIdentity, IdentityRole<Guid>>()
             .AddEntityFrameworkStores<BaseAuthDbContext>()
             .AddDefaultTokenProviders();
 
         services.AddScoped<RefreshTokenRepository>();
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IAuthUserIdentityService, AuthenticationService>();
         return services;
     }
 }

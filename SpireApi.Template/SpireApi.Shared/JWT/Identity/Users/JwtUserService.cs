@@ -4,27 +4,20 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace SpireApi.Shared.JWT.MicroServiceIdentity;
+namespace SpireApi.Shared.JWT.Identity.Users;
 
-public class ServiceAuthenticationService : IServiceAuthenticationService
+public class JwtUserService : IJwtUserService
 {
     private readonly IConfiguration _config;
 
-    public ServiceAuthenticationService(IConfiguration config)
+    public JwtUserService(IConfiguration config)
     {
         _config = config;
     }
 
-    public string GenerateJwt(IJwtServiceAuth service, IEnumerable<Claim>? extraClaims = null, int? expiresInMinutes = null)
+    public string GenerateUserJwt(IJwtUserIdentity user, IEnumerable<Claim>? extraClaims = null, int? expiresInMinutes = null)
     {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, service.Id.ToString()),
-            new Claim("serviceName", service.ServiceName ?? string.Empty)
-        };
-
-        if (!string.IsNullOrEmpty(service.Description))
-            claims.Add(new Claim("description", service.Description));
+        var claims = user.ToClaims().ToList();
 
         if (extraClaims != null)
             claims.AddRange(extraClaims);
@@ -45,7 +38,7 @@ public class ServiceAuthenticationService : IServiceAuthenticationService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public ClaimsPrincipal? ValidateJwt(string token)
+    public ClaimsPrincipal? ValidateUserJwt(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]!);
@@ -72,7 +65,7 @@ public class ServiceAuthenticationService : IServiceAuthenticationService
         }
     }
 
-    public IJwtServiceAuth? GetServiceFromClaims(ClaimsPrincipal claimsPrincipal)
+    public IJwtUserIdentity? GetUserFromClaims(ClaimsPrincipal claimsPrincipal)
     {
         if (claimsPrincipal == null)
             return null;
@@ -81,18 +74,28 @@ public class ServiceAuthenticationService : IServiceAuthenticationService
         if (idClaim == null || !Guid.TryParse(idClaim, out var id))
             return null;
 
-        var serviceName = claimsPrincipal.FindFirst("serviceName")?.Value;
-        var description = claimsPrincipal.FindFirst("description")?.Value;
+        var email = claimsPrincipal.FindFirst("email")?.Value;
+        var userName = claimsPrincipal.FindFirst("userName")?.Value;
+        var displayName = claimsPrincipal.FindFirst("displayName")?.Value ?? userName;
+        var firstName = claimsPrincipal.FindFirst("firstName")?.Value;
+        var lastName = claimsPrincipal.FindFirst("lastName")?.Value;
 
-        return new JwtServiceAuth
+        return new JwtUser
         {
             Id = id,
-            ServiceName = serviceName ?? string.Empty,
-            Description = description
+            UserName = userName,
+            DisplayName = displayName,
+            Email = email,
+            FirstName = firstName,
+            LastName = lastName
         };
     }
 
-    public Guid? GetServiceIdFromToken(string jwtToken)
+
+
+    // -------- Utility --------
+
+    public Guid? GetUserIdFromToken(string jwtToken)
     {
         var handler = new JwtSecurityTokenHandler();
 
@@ -110,8 +113,8 @@ public class ServiceAuthenticationService : IServiceAuthenticationService
         try
         {
             var principal = handler.ValidateToken(jwtToken, validationParameters, out _);
-            var serviceIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
-            return serviceIdClaim is not null ? Guid.Parse(serviceIdClaim.Value) : null;
+            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
+            return userIdClaim is not null ? Guid.Parse(userIdClaim.Value) : null;
         }
         catch
         {
@@ -119,7 +122,7 @@ public class ServiceAuthenticationService : IServiceAuthenticationService
         }
     }
 
-    public bool IsTokenValid(string jwtToken)
+    public bool IsUserTokenValid(string jwtToken)
     {
         var handler = new JwtSecurityTokenHandler();
 
@@ -145,7 +148,7 @@ public class ServiceAuthenticationService : IServiceAuthenticationService
         }
     }
 
-    public bool IsExpired(string jwtToken)
+    public bool IsUserExpired(string jwtToken)
     {
         var handler = new JwtSecurityTokenHandler();
         if (!handler.CanReadToken(jwtToken))

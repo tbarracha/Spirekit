@@ -2,17 +2,17 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
-using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUsers;
+using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
 using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 
 namespace SpireApi.Application.Modules.Authentication.Infrastructure;
 
-public class BaseAuthDbContext : IdentityDbContext<AuthUser, IdentityRole<Guid>, Guid>
+public class BaseAuthDbContext : IdentityDbContext<AuthUserIdentity, IdentityRole<Guid>, Guid>
 {
     public BaseAuthDbContext(DbContextOptions options) : base(options) { }
 
     // === Identity Core ===
-    public new DbSet<AuthUser> Users => Set<AuthUser>();
+    public new DbSet<AuthUserIdentity> Users => Set<AuthUserIdentity>();
     public DbSet<AuthAudit> AuthAudits => Set<AuthAudit>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 

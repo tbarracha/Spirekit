@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Scrutor;
 
-namespace SpireApi.Shared.Services;
+namespace SpireCore.Services;
 
 public static class ServiceExtensions
 {

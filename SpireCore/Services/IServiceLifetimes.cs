@@ -1,4 +1,4 @@
-﻿namespace SpireApi.Shared.Services;
+﻿namespace SpireCore.Services;
 
 public interface ITransientService { }
 public interface IScopedService { }

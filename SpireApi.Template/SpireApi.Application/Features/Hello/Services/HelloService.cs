@@ -1,4 +1,4 @@
-﻿using SpireApi.Shared.Services;
+﻿using SpireCore.Services;
 
 namespace SpireApi.Application.Features.Hello.Services;
 

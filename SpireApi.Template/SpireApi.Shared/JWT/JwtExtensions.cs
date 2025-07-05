@@ -2,28 +2,30 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using SpireApi.Shared.JWT.MicroServiceIdentity;
+using SpireApi.Shared.JWT.Identity.Services;
+using SpireApi.Shared.JWT.Identity.Users;
 using SpireCore.Utils;
+using System.Security.Claims;
 using System.Text;
 
 namespace SpireApi.Shared.JWT;
 
-public static class UnifiedJwtAuthExtensions
+public static class JwtExtensions
 {
     /// <summary>
     /// Registers User and Service JWT authentication, the service identity, and the ServiceTokenProvider.
     /// </summary>
-    public static IServiceCollection AddUnifiedJwtAuthentication(
+    public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services,
         IConfiguration configuration)
     {
         // 1. Service Identity binding
-        var serviceIdentitySection = configuration.GetSection("ServiceIdentity");
-        var serviceIdentity = serviceIdentitySection.Get<ServiceIdentity>() ?? new ServiceIdentity();
-
-        serviceIdentity.Id = GuidUtility.CreateDeterministicGuid(serviceIdentity.ServiceName);
-        services.AddSingleton<IJwtServiceAuth>(serviceIdentity);
-        services.AddSingleton<ServiceTokenProvider>();
+        //var serviceIdentitySection = configuration.GetSection("ServiceIdentity");
+        //var serviceIdentity = serviceIdentitySection.Get<ServiceIdentity>() ?? new ServiceIdentity();
+        //
+        //serviceIdentity.Id = GuidUtility.CreateDeterministicGuid(serviceIdentity.ServiceName);
+        //services.AddSingleton<IJwtServiceIdentity>(serviceIdentity);
+        //services.AddSingleton<ServiceTokenProvider>();
 
         // 2. Get Jwt settings
         var jwtSection = configuration.GetSection("Jwt");
@@ -57,7 +59,7 @@ public static class UnifiedJwtAuthExtensions
         })
         .AddJwtBearer("ServiceBearer", options =>
         {
-            // SERVICE JWT setup (could customize further if needed)
+            // SERVICE JWT setup
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -70,7 +72,7 @@ public static class UnifiedJwtAuthExtensions
             };
         });
 
-        // 4. Add Authorization policies (optional, but recommended)
+        // 4. Add Authorization policies
         services.AddAuthorization(options =>
         {
             options.AddPolicy("UserJwt", policy =>
@@ -81,10 +83,32 @@ public static class UnifiedJwtAuthExtensions
                 policy.RequireAuthenticatedUser()
                       .AddAuthenticationSchemes("ServiceBearer"));
 
-            // Default policy (can point to user, or leave out for open API)
             options.DefaultPolicy = options.GetPolicy("UserJwt")!;
         });
 
         return services;
+    }
+
+    /// <summary>
+    /// Converts an IJwtUser to a set of JWT claims.
+    /// </summary>
+    public static IEnumerable<Claim> ToClaims(this IJwtUserIdentity user)
+    {
+        yield return new Claim(ClaimTypes.NameIdentifier, user.Id.ToString());
+
+        if (!string.IsNullOrEmpty(user.Email))
+            yield return new Claim(ClaimTypes.Email, user.Email);
+
+        if (!string.IsNullOrEmpty(user.UserName))
+            yield return new Claim(ClaimTypes.Name, user.UserName);
+
+        if (!string.IsNullOrEmpty(user.DisplayName))
+            yield return new Claim("display_name", user.DisplayName);
+
+        if (user is { FirstName: not null })
+            yield return new Claim("first_name", user.FirstName!);
+
+        if (user is { LastName: not null })
+            yield return new Claim("last_name", user.LastName!);
     }
 }
