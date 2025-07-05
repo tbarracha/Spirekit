@@ -1,6 +1,9 @@
 ﻿// ITextAttachment.cs
 
-namespace SpireCore.AI.Interactions.Attachments;
+
+// ITextAttachment.cs
+
+namespace SpireCore.AI.Interactions.Contracts.Attachments;
 
 /// <summary>
 /// Text content attachment.

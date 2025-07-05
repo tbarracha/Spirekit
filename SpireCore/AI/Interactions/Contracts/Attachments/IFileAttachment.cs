@@ -1,6 +1,6 @@
 ﻿// IFileAttachment.cs
 
-namespace SpireCore.AI.Interactions.Attachments;
+namespace SpireCore.AI.Interactions.Contracts.Attachments;
 
 /// <summary>
 /// File content attachment (image, file, audio, etc.).

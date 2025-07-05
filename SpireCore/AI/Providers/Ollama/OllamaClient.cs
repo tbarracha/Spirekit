@@ -1,10 +1,9 @@
-﻿// SpireCore.AI.Providers.Ollama
-
-using System.Text.Json;
+﻿using System.Text.Json;
 using SpireCore.AI.Clients;
-using SpireCore.AI.Interactions;
-using SpireCore.AI.Interactions.Attachments;
+using SpireCore.AI.Interactions.Contracts;
+using SpireCore.AI.Interactions.Contracts.Attachments;
 using SpireCore.AI.Interactions.Implementations;
+using SpireCore.AI.Interactions.Implementations.Attachments;
 
 namespace SpireCore.AI.Providers.Ollama;
 
@@ -13,32 +12,43 @@ public class OllamaClient : AIClient
     public OllamaClient(HttpClient httpClient, AiClientConfiguration config)
         : base(httpClient, config) { }
 
-    // Map Interaction -> OllamaGenerateRequest
-    private OllamaGenerateRequest MapInteractionToOllamaRequest(IInteraction interaction)
+    private OllamaGenerateRequest MapRequestToOllama(IInteractionRequest request)
     {
+        var interaction = request.Interaction;
         var text = interaction.Attachments.OfType<ITextAttachment>().FirstOrDefault()?.Text ?? "";
 
-        // Map multimodal images (base64) if present
         var images = interaction.Attachments
             .OfType<IFileAttachment>()
             .Where(f => f.MimeType.StartsWith("image/"))
             .Select(f => f.Base64ContentsOrUrl)
             .ToList();
 
-        // Advanced options (temperature, stop, etc.)
-        var options = _settings.Extra?.ToDictionary(kv => kv.Key, kv => kv.Value);
+        var model = _settings.Models.TryGetValue(interaction.Type, out var m) ? m : _settings.Models.GetValueOrDefault("text") ?? "llama3";
+
+        // Merge client-level options with request-level options
+        var mergedOptions = new Dictionary<string, object>();
+        if (_settings.Extra is not null)
+        {
+            foreach (var kv in _settings.Extra)
+                mergedOptions[kv.Key] = kv.Value;
+        }
+
+        if (request.Options is not null)
+        {
+            foreach (var kv in request.Options)
+                mergedOptions[kv.Key] = kv.Value;
+        }
 
         return new OllamaGenerateRequest
         {
-            Model = _settings.Models.TryGetValue(interaction.Type, out var m) ? m : _settings.Models.GetValueOrDefault("text") ?? "llama3",
+            Model = model,
             Prompt = text,
             Images = images.Count > 0 ? images : null,
-            Stream = true, // Default to streaming
-            Options = options
+            Stream = request.Stream,
+            Options = mergedOptions.Count > 0 ? mergedOptions : null
         };
     }
 
-    // Map OllamaGenerateResponse -> Interaction
     private static IInteraction MapOllamaResponseToInteraction(OllamaGenerateResponse resp)
     {
         return new Interaction(
@@ -51,19 +61,12 @@ public class OllamaClient : AIClient
         );
     }
 
-    // ProcessInteraction: Streaming or non-streaming response
-    public override async Task<IInteraction> ProcessInteraction(IInteraction interactionRequest)
+    public override async Task<IInteraction> ProcessInteraction(IInteractionRequest request)
     {
-        var payload = MapInteractionToOllamaRequest(interactionRequest);
+        var payload = MapRequestToOllama(request);
 
-        // Determine streaming based on Extra/config (default: true)
-        bool streaming = true;
-        if (_settings.Extra.TryGetValue("stream", out var streamObj) && streamObj is bool stream)
-            streaming = stream;
-
-        if (!streaming)
+        if (!request.Stream)
         {
-            // Non-streaming: read entire response as a single JSON object
             var response = await PostAsync("/api/generate", payload);
             var responseStr = await response.Content.ReadAsStringAsync();
             var respObj = JsonSerializer.Deserialize<OllamaGenerateResponse>(responseStr);
@@ -71,21 +74,18 @@ public class OllamaClient : AIClient
         }
         else
         {
-            // Streaming: aggregate streamed partial responses
             string fullResponse = "";
             await foreach (var jsonLine in PostStreamAsync("/api/generate", payload))
             {
-                if (string.IsNullOrWhiteSpace(jsonLine))
-                    continue;
+                if (string.IsNullOrWhiteSpace(jsonLine)) continue;
 
                 var resp = JsonSerializer.Deserialize<OllamaGenerateResponse>(jsonLine);
                 if (resp != null && !string.IsNullOrEmpty(resp.Response))
                     fullResponse += resp.Response;
-                if (resp != null && resp.Done.HasValue && resp.Done.Value)
+                if (resp?.Done == true)
                     break;
             }
 
-            // Compose a single Interaction for the full reply
             return new Interaction(
                 "assistant",
                 "text",
@@ -94,19 +94,17 @@ public class OllamaClient : AIClient
         }
     }
 
-
-    // Streaming completion as async enumerable
     public async IAsyncEnumerable<IInteraction> StreamInteractionAsync(
-        IInteraction interactionRequest,
+        IInteractionRequest request,
         [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var payload = MapInteractionToOllamaRequest(interactionRequest);
+        var payload = MapRequestToOllama(request);
         payload.Stream = true;
 
         await foreach (var jsonLine in PostStreamAsync("/api/generate", payload, cancellationToken))
         {
-            if (string.IsNullOrWhiteSpace(jsonLine))
-                continue;
+            if (string.IsNullOrWhiteSpace(jsonLine)) continue;
+
             var resp = JsonSerializer.Deserialize<OllamaGenerateResponse>(jsonLine);
             if (resp != null && !string.IsNullOrWhiteSpace(resp.Response))
                 yield return MapOllamaResponseToInteraction(resp);

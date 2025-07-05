@@ -1,20 +1,18 @@
-﻿using SpireCore.AI.Interactions.Attachments;
+﻿using SpireCore.AI.Interactions.Contracts;
+using SpireCore.AI.Interactions.Contracts.Attachments;
 
 namespace SpireCore.AI.Interactions.Implementations;
 
-/// <summary>
-/// One AI message, file, image, or audio exchange.
-/// </summary>
 public class Interaction : IInteraction
 {
     public string Role { get; }
     public string Type { get; }
     public IReadOnlyList<IInteractionAttachment> Attachments { get; }
 
-    public Interaction(string role, string type, IReadOnlyList<IInteractionAttachment> attachments)
+    public Interaction(string role, string type, IEnumerable<IInteractionAttachment> attachments)
     {
         Role = role;
         Type = type;
-        Attachments = attachments;
+        Attachments = attachments.ToList();
     }
 }

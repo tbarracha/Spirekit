@@ -1,7 +1,8 @@
 ﻿using SpireCore.AI.Clients;
-using SpireCore.AI.Interactions;
-using SpireCore.AI.Interactions.Attachments;
+using SpireCore.AI.Interactions.Contracts;
+using SpireCore.AI.Interactions.Contracts.Attachments;
 using SpireCore.AI.Interactions.Implementations;
+using SpireCore.AI.Interactions.Implementations.Attachments;
 using SpireCore.AI.Providers.Ollama;
 using SpireCore.Commands;
 using System.Text;
@@ -90,9 +91,16 @@ internal class OllamaChatCommand : BaseCommand
 
             try
             {
-                // --- Build a single IInteraction whose TextAttachment is the 
-                //     concatenated history for the prompt
-                var request = BuildPromptFromHistory(session);
+                var thinkFlag = session.History.Interactions.LastOrDefault(i => i.Role == "user")?
+                    .Attachments.OfType<ITextAttachment>().FirstOrDefault()?.Text?.Trim();
+
+                var think = thinkFlag == "/think";
+
+                var request = new InteractionRequest(
+                    BuildPromptFromHistory(session),
+                    stream: true,
+                    think: think
+                );
 
                 // --- Begin streaming (colors exactly as you specified)
                 Console.WriteLine();

@@ -1,6 +1,9 @@
 ﻿// IImageAttachment.cs
 
-namespace SpireCore.AI.Interactions.Attachments;
+
+// IImageAttachment.cs
+
+namespace SpireCore.AI.Interactions.Contracts.Attachments;
 
 /// <summary>
 /// Image content attachment.

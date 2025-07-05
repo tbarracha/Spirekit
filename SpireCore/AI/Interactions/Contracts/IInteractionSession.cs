@@ -1,8 +1,9 @@
-﻿// IInteractionSession.cs
+﻿
+// IInteractionSession.cs
 
 using SpireCore.AI.Clients;
 
-namespace SpireCore.AI.Interactions;
+namespace SpireCore.AI.Interactions.Contracts;
 
 /// <summary>
 /// Represents a single AI interaction session, holding model info, client, and history.

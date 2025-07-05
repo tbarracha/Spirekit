@@ -1,6 +1,6 @@
-﻿using SpireCore.AI.Interactions.Attachments;
+﻿using SpireCore.AI.Interactions.Contracts.Attachments;
 
-namespace SpireCore.AI.Interactions;
+namespace SpireCore.AI.Interactions.Contracts;
 
 /// <summary>
 /// One AI message, file, image, or audio exchange.

@@ -1,6 +1,6 @@
 ﻿// IInteractionAttachment.cs
 
-namespace SpireCore.AI.Interactions.Attachments;
+namespace SpireCore.AI.Interactions.Contracts.Attachments;
 
 /// <summary>
 /// An attachment or payload associated with an interaction (e.g. text, image, file, audio).

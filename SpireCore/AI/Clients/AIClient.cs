@@ -1,4 +1,4 @@
-﻿using SpireCore.AI.Interactions;
+﻿using SpireCore.AI.Interactions.Contracts;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -80,5 +80,10 @@ public abstract class AIClient : IAiClient
         }
     }
 
-    public abstract Task<IInteraction> ProcessInteraction(IInteraction interactionRequest);
+    /// <summary>
+    /// Must be implemented by providers to process a full AI interaction request.
+    /// </summary>
+    /// <param name="request">Wrapped interaction request including stream/think/options.</param>
+    /// <returns>Resulting assistant interaction.</returns>
+    public abstract Task<IInteraction> ProcessInteraction(IInteractionRequest request);
 }

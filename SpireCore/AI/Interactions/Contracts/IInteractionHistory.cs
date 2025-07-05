@@ -1,6 +1,6 @@
 ﻿// IInteractionHistory.cs
 
-namespace SpireCore.AI.Interactions;
+namespace SpireCore.AI.Interactions.Contracts;
 
 /// <summary>
 /// An ordered history of all interactions in a session.
