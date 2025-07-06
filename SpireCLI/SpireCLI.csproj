@@ -19,4 +19,8 @@
     <ProjectReference Include="..\SpireCore\SpireCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Root\ProjectManagement\Frontend\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 
 Spirekit
-+-- SpireApi.Template
++-- SpireApi
 ¦   +-- SpireApi.Application
 ¦   ¦   +-- Features
 ¦   ¦   ¦   +-- Hello

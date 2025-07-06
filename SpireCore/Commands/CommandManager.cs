@@ -134,6 +134,8 @@ public class CommandManager
         var node = _root;
         var remaining = context.Args.ToList();
 
+        string invokedCommandName = null;
+        // Find the deepest matching command node and invoked command name
         while (remaining.Any())
         {
             var next = remaining[0];
@@ -141,6 +143,7 @@ public class CommandManager
                 break;
 
             node = child;
+            invokedCommandName = next; // This is the command/alias used
             remaining.RemoveAt(0);
         }
 
@@ -157,7 +160,14 @@ public class CommandManager
             return CommandResult.Error(msg);
         }
 
-        var commandContext = new CommandContext(remaining.ToArray(), this, _root, context.IsInteractive);
+        // Pass the invoked command name and stripped args to the context
+        var commandContext = new CommandContext(
+            remaining.ToArray(),
+            this,
+            _root,
+            invokedCommandName ?? node.Name, // use node.Name as fallback
+            context.IsInteractive);
+
         try
         {
             var result = node.Command.Execute(commandContext);
