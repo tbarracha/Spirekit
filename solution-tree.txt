@@ -188,7 +188,7 @@ Spirekit
 ¦   ¦   ¦   +-- IamDbContextFactory.cs
 ¦   ¦   +-- migration_commands.txt
 ¦   ¦   +-- SpireApi.Infrastructure.csproj
-¦   +-- SpireApi.Shared
+¦   +-- SpireCore.API
 ¦   ¦   +-- Configuration
 ¦   ¦   ¦   +-- Features
 ¦   ¦   ¦   ¦   +-- FeatureConfiguration.cs
@@ -256,7 +256,7 @@ Spirekit
 ¦   ¦   ¦   ¦   +-- SwaggerControllerOrderAttribute.cs
 ¦   ¦   ¦   ¦   +-- VerbOrderOperationIdFilter.cs
 ¦   ¦   ¦   +-- SwaggerAutoOpenExtension.cs
-¦   ¦   +-- SpireApi.Shared.csproj
+¦   ¦   +-- SpireCore.API.csproj
 ¦   +-- Template
 ¦       +-- {Namespace}.Application
 ¦       ¦   +-- Features

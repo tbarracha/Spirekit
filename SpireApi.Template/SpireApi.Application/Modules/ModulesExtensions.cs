@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SpireApi.Application.Modules.Authentication;
 using SpireApi.Application.Modules.Iam;
-using SpireApi.Shared.Configuration.Modules;
+using SpireCore.API.Configuration.Modules;
 
 namespace SpireApi.Application.Modules;
 

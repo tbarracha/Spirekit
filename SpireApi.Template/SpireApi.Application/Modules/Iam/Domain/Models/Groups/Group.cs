@@ -1,4 +1,4 @@
-﻿using SpireApi.Shared.EntityFramework.Entities.Memberships;
+﻿using SpireCore.API.EntityFramework.Entities.Memberships;
 
 namespace SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 

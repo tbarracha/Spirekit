@@ -1,4 +1,4 @@
-﻿using SpireApi.Shared.JWT.Identity.Users;
+﻿using SpireCore.API.JWT.Identity.Users;
 using SpireCore.Events.Dispatcher;
 
 namespace SpireApi.Contracts.Events.Authentication;

@@ -13,8 +13,8 @@ You will paste your actual domain model code at the end of this prompt; all `[pl
 
 ```csharp
 using SpireApi.Application.Modules.Iam.Domain.Contexts;
-using SpireApi.Shared.Operations;
-using SpireApi.Shared.Operations.Dtos;
+using SpireCore.API.Operations;
+using SpireCore.API.Operations.Dtos;
 using SpireCore.Services;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups;

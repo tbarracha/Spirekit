@@ -1,5 +1,5 @@
 ﻿using SpireApi.Application.Modules.Authentication.Infrastructure;
-using SpireApi.Shared.EntityFramework.Entities.Repositories;
+using SpireCore.API.EntityFramework.Entities.Repositories;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Models;
 

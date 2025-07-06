@@ -6,7 +6,7 @@ using System.Security.Claims;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
-using SpireApi.Shared.JWT.Identity.Users;
+using SpireCore.API.JWT.Identity.Users;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
 using SpireApi.Contracts.Events.Authentication;
 using SpireCore.Services;

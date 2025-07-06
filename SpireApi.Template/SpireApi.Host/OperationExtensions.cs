@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SpireApi.Shared.Operations;
-using SpireApi.Shared.Operations.Attributes;
+using SpireCore.API.Operations;
+using SpireCore.API.Operations.Attributes;
 using System.Reflection;
 
 public static class OperationExtensions

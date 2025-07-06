@@ -9,7 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SpireCore\SpireCore.csproj" />
     <ProjectReference Include="..\SpireApi.Contracts\SpireApi.Contracts.csproj" />
-    <ProjectReference Include="..\SpireApi.Shared\SpireApi.Shared.csproj" />
+    <ProjectReference Include="..\SpireCore.API\SpireCore.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

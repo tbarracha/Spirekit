@@ -1,6 +1,6 @@
 ﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
-using SpireApi.Shared.Operations;
-using SpireApi.Shared.Operations.Dtos;
+using SpireCore.API.Operations;
+using SpireCore.API.Operations.Dtos;
 using SpireCore.Services;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups;

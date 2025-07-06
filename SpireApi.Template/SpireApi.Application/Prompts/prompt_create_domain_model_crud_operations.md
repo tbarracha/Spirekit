@@ -21,8 +21,8 @@ Given a domain model (a C# class), **generate the base CRUD operation class AND 
 
   * `using SpireApi.Application.Modules.Iam.Domain.Models.{PluralName};`
   * `using SpireApi.Application.Modules.Iam.Infrastructure;`
-  * `using SpireApi.Shared.Operations.Attributes;`
-  * `using SpireApi.Shared.Operations.Dtos;`
+  * `using SpireCore.API.Operations.Attributes;`
+  * `using SpireCore.API.Operations.Dtos;`
 
 * **Generate a single abstract `Base{EntityName}CrudOperation<TRequest, TResponse>` class:**
 
@@ -73,8 +73,8 @@ Given a domain model (a C# class), **generate the base CRUD operation class AND 
 // --------- BaseGroupMemberCrudOperation.cs -----------
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 using SpireApi.Application.Modules.Iam.Infrastructure;
-using SpireApi.Shared.Operations.Attributes;
-using SpireApi.Shared.Operations.Dtos;
+using SpireCore.API.Operations.Attributes;
+using SpireCore.API.Operations.Dtos;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups.GroupMemberOperations;
 
@@ -94,8 +94,8 @@ public abstract class BaseGroupMemberCrudOperation<TRequest, TResponse>
 // --------- ListGroupMembersPagedOperation.cs -----------
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 using SpireApi.Application.Modules.Iam.Infrastructure;
-using SpireApi.Shared.Operations.Attributes;
-using SpireApi.Shared.Operations.Dtos;
+using SpireCore.API.Operations.Attributes;
+using SpireCore.API.Operations.Dtos;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups.GroupMemberOperations;
 

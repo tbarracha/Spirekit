@@ -3,7 +3,7 @@ using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 using SpireApi.Application.Modules.Iam.Domain.Models.Permissions;
 using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
 using SpireApi.Application.Modules.Iam.Domain.Models.Users;
-using SpireApi.Shared.EntityFramework.DbContexts;
+using SpireCore.API.EntityFramework.DbContexts;
 
 namespace SpireApi.Application.Modules.Iam.Infrastructure;
 

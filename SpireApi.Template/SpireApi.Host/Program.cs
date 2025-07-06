@@ -7,11 +7,11 @@ using SpireApi.Application.Modules.Authentication.Infrastructure;
 using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Infrastructure.Authentication;
 using SpireApi.Infrastructure.Iam;
-using SpireApi.Shared.Configuration.Features;
-using SpireApi.Shared.Configuration.Modules;
-using SpireApi.Shared.JWT;
-using SpireApi.Shared.JWT.Identity.Users;
-using SpireApi.Shared.Swagger;
+using SpireCore.API.Configuration.Features;
+using SpireCore.API.Configuration.Modules;
+using SpireCore.API.JWT;
+using SpireCore.API.JWT.Identity.Users;
+using SpireCore.API.Swagger;
 using SpireCore.Events.Dispatcher;
 using SpireCore.Services;
 

@@ -1,8 +1,8 @@
 ﻿// --------- CreateRolePermissionOperation.cs ---------
 using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
 using SpireApi.Application.Modules.Iam.Infrastructure;
-using SpireApi.Shared.Operations.Attributes;
-using SpireApi.Shared.Operations.Dtos;
+using SpireCore.API.Operations.Attributes;
+using SpireCore.API.Operations.Dtos;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Roles.RolePermissionOperations;
 

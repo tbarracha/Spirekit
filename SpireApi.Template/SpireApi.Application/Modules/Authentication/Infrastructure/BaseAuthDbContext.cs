@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
 using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
-using SpireApi.Shared.EntityFramework.DbContexts;
+using SpireCore.API.EntityFramework.DbContexts;
 
 namespace SpireApi.Application.Modules.Authentication.Infrastructure;
 

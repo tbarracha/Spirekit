@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
-using SpireApi.Shared.Configuration.Features;
+using SpireCore.API.Configuration.Features;
 
 namespace SpireApi.Application.Features;
 

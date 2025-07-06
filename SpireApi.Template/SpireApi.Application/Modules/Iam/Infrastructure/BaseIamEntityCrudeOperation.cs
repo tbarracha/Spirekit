@@ -1,4 +1,4 @@
-﻿using SpireApi.Shared.Operations;
+﻿using SpireCore.API.Operations;
 using SpireCore.Services;
 
 namespace SpireApi.Application.Modules.Iam.Infrastructure;

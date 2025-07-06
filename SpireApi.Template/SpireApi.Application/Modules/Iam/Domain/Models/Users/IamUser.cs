@@ -1,5 +1,5 @@
 ﻿using SpireApi.Application.Modules.Iam.Infrastructure;
-using SpireApi.Shared.JWT.Identity.Users;
+using SpireCore.API.JWT.Identity.Users;
 
 namespace SpireApi.Application.Modules.Iam.Domain.Models.Users;
 

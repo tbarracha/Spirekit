@@ -1,7 +1,7 @@
 ﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
-using SpireApi.Shared.Operations.Attributes;
-using SpireApi.Shared.Operations.Dtos;
+using SpireCore.API.Operations.Attributes;
+using SpireCore.API.Operations.Dtos;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups.GroupModerationOperations;
 

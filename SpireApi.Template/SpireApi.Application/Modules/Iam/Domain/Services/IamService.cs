@@ -4,7 +4,7 @@ using SpireApi.Application.Modules.Iam.Domain.Models.Roles.Repositories;
 using SpireApi.Application.Modules.Iam.Domain.Models.Users;
 using SpireApi.Application.Modules.Iam.Domain.Models.Users.Repositories;
 using SpireApi.Application.Modules.Iam.Repositories;
-using SpireApi.Shared.EntityFramework.Entities.Memberships;
+using SpireCore.API.EntityFramework.Entities.Memberships;
 using SpireCore.Constants;
 using SpireCore.Services;
 

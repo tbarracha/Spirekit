@@ -1,5 +1,5 @@
-﻿using SpireApi.Shared.EntityFramework.Entities.Base;
-using SpireApi.Shared.EntityFramework.Entities.Repositories;
+﻿using SpireCore.API.EntityFramework.Entities.Base;
+using SpireCore.API.EntityFramework.Entities.Repositories;
 
 namespace SpireApi.Application.Modules.Iam.Infrastructure;
 
