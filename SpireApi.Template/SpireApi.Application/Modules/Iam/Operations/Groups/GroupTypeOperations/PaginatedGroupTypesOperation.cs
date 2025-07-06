@@ -1,7 +1,6 @@
-﻿// --------- ListGroupTypesPagedOperation.cs ---------
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SpireApi.Application.Modules.Iam.Domain.Contexts;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
-using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Shared.Operations.Dtos;
 using SpireCore.Lists.Pagination;
@@ -12,22 +11,20 @@ public class PaginatedGroupTypesRequestDto
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
-
     public string? Name { get; set; }
-    // Add more filters as needed
 }
 
 [OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/page")]
 public class PaginatedGroupTypesOperation
-    : BaseGroupTypeCrudOperation<PaginatedGroupTypesRequestDto, PaginatedResult<GroupType>>
+    : BaseGroupDomainOperation<PaginatedGroupTypesRequestDto, PaginatedResult<GroupType>>
 {
-    public PaginatedGroupTypesOperation(BaseIamEntityRepository<GroupType> repository) : base(repository) { }
+    public PaginatedGroupTypesOperation(GroupContext groupContext) : base(groupContext) { }
 
     public override async Task<PaginatedResult<GroupType>> ExecuteAsync(AuditableRequestDto<PaginatedGroupTypesRequestDto> request)
     {
         var filter = request.Data;
-        var query = _repository.Query();
+        var query = _groupContext.RepositoryContext.GroupTypeRepository.Query();
 
         if (!string.IsNullOrWhiteSpace(filter.Name))
             query = query.Where(gt => gt.Name.Contains(filter.Name));

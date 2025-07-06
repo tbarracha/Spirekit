@@ -1,0 +1,605 @@
+
+Spirekit
++-- SpireApi.Template
+¦   +-- SpireApi.Application
+¦   ¦   +-- Features
+¦   ¦   ¦   +-- Hello
+¦   ¦   ¦   ¦   +-- Operations
+¦   ¦   ¦   ¦   ¦   +-- HelloServiceOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- HelloWorldOperation.cs
+¦   ¦   ¦   ¦   +-- Services
+¦   ¦   ¦   ¦       +-- HelloService.cs
+¦   ¦   ¦   +-- FeatureExtensions.cs
+¦   ¦   +-- Modules
+¦   ¦   ¦   +-- Authentication
+¦   ¦   ¦   ¦   +-- Configuration
+¦   ¦   ¦   ¦   ¦   +-- AuthSettings.cs
+¦   ¦   ¦   ¦   +-- Domain
+¦   ¦   ¦   ¦   ¦   +-- Models
+¦   ¦   ¦   ¦   ¦   ¦   +-- AuthAudits
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- AuthAudit.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- AuthUserIdentities
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- AuthUserIdentity.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- RefreshTokens
+¦   ¦   ¦   ¦   ¦   ¦       +-- RefreshToken.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- RefreshTokenRepository.cs
+¦   ¦   ¦   ¦   ¦   +-- Services
+¦   ¦   ¦   ¦   ¦       +-- AuthenticationService.cs
+¦   ¦   ¦   ¦   ¦       +-- AuthTokenHelper.cs
+¦   ¦   ¦   ¦   ¦       +-- IAuthUserIdentityService.cs
+¦   ¦   ¦   ¦   +-- Infrastructure
+¦   ¦   ¦   ¦   ¦   +-- BaseAuthDbContext.cs
+¦   ¦   ¦   ¦   ¦   +-- BaseAuthEntity.cs
+¦   ¦   ¦   ¦   ¦   +-- BaseAuthEntityRepository.cs
+¦   ¦   ¦   ¦   +-- Operations
+¦   ¦   ¦   ¦   ¦   +-- AuthOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- GetCurrentUserOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- GetUserByIdOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- GetUserByTokenOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- LoginOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- LogoutOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- RefreshTokenOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- RegisterOperation.cs
+¦   ¦   ¦   ¦   +-- AuthServiceExtensions.cs
+¦   ¦   ¦   +-- Iam
+¦   ¦   ¦   ¦   +-- Domain
+¦   ¦   ¦   ¦   ¦   +-- Contexts
+¦   ¦   ¦   ¦   ¦   ¦   +-- GroupContext.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- GroupRepositoryContext.cs
+¦   ¦   ¦   ¦   ¦   +-- Models
+¦   ¦   ¦   ¦   ¦   ¦   +-- Groups
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupRepositories.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Group.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Permissions
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionScopeRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Permission.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionScope.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Roles
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- RolePermissionRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- RoleRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UserRoleRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Role.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- RolePermission.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UserRole.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Users
+¦   ¦   ¦   ¦   ¦   ¦       +-- IamUser.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- IamUserRepository.cs
+¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   +-- Services
+¦   ¦   ¦   ¦   ¦       +-- GroupModerationService.cs
+¦   ¦   ¦   ¦   ¦       +-- GroupService.cs
+¦   ¦   ¦   ¦   ¦       +-- IamService.cs
+¦   ¦   ¦   ¦   ¦       +-- PermissionService.cs
+¦   ¦   ¦   ¦   ¦       +-- RoleService.cs
+¦   ¦   ¦   ¦   +-- Dtos
+¦   ¦   ¦   ¦   +-- EventHandling
+¦   ¦   ¦   ¦   ¦   +-- OnAuthUserRegisteredHandler.cs
+¦   ¦   ¦   ¦   +-- Infrastructure
+¦   ¦   ¦   ¦   ¦   +-- BaseIamDbContext.cs
+¦   ¦   ¦   ¦   ¦   +-- BaseIamEntity.cs
+¦   ¦   ¦   ¦   ¦   +-- BaseIamEntityCrudeOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- BaseIamEntityRepository.cs
+¦   ¦   ¦   ¦   +-- Operations
+¦   ¦   ¦   ¦   ¦   +-- Groups
+¦   ¦   ¦   ¦   ¦   ¦   +-- GroupMemberOperations
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- CreateGroupMemberOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- DeleteGroupMemberOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetGroupMemberByIdOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PageGroupMembersByGroupOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PaginatedUserGroupsOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UpdateGroupMemberOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- GroupModerationOperations
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetLatestModerationAuditOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetModerationAuditsByGroupIdOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetModerationAuditsByMemberIdOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- GroupOperations
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- CreateGroupOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- DeleteGroupOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetGroupByIdOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetGroupByNameOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PaginatedGroupsByTypeOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PaginatedGroupsOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UpdateGroupOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- GroupTypeOperations
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- CreateGroupTypeOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- DeleteGroupTypeOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetGroupTypeByIdOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PaginatedGroupTypesOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UpdateGroupTypeOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- BaseGroupDomainOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- Permissions
+¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionOperations
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- BasePermissionCrudOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- CreatePermissionOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- DeletePermissionOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GetPermissionByIdOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PaginatedPermissionsOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UpdatePermissionOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionScopeOperations
+¦   ¦   ¦   ¦   ¦   ¦       +-- BasePermissionScopeCrudOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- CreatePermissionScopeOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- DeletePermissionScopeOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- GetPermissionScopeByIdOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- PaginatedPermissionScopesOperation.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- UpdatePermissionScopeOperation.cs
+¦   ¦   ¦   ¦   ¦   +-- Roles
+¦   ¦   ¦   ¦   ¦       +-- RoleOperations
+¦   ¦   ¦   ¦   ¦       ¦   +-- BaseRoleCrudOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- CreateRoleOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- DeleteRoleOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- GetRoleByIdOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- PaginatedRolesOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- UpdateRoleOperation.cs
+¦   ¦   ¦   ¦   ¦       +-- RolePermissionOperations
+¦   ¦   ¦   ¦   ¦       ¦   +-- BaseRolePermissionCrudOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- CheckRoleHasPermissionOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- CreateRolePermissionOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- DeleteRolePermissionOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- GetRolePermissionByIdOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- PaginatedRolePermissionsOperation.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- UpdateRolePermissionOperation.cs
+¦   ¦   ¦   ¦   ¦       +-- UserRoleOperations
+¦   ¦   ¦   ¦   ¦           +-- AssignUserRoleOperation.cs
+¦   ¦   ¦   ¦   ¦           +-- BaseUserRoleCrudOperation.cs
+¦   ¦   ¦   ¦   ¦           +-- PaginatedRolesByUserIdOperation.cs
+¦   ¦   ¦   ¦   ¦           +-- RemoveUserRoleOperation.cs
+¦   ¦   ¦   ¦   +-- IamServiceExtensions.cs
+¦   ¦   ¦   +-- ModuleExtensions.cs
+¦   ¦   +-- SpireApi.Application.csproj
+¦   ¦   +-- structure.txt
+¦   +-- SpireApi.Contracts
+¦   ¦   +-- Dtos
+¦   ¦   ¦   +-- Features
+¦   ¦   ¦   ¦   +-- Hello
+¦   ¦   ¦   ¦       +-- HelloRequestDto.cs
+¦   ¦   ¦   ¦       +-- HelloResponseDto.cs
+¦   ¦   ¦   +-- Modules
+¦   ¦   ¦       +-- Authentication
+¦   ¦   ¦           +-- AuthResponseDto.cs
+¦   ¦   ¦           +-- LoginRequestDto.cs
+¦   ¦   ¦           +-- RefreshTokenRequestDto.cs
+¦   ¦   ¦           +-- RegisterRequestDto.cs
+¦   ¦   +-- Events
+¦   ¦   ¦   +-- Authentication
+¦   ¦   ¦       +-- AuthUserEventBase.cs
+¦   ¦   ¦       +-- AuthUserLoggedInEvent.cs
+¦   ¦   ¦       +-- AuthUserRegisteredEvent.cs
+¦   ¦   +-- SpireApi.Contracts.csproj
+¦   ¦   +-- structure.txt
+¦   +-- SpireApi.Host
+¦   ¦   +-- Properties
+¦   ¦   ¦   +-- launchSettings.json
+¦   ¦   +-- appsettings.Development.json
+¦   ¦   +-- appsettings.json
+¦   ¦   +-- OperationEndpointMapper.cs
+¦   ¦   +-- OperationExtensions.cs
+¦   ¦   +-- Program.cs
+¦   ¦   +-- SpireApi.Host.csproj
+¦   +-- SpireApi.Infrastructure
+¦   ¦   +-- Authentication
+¦   ¦   ¦   +-- AuthDbContext.cs
+¦   ¦   ¦   +-- AuthDbContextFactory.cs
+¦   ¦   +-- Iam
+¦   ¦   ¦   +-- IamDbContext.cs
+¦   ¦   ¦   +-- IamDbContextFactory.cs
+¦   ¦   +-- migration_commands.txt
+¦   ¦   +-- SpireApi.Infrastructure.csproj
+¦   +-- SpireApi.Shared
+¦   ¦   +-- Configuration
+¦   ¦   ¦   +-- Features
+¦   ¦   ¦   ¦   +-- FeatureConfiguration.cs
+¦   ¦   ¦   ¦   +-- FeaturesConfigurationList.cs
+¦   ¦   ¦   +-- Modules
+¦   ¦   ¦       +-- ModuleConfiguration.cs
+¦   ¦   ¦       +-- ModulesConfigurationList.cs.cs
+¦   ¦   +-- EntityFramework
+¦   ¦   ¦   +-- DbContexts
+¦   ¦   ¦   ¦   +-- BaseDbContext.cs
+¦   ¦   ¦   ¦   +-- BaseEntityDbContext.cs
+¦   ¦   ¦   ¦   +-- DbContextExtensions.cs
+¦   ¦   ¦   +-- Entities
+¦   ¦   ¦   ¦   +-- Base
+¦   ¦   ¦   ¦   ¦   +-- BaseAuditableEntity.cs
+¦   ¦   ¦   ¦   ¦   +-- BaseEntity.cs
+¦   ¦   ¦   ¦   ¦   +-- IAuditableEntity.cs
+¦   ¦   ¦   ¦   ¦   +-- IEntity.cs
+¦   ¦   ¦   ¦   +-- Memberships
+¦   ¦   ¦   ¦   ¦   +-- BaseGroupMembership.cs
+¦   ¦   ¦   ¦   ¦   +-- BaseGroupMembershipService.cs
+¦   ¦   ¦   ¦   ¦   +-- IGroupMembership.cs
+¦   ¦   ¦   ¦   ¦   +-- IGroupService.cs
+¦   ¦   ¦   ¦   ¦   +-- MembershipState.cs
+¦   ¦   ¦   ¦   +-- BaseEntityConfigurationHelper.cs
+¦   ¦   ¦   +-- ModelBuilder
+¦   ¦   ¦   ¦   +-- Attributes
+¦   ¦   ¦   ¦       +-- StoreAsStringAttribute
+¦   ¦   ¦   ¦       ¦   +-- ModelBuilderExtensions.StoreAsString.cs
+¦   ¦   ¦   ¦       ¦   +-- StoreAsStringAttribute.cs
+¦   ¦   ¦   ¦       +-- ModelBuilderExtensions.cs
+¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦       +-- BaseAuditableEntityRepository.cs
+¦   ¦   ¦       +-- BaseEntityRepository.cs
+¦   ¦   ¦       +-- IAuditableEntityRepository.cs
+¦   ¦   ¦       +-- IEntityRepository.cs
+¦   ¦   +-- JWT
+¦   ¦   ¦   +-- Identity
+¦   ¦   ¦   ¦   +-- Services
+¦   ¦   ¦   ¦   ¦   +-- IJwtServiceIdentity.cs
+¦   ¦   ¦   ¦   ¦   +-- IServiceAuthenticationService.cs
+¦   ¦   ¦   ¦   +-- Users
+¦   ¦   ¦   ¦       +-- IJwtUserIdentity.cs
+¦   ¦   ¦   ¦       +-- IJwtUserService.cs
+¦   ¦   ¦   ¦       +-- JwtUser.cs
+¦   ¦   ¦   ¦       +-- JwtUserService.cs
+¦   ¦   ¦   +-- JwtExtensions.cs
+¦   ¦   +-- Operations
+¦   ¦   ¦   +-- Attributes
+¦   ¦   ¦   ¦   +-- OperationAuthorizeAttribute.cs
+¦   ¦   ¦   ¦   +-- OperationGroupAttribute.cs
+¦   ¦   ¦   ¦   +-- OperationMethodAttribute.cs
+¦   ¦   ¦   ¦   +-- OperationProducesFileAttribute.cs
+¦   ¦   ¦   ¦   +-- OperationRouteAttribute.cs
+¦   ¦   ¦   +-- Dtos
+¦   ¦   ¦   ¦   +-- AuditableRequestDto.cs
+¦   ¦   ¦   +-- IOperation.cs
+¦   ¦   ¦   +-- OperationEndpointMapper.cs
+¦   ¦   ¦   +-- OperationExtensions.cs
+¦   ¦   ¦   +-- OperationMiddleware.cs
+¦   ¦   +-- Swagger
+¦   ¦   ¦   +-- SwaggerControllerOrders
+¦   ¦   ¦   ¦   +-- CustomSwaggerDocumentFilter.cs
+¦   ¦   ¦   ¦   +-- SwaggerControllerOrder.cs
+¦   ¦   ¦   ¦   +-- SwaggerControllerOrderAttribute.cs
+¦   ¦   ¦   ¦   +-- VerbOrderOperationIdFilter.cs
+¦   ¦   ¦   +-- SwaggerAutoOpenExtension.cs
+¦   ¦   +-- SpireApi.Shared.csproj
+¦   +-- Template
+¦       +-- {Namespace}.Application
+¦       ¦   +-- Features
+¦       ¦   ¦   +-- Hello
+¦       ¦   ¦       +-- Operations
+¦       ¦   ¦       ¦   +-- HelloServiceOperation.cs
+¦       ¦   ¦       ¦   +-- HelloWorldOperation.cs
+¦       ¦   ¦       +-- Services
+¦       ¦   ¦           +-- HelloService.cs
+¦       ¦   +-- Modules
+¦       ¦   ¦   +-- Authentication
+¦       ¦   ¦   ¦   +-- Configuration
+¦       ¦   ¦   ¦   ¦   +-- AuthServiceExtensions.cs
+¦       ¦   ¦   ¦   ¦   +-- AuthSettings.cs
+¦       ¦   ¦   ¦   +-- Domain
+¦       ¦   ¦   ¦   ¦   +-- Models
+¦       ¦   ¦   ¦   ¦   ¦   +-- AuthAudits
+¦       ¦   ¦   ¦   ¦   ¦   ¦   +-- AuthAudit.cs
+¦       ¦   ¦   ¦   ¦   ¦   +-- AuthUsers
+¦       ¦   ¦   ¦   ¦   ¦   ¦   +-- AuthUser.cs
+¦       ¦   ¦   ¦   ¦   ¦   +-- RefreshTokens
+¦       ¦   ¦   ¦   ¦   ¦       +-- RefreshToken.cs
+¦       ¦   ¦   ¦   ¦   ¦       +-- RefreshTokenRepository.cs
+¦       ¦   ¦   ¦   ¦   +-- Services
+¦       ¦   ¦   ¦   ¦       +-- AuthenticationService.cs
+¦       ¦   ¦   ¦   ¦       +-- AuthTokenHelper.cs
+¦       ¦   ¦   ¦   ¦       +-- IAuthenticationService.cs
+¦       ¦   ¦   ¦   +-- Infrastructure
+¦       ¦   ¦   ¦   ¦   +-- BaseAuthDbContext.cs
+¦       ¦   ¦   ¦   +-- Operations
+¦       ¦   ¦   ¦       +-- AuthOperation.cs
+¦       ¦   ¦   ¦       +-- GetCurrentUserOperation.cs
+¦       ¦   ¦   ¦       +-- GetUserByIdOperation.cs
+¦       ¦   ¦   ¦       +-- GetUserByTokenOperation.cs
+¦       ¦   ¦   ¦       +-- LoginOperation.cs
+¦       ¦   ¦   ¦       +-- RefreshTokenOperation.cs
+¦       ¦   ¦   ¦       +-- RegisterOperation.cs
+¦       ¦   ¦   +-- Iam
+¦       ¦   ¦       +-- Domain
+¦       ¦   ¦       ¦   +-- Models
+¦       ¦   ¦       ¦   ¦   +-- Accounts
+¦       ¦   ¦       ¦   ¦   ¦   +-- Account.cs
+¦       ¦   ¦       ¦   ¦   +-- Groups
+¦       ¦   ¦       ¦   ¦   ¦   +-- Group.cs
+¦       ¦   ¦       ¦   ¦   ¦   +-- GroupAccount.cs
+¦       ¦   ¦       ¦   ¦   ¦   +-- GroupType.cs
+¦       ¦   ¦       ¦   ¦   +-- Permissions
+¦       ¦   ¦       ¦   ¦   ¦   +-- Permission.cs
+¦       ¦   ¦       ¦   ¦   +-- Roles
+¦       ¦   ¦       ¦   ¦   ¦   +-- Role.cs
+¦       ¦   ¦       ¦   ¦   +-- Users
+¦       ¦   ¦       ¦   +-- Services
+¦       ¦   ¦       +-- Dtos
+¦       ¦   ¦       +-- Operations
+¦       ¦   +-- Shared
+¦       ¦   ¦   +-- Entities
+¦       ¦   ¦       +-- GuidEntity.cs
+¦       ¦   ¦       +-- GuidEntityBy.cs
+¦       ¦   ¦       +-- GuidEntityByRepository.cs
+¦       ¦   ¦       +-- GuidEntityDbContext.cs
+¦       ¦   ¦       +-- GuidEntityRepository.cs
+¦       ¦   ¦       +-- IGuidEntityByRepository.cs
+¦       ¦   ¦       +-- IGuidEntityRepository.cs
+¦       ¦   +-- {Namespace}.Application.csproj
+¦       +-- {Namespace}.Contracts
+¦       ¦   +-- Dtos
+¦       ¦   ¦   +-- Features
+¦       ¦   ¦   ¦   +-- Hello
+¦       ¦   ¦   ¦       +-- HelloRequestDto.cs
+¦       ¦   ¦   ¦       +-- HelloResponseDto.cs
+¦       ¦   ¦   +-- Modules
+¦       ¦   ¦       +-- Authentication
+¦       ¦   ¦           +-- AuthResponseDto.cs
+¦       ¦   ¦           +-- LoginRequestDto.cs
+¦       ¦   ¦           +-- RefreshTokenRequestDto.cs
+¦       ¦   ¦           +-- RegisterRequestDto.cs
+¦       ¦   +-- {Namespace}.Contracts.csproj
+¦       +-- {Namespace}.Host
+¦       ¦   +-- Properties
+¦       ¦   ¦   +-- launchSettings.json
+¦       ¦   +-- {Namespace}.Host.csproj
+¦       ¦   +-- appsettings.Development.json
+¦       ¦   +-- appsettings.json
+¦       ¦   +-- OperationEndpointMapper.cs
+¦       ¦   +-- OperationExtensions.cs
+¦       ¦   +-- Program.cs
+¦       +-- {Namespace}.Infrastructure
+¦       ¦   +-- Authentication
+¦       ¦   ¦   +-- AuthBdContext.cs
+¦       ¦   ¦   +-- AuthBdContextFactory.cs
+¦       ¦   +-- Migrations
+¦       ¦   ¦   +-- 20250701220535_InitAuthMigrations.cs
+¦       ¦   ¦   +-- 20250701220535_InitAuthMigrations.Designer.cs
+¦       ¦   ¦   +-- AuthBdContextModelSnapshot.cs
+¦       ¦   +-- {Namespace}.Infrastructure.csproj
+¦       ¦   +-- migration_commands.txt
+¦       +-- {Namespace}.Shared
+¦       ¦   +-- EntityFramework
+¦       ¦   ¦   +-- DbContexts
+¦       ¦   ¦   ¦   +-- DbContextExtensions.cs
+¦       ¦   ¦   +-- Entities
+¦       ¦   ¦   ¦   +-- AggregateEntity.cs
+¦       ¦   ¦   ¦   +-- BaseEntityClass.cs
+¦       ¦   ¦   ¦   +-- BaseEntityConfigurationHelper.cs
+¦       ¦   ¦   ¦   +-- BaseEntityRecord.cs
+¦       ¦   ¦   ¦   +-- ChildEntity.cs
+¦       ¦   ¦   ¦   +-- IEntity.cs
+¦       ¦   ¦   ¦   +-- IEntityWithState.cs
+¦       ¦   ¦   +-- Repositories
+¦       ¦   ¦   ¦   +-- BaseRepository.cs
+¦       ¦   ¦   ¦   +-- IRepoEntity.cs
+¦       ¦   ¦   ¦   +-- IRepository.cs
+¦       ¦   ¦   ¦   +-- RepoEntity.cs
+¦       ¦   ¦   +-- Services
+¦       ¦   ¦       +-- EfBaseMultiContextService.cs
+¦       ¦   ¦       +-- EfBaseService.cs
+¦       ¦   +-- JWT
+¦       ¦   ¦   +-- MicroServiceIdentity
+¦       ¦   ¦   ¦   +-- IJwtServiceAuth .cs
+¦       ¦   ¦   ¦   +-- IServiceAuthenticationService.cs
+¦       ¦   ¦   ¦   +-- JwtServiceAuth.cs
+¦       ¦   ¦   ¦   +-- ServiceAuthenticationService.cs
+¦       ¦   ¦   ¦   +-- ServiceIdentity.cs
+¦       ¦   ¦   ¦   +-- ServiceIdentityExtensions.cs
+¦       ¦   ¦   ¦   +-- ServiceTokenProvider.cs
+¦       ¦   ¦   +-- UserIdentity
+¦       ¦   ¦   ¦   +-- IJwtService.cs
+¦       ¦   ¦   ¦   +-- IJwtUser.cs
+¦       ¦   ¦   ¦   +-- JwtService.cs
+¦       ¦   ¦   ¦   +-- JwtUser.cs
+¦       ¦   ¦   +-- UnifiedJwtAuthExtensions.cs
+¦       ¦   +-- Operations
+¦       ¦   ¦   +-- Attributes
+¦       ¦   ¦   ¦   +-- OperationAuthorizeAttribute.cs
+¦       ¦   ¦   ¦   +-- OperationGroupAttribute.cs
+¦       ¦   ¦   ¦   +-- OperationMethodAttribute.cs
+¦       ¦   ¦   ¦   +-- OperationProducesFileAttribute.cs
+¦       ¦   ¦   ¦   +-- OperationRouteAttribute.cs
+¦       ¦   ¦   +-- Dtos
+¦       ¦   ¦   ¦   +-- FileDownloadDto.cs
+¦       ¦   ¦   ¦   +-- FileDownloadRequestDto.cs
+¦       ¦   ¦   ¦   +-- FileDownloadResponseDto.cs
+¦       ¦   ¦   ¦   +-- FileUploadDto.cs
+¦       ¦   ¦   ¦   +-- StreamableDto.cs
+¦       ¦   ¦   +-- IOperation.cs
+¦       ¦   ¦   +-- OperationEndpointMapper.cs
+¦       ¦   ¦   +-- OperationExtensions.cs
+¦       ¦   +-- Services
+¦       ¦   ¦   +-- IServiceLifetimes.cs
+¦       ¦   ¦   +-- ServiceExtensions.cs
+¦       ¦   +-- Swagger
+¦       ¦   ¦   +-- SwaggerControllerOrders
+¦       ¦   ¦   ¦   +-- CustomSwaggerDocumentFilter.cs
+¦       ¦   ¦   ¦   +-- SwaggerControllerOrder.cs
+¦       ¦   ¦   ¦   +-- SwaggerControllerOrderAttribute.cs
+¦       ¦   ¦   ¦   +-- VerbOrderOperationIdFilter.cs
+¦       ¦   ¦   +-- SwaggerAutoOpenExtension.cs
+¦       ¦   +-- {Namespace}.Shared.csproj
+¦       +-- SpireCore
+¦       ¦   +-- Abstractions
+¦       ¦   ¦   +-- Interfaces
+¦       ¦   ¦       +-- ICreatedAt.cs
+¦       ¦   ¦       +-- ICreatedBy.cs
+¦       ¦   ¦       +-- IHasId.cs
+¦       ¦   ¦       +-- IStateFlag.cs
+¦       ¦   ¦       +-- IUpdatedAt.cs
+¦       ¦   ¦       +-- IUpdatedBy.cs
+¦       ¦   +-- Commands
+¦       ¦   ¦   +-- BaseCommand.cs
+¦       ¦   ¦   +-- CommandContext.cs
+¦       ¦   ¦   +-- CommandManager.cs
+¦       ¦   ¦   +-- CommandNode.cs
+¦       ¦   ¦   +-- CommandResult.cs
+¦       ¦   ¦   +-- ICommand.cs
+¦       ¦   +-- Constants
+¦       ¦   ¦   +-- StateFlags.cs
+¦       ¦   +-- Events
+¦       ¦   ¦   +-- Dispatcher
+¦       ¦   ¦   ¦   +-- EventDispatcherServiceCollectionExtensions.cs
+¦       ¦   ¦   ¦   +-- IDomainEvent.cs
+¦       ¦   ¦   ¦   +-- IEventDispatcher.cs
+¦       ¦   ¦   ¦   +-- IEventHandler.cs
+¦       ¦   ¦   ¦   +-- InMemoryEventDispatcher.cs
+¦       ¦   ¦   +-- EventEmitter.cs
+¦       ¦   ¦   +-- LazyEventEmitter.cs
+¦       ¦   +-- Lists
+¦       ¦   ¦   +-- Pagination
+¦       ¦   ¦       +-- IPagination.cs
+¦       ¦   ¦       +-- PaginatedResult.cs
+¦       ¦   +-- Mappings
+¦       ¦   ¦   +-- Language
+¦       ¦   ¦       +-- TypescriptDtoMapper.cs
+¦       ¦   +-- Utils
+¦       ¦   ¦   +-- GuidUtility.cs
+¦       ¦   +-- SpireCore.csproj
+¦       +-- {Namespace}.sln
++-- SpireCLI
+¦   +-- Commands
+¦   ¦   +-- Root
+¦   ¦   ¦   +-- AI
+¦   ¦   ¦   ¦   +-- ChatGpt
+¦   ¦   ¦   ¦   ¦   +-- chatgpt_tokens.txt
+¦   ¦   ¦   ¦   ¦   +-- ChatGptBrowserChatCommand.cs
+¦   ¦   ¦   ¦   ¦   +-- ChatGptClient.cs
+¦   ¦   ¦   ¦   +-- OllamaChatCommand.cs
+¦   ¦   ¦   +-- HelloCommand.cs
+¦   ¦   ¦   +-- HelpCommand.cs
+¦   ¦   ¦   +-- VersionCommand.cs
+¦   ¦   +-- CommandManagerBuilder.cs
+¦   +-- Program.cs
+¦   +-- SpireCLI.csproj
+¦   +-- SpireCLI.sln
++-- SpireCore
+¦   +-- Abstractions
+¦   ¦   +-- Interfaces
+¦   ¦       +-- ICreatedAt.cs
+¦   ¦       +-- ICreatedBy.cs
+¦   ¦       +-- IHasId.cs
+¦   ¦       +-- IStateFlag.cs
+¦   ¦       +-- IUpdatedAt.cs
+¦   ¦       +-- IUpdatedBy.cs
+¦   +-- AI
+¦   ¦   +-- Clients
+¦   ¦   ¦   +-- AIClient.cs
+¦   ¦   ¦   +-- AiClientConfiguration.cs
+¦   ¦   ¦   +-- AIClientException.cs
+¦   ¦   ¦   +-- IAiClient.cs
+¦   ¦   +-- Generators
+¦   ¦   ¦   +-- ITextGenerator.cs
+¦   ¦   +-- Interactions
+¦   ¦   ¦   +-- Contracts
+¦   ¦   ¦   ¦   +-- Attachments
+¦   ¦   ¦   ¦   ¦   +-- IAudioAttachment.cs
+¦   ¦   ¦   ¦   ¦   +-- IFileAttachment.cs
+¦   ¦   ¦   ¦   ¦   +-- IImageAttachment.cs
+¦   ¦   ¦   ¦   ¦   +-- IInteractionAttachment.cs
+¦   ¦   ¦   ¦   ¦   +-- ITextAttachment.cs
+¦   ¦   ¦   ¦   ¦   +-- IVideoAttachment.cs
+¦   ¦   ¦   ¦   +-- IInteraction.cs
+¦   ¦   ¦   ¦   +-- IInteractionHistory.cs
+¦   ¦   ¦   ¦   +-- IInteractionRequest.cs
+¦   ¦   ¦   ¦   +-- IInteractionSession.cs
+¦   ¦   ¦   +-- Implementations
+¦   ¦   ¦       +-- Attachments
+¦   ¦   ¦       ¦   +-- AudioAttachment.cs
+¦   ¦   ¦       ¦   +-- FileAttachment.cs
+¦   ¦   ¦       ¦   +-- ImageAttachment.cs
+¦   ¦   ¦       ¦   +-- InteractionAttachment.cs
+¦   ¦   ¦       ¦   +-- TextAttachment.cs
+¦   ¦   ¦       ¦   +-- VideoAttachment.cs
+¦   ¦   ¦       +-- Interaction.cs
+¦   ¦   ¦       +-- InteractionHistory.cs
+¦   ¦   ¦       +-- InteractionRequest.cs
+¦   ¦   ¦       +-- InteractionSession.cs
+¦   ¦   +-- Providers
+¦   ¦   ¦   +-- Ollama
+¦   ¦   ¦       +-- OllamaClient.cs
+¦   ¦   ¦       +-- OllamaClientModels.cs
+¦   ¦   +-- AiInteractionRoles.cs
+¦   ¦   +-- AiInteractionTypes.cs
+¦   +-- Attributes
+¦   ¦   +-- NormalizeFrom
+¦   ¦       +-- NormalizationHelper.cs
+¦   ¦       +-- NormalizedFromAttribute.cs
+¦   +-- Commands
+¦   ¦   +-- BaseCommand.cs
+¦   ¦   +-- CommandContext.cs
+¦   ¦   +-- CommandManager.cs
+¦   ¦   +-- CommandNode.cs
+¦   ¦   +-- CommandResult.cs
+¦   ¦   +-- ICommand.cs
+¦   +-- Constants
+¦   ¦   +-- StateFlags.cs
+¦   +-- Events
+¦   ¦   +-- Dispatcher
+¦   ¦   ¦   +-- EventDispatcherServiceCollectionExtensions.cs
+¦   ¦   ¦   +-- IDomainEvent.cs
+¦   ¦   ¦   +-- IEventDispatcher.cs
+¦   ¦   ¦   +-- IEventHandler.cs
+¦   ¦   ¦   +-- InMemoryEventDispatcher.cs
+¦   ¦   +-- EventEmitter.cs
+¦   ¦   +-- LazyEventEmitter.cs
+¦   +-- Lists
+¦   ¦   +-- Pagination
+¦   ¦       +-- IPagination.cs
+¦   ¦       +-- PaginatedResult.cs
+¦   +-- Mappings
+¦   ¦   +-- Language
+¦   ¦       +-- TypescriptDtoMapper.cs
+¦   +-- Services
+¦   ¦   +-- IServiceLifetimes.cs
+¦   ¦   +-- ServiceExtensions.cs
+¦   +-- Utils
+¦   ¦   +-- GuidUtility.cs
+¦   +-- SpireCore.csproj
++-- Spirekit
++-- commands.md
++-- solution-structure.txt
++-- spireApiREADME.md
++-- Spirekit.sln
++-- structure.txt
+
+
++-- {ModuleName}
+    +-- Configuration
+    +-- Domain
+    ¦   +-- Contexts
+    ¦   ¦   +-- {ModuleName}Context.cs
+    ¦   ¦   +-- {ModuleName}RepositoryContext.cs
+    ¦   +-- Models
+    ¦   ¦   +-- {DomainModel1}
+    ¦   ¦   ¦   +-- {DomainModel1}.cs
+    ¦   ¦   +-- {DomainModel2}
+    ¦   ¦   ¦   +-- {DomainModel2}.cs
+    ¦   +-- Repositories
+    ¦   ¦   +-- I{DomainModel1}Repository.cs
+    ¦   ¦   +-- {DomainModel1}Repository.cs
+    ¦   ¦   +-- I{DomainModel2}Repository.cs
+    ¦   ¦   +-- {DomainModel2}Repository.cs
+    ¦   +-- Services
+    ¦       +-- {DomainModel1}Service.cs
+    ¦       +-- {DomainModel2}Service.cs
+    +-- Dtos
+    ¦   +-- {DomainModel1}Dtos
+    ¦   ¦   +-- {DomainModel1}CreateDto.cs
+    ¦   ¦   +-- {DomainModel1}UpdateDto.cs
+    ¦   ¦   +-- {DomainModel1}ReadDto.cs
+    ¦   +-- {DomainModel2}Dtos
+    +-- EventHandling
+    +-- Infrastructure
+    ¦   +-- Base{ModuleName}DbContext.cs
+    ¦   +-- Base{ModuleName}Entity.cs
+    ¦   +-- Base{ModuleName}EntityRepository.cs
+    +-- Operations
+    ¦   +-- {DomainModel1}
+    ¦   ¦   +-- Get{DomainModel1}Operation.cs
+    ¦   ¦   +-- Create{DomainModel1}Operation.cs
+    ¦   ¦   +-- Update{DomainModel1}Operation.cs
+    ¦   ¦   +-- Delete{DomainModel1}Operation.cs
+    ¦   +-- {DomainModel2}
+    ¦       +-- Get{DomainModel2}Operation.cs
+    ¦       +-- Create{DomainModel2}Operation.cs
+    ¦       +-- Update{DomainModel2}Operation.cs
+    ¦       +-- Delete{DomainModel2}Operation.cs
+    +-- {ModuleName}Extensions.cs
+ 

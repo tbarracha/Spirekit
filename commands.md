@@ -1,4 +1,4 @@
-./Scripts/Show-ProjectTree.ps1
+./Scripts/show-solution-tree.ps1
 
 ./Scripts/Export-TemplateFromSpireApi.ps1
 

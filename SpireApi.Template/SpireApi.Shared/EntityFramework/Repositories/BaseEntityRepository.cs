@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpireApi.Shared.EntityFramework.Entities.Abstractions;
+using SpireApi.Shared.EntityFramework.Entities.Base;
 using SpireCore.Constants;
 using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;

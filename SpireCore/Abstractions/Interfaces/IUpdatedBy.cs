@@ -2,7 +2,7 @@
 
 public interface IUpdatedBy
 {
-    string UpdatedBy { get; set; }
+    string? UpdatedBy { get; set; }
 }
 
 public interface IUpdatedBy<TId>

@@ -1,5 +1,4 @@
-﻿using SpireCore.Services;
-
+﻿
 namespace SpireCore.Events.Dispatcher;
 
 public interface IEventDispatcher

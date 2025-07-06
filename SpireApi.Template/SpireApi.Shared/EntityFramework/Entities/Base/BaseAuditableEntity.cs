@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SpireApi.Shared.EntityFramework.Entities;
-using SpireApi.Shared.EntityFramework.Entities.Abstractions;
-using SpireApi.Shared.EntityFramework.Entities.Implementations;
+using SpireApi.Shared.EntityFramework.Entities.Base;
 using SpireCore.Abstractions.Interfaces;
 
 public abstract class BaseAuditableEntity<TId> : BaseEntity<TId>, IAuditableEntity<TId>

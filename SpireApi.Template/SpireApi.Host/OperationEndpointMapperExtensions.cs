@@ -3,7 +3,7 @@ using SpireApi.Shared.Operations;
 using SpireApi.Shared.Operations.Attributes;
 using System.Reflection;
 
-public static class OperationEndpointMapper
+public static class OperationEndpointMapperExtensions
 {
     public static RouteHandlerBuilder MapOperation<TOp, TReq, TRes>(
         WebApplication app, string route, string method)
@@ -56,7 +56,7 @@ public static class OperationEndpointMapper
                 typeof(FileResult),        // This is correct for files (or use typeof(void) for no body)
                 producesFileAttr.ContentType
             );
-            
+
             // Optional: Add OpenApi doc hint
             builder.WithOpenApi(op =>
             {

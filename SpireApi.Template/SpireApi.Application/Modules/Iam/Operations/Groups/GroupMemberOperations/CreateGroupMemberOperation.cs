@@ -1,6 +1,5 @@
-﻿// --------- CreateGroupMemberOperation.cs ---------
+﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
-using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Shared.Operations.Dtos;
 
@@ -18,9 +17,9 @@ public class CreateGroupMemberDto
 [OperationGroup("IAM Group Members")]
 [OperationRoute("group/member/create")]
 public class CreateGroupMemberOperation
-    : BaseGroupMemberCrudOperation<CreateGroupMemberDto, GroupMember>
+    : BaseGroupDomainOperation<CreateGroupMemberDto, GroupMember>
 {
-    public CreateGroupMemberOperation(BaseIamEntityRepository<GroupMember> repository) : base(repository) { }
+    public CreateGroupMemberOperation(GroupContext groupContext) : base(groupContext) { }
 
     public override async Task<GroupMember> ExecuteAsync(AuditableRequestDto<CreateGroupMemberDto> request)
     {
@@ -29,11 +28,10 @@ public class CreateGroupMemberOperation
         {
             GroupId = dto.GroupId,
             UserId = dto.UserId,
-            RoleId = dto.RoleId,
-            IsActive = dto.IsActive,
+            RoleId = dto.RoleId ?? Guid.Empty,
             JoinedAt = dto.JoinedAt ?? DateTime.UtcNow
         };
-        await _repository.AddAsync(entity);
+        await _groupContext.RepositoryContext.GroupMemberRepository.AddAsync(entity);
         return entity;
     }
 }

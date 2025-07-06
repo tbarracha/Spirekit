@@ -2,10 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SpireApi.Application.Features;
 using SpireApi.Application.Modules;
-using SpireApi.Application.Modules.Authentication;
 using SpireApi.Application.Modules.Authentication.Configuration;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
-using SpireApi.Application.Modules.Iam;
 using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Infrastructure.Authentication;
 using SpireApi.Infrastructure.Iam;
@@ -75,6 +73,5 @@ if (authSettings.Authentication)
 
 app.UseOpenApi(endpointName: "Spire Auth API", autoOpen: true);
 app.MapAllOperations();
-OperationExtensions.ListAllOperations();
 
 app.Run();

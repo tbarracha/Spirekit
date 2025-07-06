@@ -1,8 +1,10 @@
-﻿using SpireApi.Shared.EntityFramework.Repositories;
+﻿using SpireApi.Shared.EntityFramework.Entities.Base;
+using SpireApi.Shared.EntityFramework.Repositories;
 
 namespace SpireApi.Application.Modules.Iam.Infrastructure;
 
-public abstract class BaseIamEntityRepository<T> : BaseAuditableEntityRepository<T, Guid, BaseIamDbContext> where T : BaseIamEntity
+public abstract class BaseIamEntityRepository<T> : BaseAuditableEntityRepository<T, Guid, BaseIamDbContext>
+    where T : class, IAuditableEntity<Guid>
 {
     protected BaseIamEntityRepository(BaseIamDbContext context) : base(context)
     {

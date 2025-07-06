@@ -1,6 +1,5 @@
-﻿// --------- CreateGroupTypeOperation.cs ---------
+﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
-using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Shared.Operations.Dtos;
 
@@ -15,9 +14,9 @@ public class CreateGroupTypeDto
 [OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/create")]
 public class CreateGroupTypeOperation
-    : BaseGroupTypeCrudOperation<CreateGroupTypeDto, GroupType>
+    : BaseGroupDomainOperation<CreateGroupTypeDto, GroupType>
 {
-    public CreateGroupTypeOperation(BaseIamEntityRepository<GroupType> repository) : base(repository) { }
+    public CreateGroupTypeOperation(GroupContext groupContext) : base(groupContext) { }
 
     public override async Task<GroupType> ExecuteAsync(AuditableRequestDto<CreateGroupTypeDto> request)
     {
@@ -27,7 +26,7 @@ public class CreateGroupTypeOperation
             Name = dto.Name,
             Description = dto.Description
         };
-        await _repository.AddAsync(entity);
+        await _groupContext.RepositoryContext.GroupTypeRepository.AddAsync(entity);
         return entity;
     }
 }

@@ -3,6 +3,7 @@ using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
 using SpireApi.Application.Modules.Iam.Domain.Models.Permissions;
 using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
 using SpireApi.Application.Modules.Iam.Domain.Models.Users;
+using SpireApi.Shared.EntityFramework.ModelBuilders.Attributes.StoreAsStringAttribute;
 
 namespace SpireApi.Application.Modules.Iam.Infrastructure;
 
@@ -37,6 +38,8 @@ public abstract class BaseIamDbContext : DbContext
 
         // Register all IEntityTypeConfiguration<T> implementations (if you have them)
         builder.ApplyConfigurationsFromAssembly(typeof(BaseIamDbContext).Assembly);
+
+        builder.ApplyEnumStringConversions();
 
         // OPTIONAL: If you want to customize relationships further, do it here.
         // For example:

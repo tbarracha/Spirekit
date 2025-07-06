@@ -37,6 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Modules\Authentication\Domain\Repositories\" />
+    <Folder Include="Modules\Iam\Domain\Repositories\" />
     <Folder Include="Modules\Iam\Dtos\" />
   </ItemGroup>
 

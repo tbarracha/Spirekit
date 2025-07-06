@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SpireApi.Shared.EntityFramework.Entities.Abstractions;
 using SpireCore.Constants;
 
-namespace SpireApi.Shared.EntityFramework.Entities.Implementations;
+namespace SpireApi.Shared.EntityFramework.Entities.Base;
 
 public abstract class BaseEntity<TId> : IEntity<TId>
 {
@@ -16,7 +15,7 @@ public abstract class BaseEntity<TId> : IEntity<TId>
 
 
     // Generic virtual configuration for base fields
-    public virtual void ConfigureEntity<T>(EntityTypeBuilder<T> builder) where T : BaseEntity<TId>
+    public virtual void ConfigureEntity<T>(EntityTypeBuilder<T> builder) where T : class, IEntity<TId>
     {
         BaseEntityConfigurationHelper.ConfigureEntity<T, TId>(builder);
     }

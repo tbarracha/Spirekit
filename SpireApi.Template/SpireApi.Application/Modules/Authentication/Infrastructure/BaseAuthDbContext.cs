@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
 using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
 using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
+using SpireApi.Shared.EntityFramework.DbContexts;
 
 namespace SpireApi.Application.Modules.Authentication.Infrastructure;
 
@@ -16,11 +17,17 @@ public class BaseAuthDbContext : IdentityDbContext<AuthUserIdentity, IdentityRol
     public DbSet<AuthAudit> AuthAudits => Set<AuthAudit>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        base.OnModelCreating(builder);
+        configurationBuilder.ConfigureEnumStorageAsString();
+        base.ConfigureConventions(configurationBuilder);
+    }
 
-        // Register all IEntityTypeConfiguration<T> implementations (for all entities)
-        builder.ApplyConfigurationsFromAssembly(typeof(BaseAuthDbContext).Assembly);
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        modelBuilder.ApplyIEntityConfiguration();
     }
 }

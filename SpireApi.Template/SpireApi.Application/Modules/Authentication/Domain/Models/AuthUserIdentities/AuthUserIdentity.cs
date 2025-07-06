@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SpireApi.Shared.EntityFramework.Entities.Abstractions;
+using SpireApi.Shared.EntityFramework.Entities.Base;
 using SpireApi.Shared.JWT.Identity.Users;
 using SpireCore.Constants;
 
@@ -38,50 +38,51 @@ public class AuthUserIdentity : IdentityUser<Guid>, IEntity<Guid>, IJwtUserIdent
 
     public bool IsInitialPasswordChanged { get; set; } = false;
 
-    public class Configuration : IEntityTypeConfiguration<AuthUserIdentity>
+    void IEntity<Guid>.ConfigureEntity<T>(EntityTypeBuilder<T> builder)
     {
-        public void Configure(EntityTypeBuilder<AuthUserIdentity> builder)
-        {
-            builder.ToTable("AuthUserIdentities");
+        // Ensure this is only applied for the right entity type.
+        if (builder is not EntityTypeBuilder<AuthUserIdentity> b)
+            return;
 
-            builder.Property(i => i.Provider)
-                   .IsRequired()
-                   .HasMaxLength(32);
+        b.ToTable("AuthUserIdentities");
 
-            builder.Property(i => i.ProviderUserId)
-                   .HasMaxLength(128);
+        b.Property(i => i.Provider)
+            .IsRequired()
+            .HasMaxLength(32);
 
-            builder.Property(i => i.FirstName)
-                   .HasMaxLength(100);
+        b.Property(i => i.ProviderUserId)
+            .HasMaxLength(128);
 
-            builder.Property(i => i.LastName)
-                   .HasMaxLength(100);
+        b.Property(i => i.FirstName)
+            .HasMaxLength(100);
 
-            builder.Property(i => i.DisplayName)
-                   .HasMaxLength(150);
+        b.Property(i => i.LastName)
+            .HasMaxLength(100);
 
-            builder.Property(i => i.DateOfBirth);
+        b.Property(i => i.DisplayName)
+            .HasMaxLength(150);
 
-            builder.Property(i => i.CreatedAt).IsRequired();
-            builder.Property(i => i.UpdatedAt).IsRequired();
-            builder.Property(i => i.StateFlag)
-                   .IsRequired()
-                   .HasMaxLength(1);
+        b.Property(i => i.DateOfBirth);
 
-            builder.Property(i => i.LastLoginAt);
-            builder.Property(i => i.LastLogoutAt);
-            builder.Property(i => i.LastPasswordChangeAt);
-            builder.Property(i => i.LastFailedLoginAt);
+        b.Property(i => i.CreatedAt).IsRequired();
+        b.Property(i => i.UpdatedAt).IsRequired();
+        b.Property(i => i.StateFlag)
+            .IsRequired()
+            .HasMaxLength(1);
 
-            builder.Property(i => i.LastLoginIp)
-                   .HasMaxLength(64);
+        b.Property(i => i.LastLoginAt);
+        b.Property(i => i.LastLogoutAt);
+        b.Property(i => i.LastPasswordChangeAt);
+        b.Property(i => i.LastFailedLoginAt);
 
-            builder.Property(i => i.LastLoginUserAgent)
-                   .HasMaxLength(256);
+        b.Property(i => i.LastLoginIp)
+            .HasMaxLength(64);
 
-            builder.Property(i => i.IsInitialPasswordChanged)
-                   .IsRequired()
-                   .HasDefaultValue(false);
-        }
+        b.Property(i => i.LastLoginUserAgent)
+            .HasMaxLength(256);
+
+        b.Property(i => i.IsInitialPasswordChanged)
+            .IsRequired()
+            .HasDefaultValue(false);
     }
 }

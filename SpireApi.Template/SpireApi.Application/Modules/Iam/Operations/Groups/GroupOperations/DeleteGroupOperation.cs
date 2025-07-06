@@ -1,6 +1,4 @@
-﻿// --------- DeleteGroupOperation.cs ---------
-using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
-using SpireApi.Application.Modules.Iam.Infrastructure;
+﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
 using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Shared.Operations.Dtos;
 
@@ -13,16 +11,16 @@ public class DeleteGroupDto
 
 [OperationGroup("IAM Groups")]
 [OperationRoute("groups/delete")]
-public class DeleteGroupOperation
-    : BaseGroupCrudOperation<DeleteGroupDto, bool>
+public class DeleteGroupOperation : BaseGroupDomainOperation<DeleteGroupDto, bool>
 {
-    public DeleteGroupOperation(BaseIamEntityRepository<Group> repository) : base(repository) { }
+    public DeleteGroupOperation(GroupContext groupContext) : base(groupContext) { }
 
     public override async Task<bool> ExecuteAsync(AuditableRequestDto<DeleteGroupDto> request)
     {
-        var group = await _repository.GetByIdAsync(request.Data.Id);
+        var repo = _groupContext.RepositoryContext.GroupRepository;
+        var group = await repo.GetByIdAsync(request.Data.Id);
         if (group == null) return false;
-        await _repository.DeleteAsync(group);
+        await repo.DeleteAsync(group);
         return true;
     }
 }

@@ -99,8 +99,8 @@ public static class OperationExtensions
 
                     var httpMethod = methodAttr?.HttpMethod ?? "POST";
 
-                    var method = typeof(OperationEndpointMapper)
-                        .GetMethod(nameof(OperationEndpointMapper.MapOperation), BindingFlags.Public | BindingFlags.Static)!
+                    var method = typeof(OperationEndpointMapperExtensions)
+                        .GetMethod(nameof(OperationEndpointMapperExtensions.MapOperation), BindingFlags.Public | BindingFlags.Static)!
                         .MakeGenericMethod(opType, requestType, responseType);
 
                     var endpointBuilder = (RouteHandlerBuilder)method.Invoke(null, [app, route, httpMethod])!;

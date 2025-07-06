@@ -1,6 +1,5 @@
-﻿// --------- GetGroupTypeByIdOperation.cs ---------
+﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
-using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Shared.Operations.Dtos;
 
@@ -14,12 +13,12 @@ public class GetGroupTypeByIdDto
 [OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/get")]
 public class GetGroupTypeByIdOperation
-    : BaseGroupTypeCrudOperation<GetGroupTypeByIdDto, GroupType?>
+    : BaseGroupDomainOperation<GetGroupTypeByIdDto, GroupType?>
 {
-    public GetGroupTypeByIdOperation(BaseIamEntityRepository<GroupType> repository) : base(repository) { }
+    public GetGroupTypeByIdOperation(GroupContext groupContext) : base(groupContext) { }
 
     public override async Task<GroupType?> ExecuteAsync(AuditableRequestDto<GetGroupTypeByIdDto> request)
     {
-        return await _repository.GetByIdAsync(request.Data.Id);
+        return await _groupContext.RepositoryContext.GroupTypeRepository.GetByIdAsync(request.Data.Id);
     }
 }

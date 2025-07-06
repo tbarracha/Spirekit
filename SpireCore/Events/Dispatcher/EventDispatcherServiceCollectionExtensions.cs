@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Scrutor;
 
 namespace SpireCore.Events.Dispatcher;
 

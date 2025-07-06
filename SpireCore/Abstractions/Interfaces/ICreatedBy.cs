@@ -2,7 +2,7 @@
 
 public interface ICreatedBy
 {
-    string CreatedBy { get; set; }
+    string? CreatedBy { get; set; }
 }
 
 public interface ICreatedBy<TId>

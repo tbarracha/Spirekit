@@ -1,6 +1,5 @@
-﻿// --------- UpdateGroupTypeOperation.cs ---------
+﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
 using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
-using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Shared.Operations.Attributes;
 using SpireApi.Shared.Operations.Dtos;
 
@@ -16,20 +15,20 @@ public class UpdateGroupTypeDto
 [OperationGroup("IAM Group Types")]
 [OperationRoute("group-type/update")]
 public class UpdateGroupTypeOperation
-    : BaseGroupTypeCrudOperation<UpdateGroupTypeDto, GroupType?>
+    : BaseGroupDomainOperation<UpdateGroupTypeDto, GroupType?>
 {
-    public UpdateGroupTypeOperation(BaseIamEntityRepository<GroupType> repository) : base(repository) { }
+    public UpdateGroupTypeOperation(GroupContext groupContext) : base(groupContext) { }
 
     public override async Task<GroupType?> ExecuteAsync(AuditableRequestDto<UpdateGroupTypeDto> request)
     {
         var dto = request.Data;
-        var entity = await _repository.GetByIdAsync(dto.Id);
+        var entity = await _groupContext.RepositoryContext.GroupTypeRepository.GetByIdAsync(dto.Id);
         if (entity == null) return null;
 
         entity.Name = dto.Name;
         entity.Description = dto.Description;
 
-        await _repository.UpdateAsync(entity);
+        await _groupContext.RepositoryContext.GroupTypeRepository.UpdateAsync(entity);
         return entity;
     }
 }
