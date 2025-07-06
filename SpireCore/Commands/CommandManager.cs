@@ -210,7 +210,7 @@ public class CommandManager
                 if (!string.IsNullOrWhiteSpace(groupKey))
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine($"  {groupKey}:");
+                    Console.WriteLine($"  {groupKey} commands:");
                     Console.ResetColor();
                 }
 
@@ -228,9 +228,7 @@ public class CommandManager
                 Console.Write(cmd.Prefix + " ");
             }
 
-            var fullName = cmd.Name;
-            if (cmd.Aliases.Any())
-                fullName += $" ({string.Join(", ", cmd.Aliases)})";
+            var fullName = cmd.Name; // No aliases here
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(fullName);
@@ -240,6 +238,13 @@ public class CommandManager
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($" : {cmd.Description}");
+
+            if (cmd.Aliases.Any())
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"{indent}  or: {string.Join(", ", cmd.Aliases)}");
+                Console.ResetColor();
+            }
 
             Console.ResetColor();
         }
@@ -269,7 +274,7 @@ public class CommandManager
         if (node.SubNodes.Any())
         {
             string newGroupKey = string.IsNullOrWhiteSpace(prefix) ? node.Name : $"{prefix} {node.Name}";
-            foreach (var child in node.SubNodes.OrderBy(n => n.Name))
+            foreach (var child in node.SubNodes.OrderBy(n => n.Index))
             {
                 string newPrefix = string.IsNullOrWhiteSpace(prefix) ? node.Name : $"{prefix} {node.Name}";
                 CollectCommands(child, newPrefix, isRootLevel: false, groupKey: newGroupKey, output);

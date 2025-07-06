@@ -10,10 +10,11 @@ public class CommandNode
     public string Name { get; }
     public string Description { get; }
     public ICommand Command { get; }
+    public int Index { get; set; }
 
-    // Subnodes keyed by name
+    private static int _globalIndex = 0;
+
     private readonly Dictionary<string, CommandNode> _subNodes = new();
-    // Subnodes keyed by alias
     private readonly Dictionary<string, CommandNode> _aliases = new();
 
     /// <summary>
@@ -29,6 +30,7 @@ public class CommandNode
         Name = command.Name;
         Description = command.Description;
         Command = command;
+        Index = _globalIndex++;
     }
 
     /// <summary>
@@ -38,6 +40,7 @@ public class CommandNode
     {
         Name = name;
         Description = description;
+        Index = _globalIndex++;
     }
 
     /// <summary>
