@@ -3,7 +3,7 @@ using SpireCore.Constants;
 using SpireCore.Lists.Pagination;
 using System.Linq.Expressions;
 
-namespace SpireApi.Shared.EntityFramework.Repositories;
+namespace SpireApi.Shared.EntityFramework.Entities.Repositories;
 
 public interface IAuditableEntityRepository<T, TId> : IEntityRepository<T, TId>
     where T : class, IAuditableEntity<TId>

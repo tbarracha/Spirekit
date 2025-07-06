@@ -2,7 +2,7 @@
 
 namespace SpireApi.Shared.EntityFramework.DbContexts;
 
-public abstract class BaseEntityDbContext : DbContext
+public abstract class BaseEntityDbContext : BaseDbContext
 {
     protected BaseEntityDbContext(DbContextOptions options) : base(options) { }
 

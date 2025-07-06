@@ -5,9 +5,9 @@ using SpireApi.Shared.Configuration.Modules;
 
 namespace SpireApi.Application.Modules;
 
-public static class ModuleExtensions
+public static class ModulesExtensions
 {
-    public static void AddEnabledModules(this IServiceCollection services, ModulesConfigurationList modules)
+    public static void FilterEnabledModules(this IServiceCollection services, ModulesConfigurationList modules)
     {
         if (modules.TryGetValue("Auth", out var authConfig) && authConfig.Enabled)
         {

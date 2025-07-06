@@ -47,7 +47,7 @@ builder.Services.AddDbContext<BaseIamDbContext, IamDbContext>(options =>
 
 // --- Event dispatcher, modules & domain services ---
 builder.Services.AddDomainEventDispatcher();
-builder.Services.AddEnabledModules(modulesConfig);
+builder.Services.FilterEnabledModules(modulesConfig);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var featuresConfig = tempProvider.GetRequiredService<IOptions<FeaturesConfigurationList>>().Value;

@@ -4,7 +4,7 @@ using SpireCore.Lists.Pagination;
 using SpireCore.Services;
 using System.Linq.Expressions;
 
-namespace SpireApi.Shared.EntityFramework.Repositories;
+namespace SpireApi.Shared.EntityFramework.Entities.Repositories;
 
 /// <summary>
 /// Generic repository interface for CRUD operations, with optional pagination.
