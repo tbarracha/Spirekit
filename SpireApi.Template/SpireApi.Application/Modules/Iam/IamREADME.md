@@ -1,6 +1,6 @@
 ﻿# 🛡️ IAM – Identity & Access Management Module
 
-## ‼️ Contains Wrong or Incomplete Information ‼️
+## ‼️ AI Generated - Contains Wrong or Incomplete Information ‼️
 
 > **Identity is the new perimeter.**
 > SpireKit’s **IAM** module gives you a clear, extensible RBAC model—Groups, Roles, Permissions—ready to plug into any Spire-powered API.
