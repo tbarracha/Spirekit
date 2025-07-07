@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SpireCore.API\SpireCore.API.csproj" />
     <ProjectReference Include="..\..\SpireCore\SpireCore.csproj" />
-    <ProjectReference Include="..\SpireCore.API\SpireCore.API.csproj" />
   </ItemGroup>
 
 </Project>

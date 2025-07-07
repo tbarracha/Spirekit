@@ -27,6 +27,18 @@ public abstract class BaseCommand : ICommand
     public abstract CommandResult Execute(CommandContext context);
 
     /// <summary>
+    /// Lets a command run asynchronous code while still satisfying the
+    /// synchronous <see cref="ICommand.Execute"/> signature.
+    /// Usage: <c>return RunAsync(() => DoWorkAsync(context));</c>
+    /// </summary>
+    protected static CommandResult RunAsync(
+        Func<Task<CommandResult>> asyncFunc)
+    {
+        // .GetAwaiter().GetResult() avoids AggregateException wrapping
+        return asyncFunc().GetAwaiter().GetResult();
+    }
+
+    /// <summary>
     /// Optional utility for printing commands for internal custom commands.
     /// </summary>
     protected void PrintAvailableCommands(CommandNode node, string prefix = "")

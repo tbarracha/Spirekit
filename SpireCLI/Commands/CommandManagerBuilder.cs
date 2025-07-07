@@ -29,6 +29,7 @@ public static class CommandManagerBuilder
         var spireProjectsSubNode = new CommandNode("project", "Projects Command Group");
         root.AddSubNode(spireProjectsSubNode);
 
+        spireProjectsSubNode.AddSubNode(new CommandNode(new GetSwaggerCommand()));
         spireProjectsSubNode.AddSubNode(new CommandNode(new CreateNewSpireApiProject()));
         spireProjectsSubNode.AddSubNode(new CommandNode(new SetActiveSolutionCommand()));
         spireProjectsSubNode.AddSubNode(new CommandNode(new CreateAppModuleStructureCommand()));

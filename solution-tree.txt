@@ -1,6 +1,8 @@
 
 Spirekit
-+-- SpireApi
++-- docs
+¦   +-- CommonErrors.md
++-- SpireApi.Template
 ¦   +-- SpireApi.Application
 ¦   ¦   +-- Features
 ¦   ¦   ¦   +-- Hello
@@ -15,13 +17,17 @@ Spirekit
 ¦   ¦   ¦   ¦   +-- Configuration
 ¦   ¦   ¦   ¦   ¦   +-- AuthSettings.cs
 ¦   ¦   ¦   ¦   +-- Domain
-¦   ¦   ¦   ¦   ¦   +-- Models
-¦   ¦   ¦   ¦   ¦   ¦   +-- AuthAudits
+¦   ¦   ¦   ¦   ¦   +-- AuthAudits
+¦   ¦   ¦   ¦   ¦   ¦   +-- Models
 ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- AuthAudit.cs
-¦   ¦   ¦   ¦   ¦   ¦   +-- AuthUserIdentities
-¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- AuthUserIdentity.cs
-¦   ¦   ¦   ¦   ¦   ¦   +-- RefreshTokens
-¦   ¦   ¦   ¦   ¦   ¦       +-- RefreshToken.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   ¦       +-- AuthAuditRepository.cs
+¦   ¦   ¦   ¦   ¦   +-- AuthUserIdentities
+¦   ¦   ¦   ¦   ¦   ¦   +-- AuthUserIdentity.cs
+¦   ¦   ¦   ¦   ¦   +-- RefreshTokens
+¦   ¦   ¦   ¦   ¦   ¦   +-- Models
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- RefreshToken.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
 ¦   ¦   ¦   ¦   ¦   ¦       +-- RefreshTokenRepository.cs
 ¦   ¦   ¦   ¦   ¦   +-- Services
 ¦   ¦   ¦   ¦   ¦       +-- AuthenticationService.cs
@@ -40,42 +46,52 @@ Spirekit
 ¦   ¦   ¦   ¦   ¦   +-- LogoutOperation.cs
 ¦   ¦   ¦   ¦   ¦   +-- RefreshTokenOperation.cs
 ¦   ¦   ¦   ¦   ¦   +-- RegisterOperation.cs
-¦   ¦   ¦   ¦   +-- AuthServiceExtensions.cs
+¦   ¦   ¦   ¦   +-- AuthModuleExtensions.cs
 ¦   ¦   ¦   +-- Iam
 ¦   ¦   ¦   ¦   +-- Domain
 ¦   ¦   ¦   ¦   ¦   +-- Contexts
-¦   ¦   ¦   ¦   ¦   ¦   +-- GroupContext.cs
-¦   ¦   ¦   ¦   ¦   ¦   +-- GroupRepositoryContext.cs
-¦   ¦   ¦   ¦   ¦   +-- Models
-¦   ¦   ¦   ¦   ¦   ¦   +-- Groups
-¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
-¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupRepositories.cs
+¦   ¦   ¦   ¦   ¦   +-- Groups
+¦   ¦   ¦   ¦   ¦   ¦   +-- Contexts
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupContext.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupRepositoryContext.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Dtos
+¦   ¦   ¦   ¦   ¦   ¦   +-- Models
 ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Group.cs
-¦   ¦   ¦   ¦   ¦   ¦   +-- Permissions
-¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
-¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionRepository.cs
-¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionScopeRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupMember.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupMemberAudit.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupMembershipState.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupType.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- BaseGroupEntityRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupMemberAuditRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupMemberRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupMembershipStateRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupTypeRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Services
+¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- GroupService.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- GroupsModuleExtensions.cs
+¦   ¦   ¦   ¦   ¦   +-- Permissions
+¦   ¦   ¦   ¦   ¦   ¦   +-- Models
 ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Permission.cs
 ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- PermissionScope.cs
-¦   ¦   ¦   ¦   ¦   ¦   +-- Roles
-¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
-¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- RolePermissionRepository.cs
-¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- RoleRepository.cs
-¦   ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UserRoleRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   ¦       +-- PermissionRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- PermissionScopeRepository.cs
+¦   ¦   ¦   ¦   ¦   +-- Roles
+¦   ¦   ¦   ¦   ¦   ¦   +-- Models
 ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- Role.cs
 ¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- RolePermission.cs
-¦   ¦   ¦   ¦   ¦   ¦   ¦   +-- UserRole.cs
-¦   ¦   ¦   ¦   ¦   ¦   +-- Users
-¦   ¦   ¦   ¦   ¦   ¦       +-- IamUser.cs
-¦   ¦   ¦   ¦   ¦   ¦       +-- IamUserRepository.cs
-¦   ¦   ¦   ¦   ¦   +-- Repositories
-¦   ¦   ¦   ¦   ¦   +-- Services
-¦   ¦   ¦   ¦   ¦       +-- GroupModerationService.cs
-¦   ¦   ¦   ¦   ¦       +-- GroupService.cs
-¦   ¦   ¦   ¦   ¦       +-- IamService.cs
-¦   ¦   ¦   ¦   ¦       +-- PermissionService.cs
-¦   ¦   ¦   ¦   ¦       +-- RoleService.cs
-¦   ¦   ¦   ¦   +-- Dtos
+¦   ¦   ¦   ¦   ¦   ¦   +-- Repositories
+¦   ¦   ¦   ¦   ¦   ¦       +-- RolePermissionRepository.cs
+¦   ¦   ¦   ¦   ¦   ¦       +-- RoleRepository.cs
+¦   ¦   ¦   ¦   ¦   +-- Users
+¦   ¦   ¦   ¦   ¦       +-- Models
+¦   ¦   ¦   ¦   ¦       ¦   +-- IamUser.cs
+¦   ¦   ¦   ¦   ¦       ¦   +-- UserRole.cs
+¦   ¦   ¦   ¦   ¦       +-- Repositories
+¦   ¦   ¦   ¦   ¦           +-- IamUserRepository.cs
+¦   ¦   ¦   ¦   ¦           +-- UserRoleRepository.cs
 ¦   ¦   ¦   ¦   +-- EventHandling
 ¦   ¦   ¦   ¦   ¦   +-- OnAuthUserRegisteredHandler.cs
 ¦   ¦   ¦   ¦   +-- Infrastructure
@@ -147,8 +163,8 @@ Spirekit
 ¦   ¦   ¦   ¦   ¦           +-- BaseUserRoleCrudOperation.cs
 ¦   ¦   ¦   ¦   ¦           +-- PaginatedRolesByUserIdOperation.cs
 ¦   ¦   ¦   ¦   ¦           +-- RemoveUserRoleOperation.cs
-¦   ¦   ¦   ¦   +-- IamServiceExtensions.cs
-¦   ¦   ¦   +-- ModuleExtensions.cs
+¦   ¦   ¦   ¦   +-- IamModuleExtensions.cs
+¦   ¦   ¦   +-- ModulesExtensions.cs
 ¦   ¦   +-- SpireApi.Application.csproj
 ¦   ¦   +-- structure.txt
 ¦   +-- SpireApi.Contracts
@@ -175,10 +191,10 @@ Spirekit
 ¦   ¦   ¦   +-- launchSettings.json
 ¦   ¦   +-- appsettings.Development.json
 ¦   ¦   +-- appsettings.json
-¦   ¦   +-- OperationEndpointMapper.cs
 ¦   ¦   +-- OperationExtensions.cs
 ¦   ¦   +-- Program.cs
 ¦   ¦   +-- SpireApi.Host.csproj
+¦   ¦   +-- swagger.json
 ¦   +-- SpireApi.Infrastructure
 ¦   ¦   +-- Authentication
 ¦   ¦   ¦   +-- AuthDbContext.cs
@@ -186,6 +202,11 @@ Spirekit
 ¦   ¦   +-- Iam
 ¦   ¦   ¦   +-- IamDbContext.cs
 ¦   ¦   ¦   +-- IamDbContextFactory.cs
+¦   ¦   +-- Migrations
+¦   ¦   ¦   +-- Auth
+¦   ¦   ¦       +-- 20250707131739_InitAuthMig.cs
+¦   ¦   ¦       +-- 20250707131739_InitAuthMig.Designer.cs
+¦   ¦   ¦       +-- AuthDbContextModelSnapshot.cs
 ¦   ¦   +-- migration_commands.txt
 ¦   ¦   +-- SpireApi.Infrastructure.csproj
 ¦   +-- SpireCore.API
@@ -202,29 +223,24 @@ Spirekit
 ¦   ¦   ¦   ¦   +-- BaseEntityDbContext.cs
 ¦   ¦   ¦   ¦   +-- DbContextExtensions.cs
 ¦   ¦   ¦   +-- Entities
-¦   ¦   ¦   ¦   +-- Base
-¦   ¦   ¦   ¦   ¦   +-- BaseAuditableEntity.cs
-¦   ¦   ¦   ¦   ¦   +-- BaseEntity.cs
-¦   ¦   ¦   ¦   ¦   +-- IAuditableEntity.cs
-¦   ¦   ¦   ¦   ¦   +-- IEntity.cs
-¦   ¦   ¦   ¦   +-- Memberships
-¦   ¦   ¦   ¦   ¦   +-- BaseGroupMembership.cs
-¦   ¦   ¦   ¦   ¦   +-- BaseGroupMembershipService.cs
-¦   ¦   ¦   ¦   ¦   +-- IGroupMembership.cs
-¦   ¦   ¦   ¦   ¦   +-- IGroupService.cs
-¦   ¦   ¦   ¦   ¦   +-- MembershipState.cs
-¦   ¦   ¦   ¦   +-- BaseEntityConfigurationHelper.cs
-¦   ¦   ¦   +-- ModelBuilder
-¦   ¦   ¦   ¦   +-- Attributes
-¦   ¦   ¦   ¦       +-- StoreAsStringAttribute
-¦   ¦   ¦   ¦       ¦   +-- ModelBuilderExtensions.StoreAsString.cs
-¦   ¦   ¦   ¦       ¦   +-- StoreAsStringAttribute.cs
-¦   ¦   ¦   ¦       +-- ModelBuilderExtensions.cs
-¦   ¦   ¦   +-- Repositories
-¦   ¦   ¦       +-- BaseAuditableEntityRepository.cs
-¦   ¦   ¦       +-- BaseEntityRepository.cs
-¦   ¦   ¦       +-- IAuditableEntityRepository.cs
-¦   ¦   ¦       +-- IEntityRepository.cs
+¦   ¦   ¦       +-- Base
+¦   ¦   ¦       ¦   +-- BaseAuditableEntity.cs
+¦   ¦   ¦       ¦   +-- BaseEntity.cs
+¦   ¦   ¦       ¦   +-- IAuditableEntity.cs
+¦   ¦   ¦       ¦   +-- IEntity.cs
+¦   ¦   ¦       +-- Memberships
+¦   ¦   ¦       ¦   +-- BaseGroupMembership.cs
+¦   ¦   ¦       ¦   +-- BaseGroupMembershipService.cs
+¦   ¦   ¦       ¦   +-- GroupMemberAuditType.cs
+¦   ¦   ¦       ¦   +-- IGroupMembership.cs
+¦   ¦   ¦       ¦   +-- IGroupService.cs
+¦   ¦   ¦       ¦   +-- MembershipState.cs
+¦   ¦   ¦       +-- Repositories
+¦   ¦   ¦       ¦   +-- BaseAuditableEntityRepository.cs
+¦   ¦   ¦       ¦   +-- BaseEntityRepository.cs
+¦   ¦   ¦       ¦   +-- IAuditableEntityRepository.cs
+¦   ¦   ¦       ¦   +-- IEntityRepository.cs
+¦   ¦   ¦       +-- BaseEntityConfigurationHelper.cs
 ¦   ¦   +-- JWT
 ¦   ¦   ¦   +-- Identity
 ¦   ¦   ¦   ¦   +-- Services
@@ -455,13 +471,24 @@ Spirekit
 ¦       +-- {Namespace}.sln
 +-- SpireCLI
 ¦   +-- Commands
+¦   ¦   +-- AI
+¦   ¦   ¦   +-- ChatGpt
+¦   ¦   ¦   ¦   +-- chatgpt_tokens.txt
+¦   ¦   ¦   ¦   +-- ChatGptBrowserChatCommand.cs
+¦   ¦   ¦   ¦   +-- ChatGptClient.cs
+¦   ¦   ¦   +-- OllamaChatCommand.cs
+¦   ¦   +-- ProjectManagement
+¦   ¦   ¦   +-- Backend
+¦   ¦   ¦   ¦   +-- CreateAppModuleStructureCommand.cs
+¦   ¦   ¦   ¦   +-- DetectSpireApiProjectCommand.cs
+¦   ¦   ¦   ¦   +-- GetSwaggerCommand.cs
+¦   ¦   ¦   ¦   +-- SetActiveSolutionCommand.cs
+¦   ¦   ¦   +-- Core
+¦   ¦   ¦   ¦   +-- BaseSpireProjectCommand.cs
+¦   ¦   ¦   ¦   +-- SpireProjectConfigManager.cs
+¦   ¦   ¦   +-- Frontend
+¦   ¦   ¦   +-- CreateNewSpireApiProject.cs
 ¦   ¦   +-- Root
-¦   ¦   ¦   +-- AI
-¦   ¦   ¦   ¦   +-- ChatGpt
-¦   ¦   ¦   ¦   ¦   +-- chatgpt_tokens.txt
-¦   ¦   ¦   ¦   ¦   +-- ChatGptBrowserChatCommand.cs
-¦   ¦   ¦   ¦   ¦   +-- ChatGptClient.cs
-¦   ¦   ¦   ¦   +-- OllamaChatCommand.cs
 ¦   ¦   ¦   +-- HelloCommand.cs
 ¦   ¦   ¦   +-- HelpCommand.cs
 ¦   ¦   ¦   +-- VersionCommand.cs
@@ -475,6 +502,7 @@ Spirekit
 ¦   ¦       +-- ICreatedAt.cs
 ¦   ¦       +-- ICreatedBy.cs
 ¦   ¦       +-- IHasId.cs
+¦   ¦       +-- IIsDefault.cs
 ¦   ¦       +-- IStateFlag.cs
 ¦   ¦       +-- IUpdatedAt.cs
 ¦   ¦       +-- IUpdatedBy.cs
@@ -553,53 +581,6 @@ Spirekit
 ¦   ¦   +-- GuidUtility.cs
 ¦   +-- SpireCore.csproj
 +-- Spirekit
-+-- commands.md
 +-- solution-structure.txt
-+-- spireApiREADME.md
 +-- Spirekit.sln
 +-- structure.txt
-
-
-+-- {ModuleName}
-    +-- Configuration
-    +-- Domain
-    ¦   +-- Contexts
-    ¦   ¦   +-- {ModuleName}Context.cs
-    ¦   ¦   +-- {ModuleName}RepositoryContext.cs
-    ¦   +-- Models
-    ¦   ¦   +-- {DomainModel1}
-    ¦   ¦   ¦   +-- {DomainModel1}.cs
-    ¦   ¦   +-- {DomainModel2}
-    ¦   ¦   ¦   +-- {DomainModel2}.cs
-    ¦   +-- Repositories
-    ¦   ¦   +-- I{DomainModel1}Repository.cs
-    ¦   ¦   +-- {DomainModel1}Repository.cs
-    ¦   ¦   +-- I{DomainModel2}Repository.cs
-    ¦   ¦   +-- {DomainModel2}Repository.cs
-    ¦   +-- Services
-    ¦       +-- {DomainModel1}Service.cs
-    ¦       +-- {DomainModel2}Service.cs
-    +-- Dtos
-    ¦   +-- {DomainModel1}Dtos
-    ¦   ¦   +-- {DomainModel1}CreateDto.cs
-    ¦   ¦   +-- {DomainModel1}UpdateDto.cs
-    ¦   ¦   +-- {DomainModel1}ReadDto.cs
-    ¦   +-- {DomainModel2}Dtos
-    +-- EventHandling
-    +-- Infrastructure
-    ¦   +-- Base{ModuleName}DbContext.cs
-    ¦   +-- Base{ModuleName}Entity.cs
-    ¦   +-- Base{ModuleName}EntityRepository.cs
-    +-- Operations
-    ¦   +-- {DomainModel1}
-    ¦   ¦   +-- Get{DomainModel1}Operation.cs
-    ¦   ¦   +-- Create{DomainModel1}Operation.cs
-    ¦   ¦   +-- Update{DomainModel1}Operation.cs
-    ¦   ¦   +-- Delete{DomainModel1}Operation.cs
-    ¦   +-- {DomainModel2}
-    ¦       +-- Get{DomainModel2}Operation.cs
-    ¦       +-- Create{DomainModel2}Operation.cs
-    ¦       +-- Update{DomainModel2}Operation.cs
-    ¦       +-- Delete{DomainModel2}Operation.cs
-    +-- {ModuleName}Extensions.cs
- 

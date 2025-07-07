@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SpireCore\SpireCore.csproj" />
+    <ProjectReference Include="..\SpireCore\SpireCore.csproj" />
   </ItemGroup>
 
 </Project>

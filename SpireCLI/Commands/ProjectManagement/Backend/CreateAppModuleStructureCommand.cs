@@ -97,32 +97,38 @@ public class CreateAppModuleStructureCommand : BaseSpireProjectCommand
        FOLDER & TEMP-FILE CREATION
        ---------------------------------------------------------------------- */
 
-    private static List<string> CreateModuleOrFeatureStructureFoldersOnly(string rootDir, List<string> domainModels)
+    private static List<string> CreateModuleOrFeatureStructureFoldersOnly(
+    string rootDir,
+    List<string> domainModels)
     {
         var created = new List<string>();
         void Mk(string path) { Directory.CreateDirectory(path); created.Add(path); }
 
+        // ── top-level scaffold
         Mk(rootDir);
         Mk(Path.Combine(rootDir, "Configuration"));
-        Mk(Path.Combine(rootDir, "Domain", "Contexts"));
-        Mk(Path.Combine(rootDir, "Domain", "Services"));
+        Mk(Path.Combine(rootDir, "Domain"));
+        Mk(Path.Combine(rootDir, "Domain", "Services"));    // shared services
         Mk(Path.Combine(rootDir, "EventHandling"));
         Mk(Path.Combine(rootDir, "Infrastructure"));
+        Mk(Path.Combine(rootDir, "Operations"));            // root operations folder
 
-        var modelsDir = Path.Combine(rootDir, "Domain", "Models");
-        var reposDir = Path.Combine(rootDir, "Domain", "Repositories");
-        var opsDir = Path.Combine(rootDir, "Operations");
-        var dtosDir = Path.Combine(rootDir, "Dtos");
-
-        foreach (var dir in new[] { modelsDir, reposDir, opsDir, dtosDir }) Mk(dir);
-
+        // ── one aggregate folder per <DomainModel>
         foreach (var model in domainModels)
         {
-            Mk(Path.Combine(modelsDir, Pluralize(model)));
-            Mk(Path.Combine(reposDir, Pluralize(model)));
-            Mk(Path.Combine(opsDir, Pluralize(model)));
-            Mk(Path.Combine(dtosDir, $"{model}Dtos"));
+            var plural = Pluralize(model);
+            var aggregate = Path.Combine(rootDir, "Domain", plural);
+
+            Mk(aggregate);
+            Mk(Path.Combine(aggregate, "Contexts"));
+            Mk(Path.Combine(aggregate, "Models"));
+            Mk(Path.Combine(aggregate, "Repositories"));
+            Mk(Path.Combine(aggregate, "Dtos"));
+
+            // operations stay at root: /Operations/<Aggregate>
+            Mk(Path.Combine(rootDir, "Operations", plural));
         }
+
         return created;
     }
 
@@ -182,17 +188,22 @@ public static class {itemName}{fileType}Extensions
     }
 
     private static void CreateDomainModelFiles(
-        string appProjDir, string folderType, string itemName, string rootDir, List<string> domainModels)
+    string appProjDir,
+    string folderType,
+    string itemName,
+    string rootDir,
+    List<string> domainModels)
     {
         var baseNs = GetAppProjectNamespace(appProjDir, folderType, itemName);
         var infraDir = Path.Combine(rootDir, "Infrastructure");
         var baseEntityFile = Path.Combine(infraDir, $"Base{itemName}Entity.cs");
 
+        // ---- shared base entity
         if (!File.Exists(baseEntityFile))
         {
             Directory.CreateDirectory(infraDir);
             File.WriteAllText(baseEntityFile,
-$@"namespace {baseNs}.Infrastructure;
+    $@"namespace {baseNs}.Infrastructure;
 
 public abstract class Base{itemName}Entity : BaseAuditableEntity<Guid>
 {{
@@ -200,20 +211,20 @@ public abstract class Base{itemName}Entity : BaseAuditableEntity<Guid>
 ");
         }
 
-        var modelsRoot = Path.Combine(rootDir, "Domain", "Models");
+        // ---- per-aggregate concrete entities
         foreach (var model in domainModels)
         {
             var plural = Pluralize(model);
-            var modelDir = Path.Combine(modelsRoot, plural);
-            Directory.CreateDirectory(modelDir);
+            var modelsDir = Path.Combine(rootDir, "Domain", plural, "Models");
+            Directory.CreateDirectory(modelsDir);
 
-            var modelFile = Path.Combine(modelDir, $"{model}.cs");
+            var modelFile = Path.Combine(modelsDir, $"{model}.cs");
             if (File.Exists(modelFile)) continue;
 
             File.WriteAllText(modelFile,
-$@"using {baseNs}.Infrastructure;
+    $@"using {baseNs}.Infrastructure;
 
-namespace {baseNs}.Domain.Models.{plural};
+namespace {baseNs}.Domain.{plural}.Models;
 
 public class {model} : Base{itemName}Entity
 {{
@@ -223,6 +234,8 @@ public class {model} : Base{itemName}Entity
 ");
         }
     }
+
+
 
     /* -------------------------------------------------------------------------
        .csproj helpers
