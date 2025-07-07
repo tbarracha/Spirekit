@@ -72,11 +72,11 @@ No entities, repositories, or DB logic.
 
 SpireAPI is made up of several projects for clear separation of concerns:
 
+* **SpireCore.API** — Shared utilities, cross-cutting concerns
 * **Spire.Api.Application** — Domain, modules, and application logic
 * **Spire.Api.Contracts** — DTOs and Event contracts shared across layers
 * **Spire.Api.Host** — The API host/startup project
 * **Spire.Api.Infrastructure** — Infrastructure, persistence, and EF Core
-* **SpireCore.API** — Shared utilities, cross-cutting concerns
 
 A PowerShell `Export-TemplateFromSpireApi.ps1` script is provided to copy the current project into a `/Templates` folder, update namespaces, and optionally remove modules (all modules are included by default).
 
@@ -96,8 +96,6 @@ Each module represents a distinct business subdomain and contains everything it 
 ---
 
 #### **Module Anatomy**
-
-#### **Module Anatomy — 2025 layout**
 
 Example: `Modules/Iam`
 
@@ -127,17 +125,17 @@ Modules/
 
 **Common folders in every module**
 
-| Folder / Path                     | Purpose                                                             |
-| --------------------------------- | ------------------------------------------------------------------- |
-| `Configuration`                   | Module-level settings / options objects                             |
-| `Domain/<Aggregate>/Models`       | Entities & value objects for a specific aggregate                   |
-| `Domain/<Aggregate>/Repositories` | Aggregate-specific repository interfaces & implementations          |
-| `Domain/<Aggregate>/Dtos`         | DTOs tied to that aggregate                                         |
-| `Domain/<Aggregate>/Contexts`     | Aggregate-scoped DbContext slices or orchestrators                  |
-| `Domain/Services`                 | Cross-aggregate domain/application services                         |
-| `Infrastructure`                  | Shared persistence (DbContext, migrations, base repositories, etc.) |
-| `Operations/<Aggregate>`          | Atomic endpoint classes (vertical slices) for the aggregate         |
-| `EventHandling`                   | Domain / integration event handlers                                 |
+| Folder / Path                     | Purpose                                                                               |
+| --------------------------------- | --------------------------------------------------------------------------------------|
+| `Configuration`                   | Module-level settings / options objects                                               |
+| `Domain/<Aggregate>/Models`       | Entities & value objects for a specific aggregate                                     |
+| `Domain/<Aggregate>/Repositories` | Aggregate-specific repository interfaces & implementations                            |
+| `Domain/<Aggregate>/Dtos`         | DTOs tied to that aggregate                                                           |
+| `Domain/<Aggregate>/Contexts`     | Domain wide collection of Aggregate-scoped Repositories & Services for orchestrators  |
+| `Domain/Services`                 | Cross-aggregate domain/application services                                           |
+| `Infrastructure`                  | Shared persistence (DbContext, migrations, base repositories, etc.)                   |
+| `Operations/<Aggregate>`          | Atomic endpoint classes (vertical slices) for the aggregate                           |
+| `EventHandling`                   | Domain / integration event handlers                                                   |
 
 > **Vertical slices by aggregate**
 > Each aggregate gets its own self-contained directory tree (`Groups`, `Permissions`, etc.), keeping entities, repos, DTOs, and contexts together.
