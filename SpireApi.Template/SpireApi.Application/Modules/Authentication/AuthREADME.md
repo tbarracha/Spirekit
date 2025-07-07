@@ -1,5 +1,7 @@
 ﻿# 🔐 Authentication Module
 
+## ‼️ Contains Wrong or Incomplete Information ‼️
+
 > **“Prove you are who you say you are—then get out of the way.”**
 > The **Authentication** module gives SpireKit a focused, replaceable login stack: JWT + long-lived refresh tokens, audit logs, and pluggable identity providers.
 > **Nothing more, nothing less.**
