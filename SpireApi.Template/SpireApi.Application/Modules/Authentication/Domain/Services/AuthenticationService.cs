@@ -4,12 +4,13 @@ using Microsoft.Extensions.Configuration;
 using SpireCore.Events.Dispatcher;
 using System.Security.Claims;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
-using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
-using SpireApi.Application.Modules.Authentication.Domain.Models.AuthAudits;
 using SpireCore.API.JWT.Identity.Users;
-using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
 using SpireApi.Contracts.Events.Authentication;
 using SpireCore.Services;
+using SpireApi.Application.Modules.Authentication.Domain.AuthUserIdentities;
+using SpireApi.Application.Modules.Authentication.Domain.AuthAudits.Models;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Repositories;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Models;
 
 namespace SpireApi.Application.Modules.Authentication.Domain.Services;
 

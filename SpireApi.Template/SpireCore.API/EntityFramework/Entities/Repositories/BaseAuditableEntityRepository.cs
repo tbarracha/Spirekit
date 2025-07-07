@@ -6,29 +6,48 @@ using System.Linq.Expressions;
 
 namespace SpireCore.API.EntityFramework.Entities.Repositories;
 
-public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEntityRepository<T, TId, TContext>, IAuditableEntityRepository<T, TId>
+/// <summary>
+/// Entity-Framework-Core implementation of
+/// <see cref="IAuditableEntityRepository{T,TId}"/>.  Inherits the generic
+/// data-access logic from <see cref="BaseEntityRepository{T,TId,TContext}"/>
+/// and augments every CRUD operation with audit stamping
+/// (<c>CreatedBy</c>/<c>UpdatedBy</c>) driven by an explicit
+/// <paramref name="actor"/> parameter.
+/// </summary>
+/// <typeparam name="T">Concrete auditable entity.</typeparam>
+/// <typeparam name="TId">Entity primary-key type.</typeparam>
+/// <typeparam name="TContext">Application <see cref="DbContext"/>.</typeparam>
+public abstract class BaseAuditableEntityRepository<T, TId, TContext>
+    : BaseEntityRepository<T, TId, TContext>, IAuditableEntityRepository<T, TId>
     where T : class, IAuditableEntity<TId>
     where TContext : DbContext
 {
-    protected BaseAuditableEntityRepository(TContext context) : base(context)
-    {
-    }
+    /// <summary>
+    /// Initializes a new repository bound to the supplied EF&nbsp;Core
+    /// <paramref name="context"/>.
+    /// </summary>
+    protected BaseAuditableEntityRepository(TContext context) : base(context) { }
 
-    // --- Read ---
+    // --------------------------- Read -------------------------------
 
+    /// <inheritdoc/>
     public virtual async Task<T?> GetByIdAsync(TId id, string actor, string? state = StateFlags.ACTIVE)
     {
         var query = _dbSet.AsQueryable();
-        
+
         if (state != null)
             query = query.Where(e => e.StateFlag == state);
-        
+
         query = query.Where(e => e.CreatedBy == actor);
 
         return await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
     }
 
-    public virtual async Task<T?> GetFilteredAsync(Expression<Func<T, bool>> predicate, string actor, string? state = StateFlags.ACTIVE)
+    /// <inheritdoc/>
+    public virtual async Task<T?> GetFilteredAsync(
+        Expression<Func<T, bool>> predicate,
+        string actor,
+        string? state = StateFlags.ACTIVE)
     {
         var query = _dbSet.AsQueryable();
 
@@ -40,6 +59,7 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return await query.FirstOrDefaultAsync(predicate);
     }
 
+    /// <inheritdoc/>
     public virtual async Task<PaginatedResult<T>> GetFilteredPaginatedResultAsync(
         Expression<Func<T, bool>> filter,
         string actor,
@@ -63,6 +83,7 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
 
+    /// <inheritdoc/>
     public virtual async Task<PaginatedResult<T>> GetPaginatedResultAsync(
         string actor,
         int page,
@@ -85,9 +106,9 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
     }
 
+    // --------------------------- Create ------------------------------
 
-    // --- Create ---
-
+    /// <inheritdoc/>
     public virtual async Task<T> AddAsync(T entity, string actor)
     {
         entity.CreatedAt = DateTime.UtcNow;
@@ -101,6 +122,7 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return entity;
     }
 
+    /// <inheritdoc/>
     public virtual async Task<IReadOnlyList<T>> AddRangeAsync(IEnumerable<T> entities, string actor)
     {
         var entityList = entities.ToList();
@@ -120,8 +142,9 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return entityList;
     }
 
-    // --- Update ---
+    // --------------------------- Update ------------------------------
 
+    /// <inheritdoc/>
     public virtual async Task<T> UpdateAsync(T entity, string actor)
     {
         entity.UpdatedAt = DateTime.UtcNow;
@@ -132,6 +155,7 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return entity;
     }
 
+    /// <inheritdoc/>
     public virtual async Task<IReadOnlyList<T>> UpdateRangeAsync(IEnumerable<T> entities, string actor)
     {
         var entityList = entities.ToList();
@@ -149,8 +173,9 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return entityList;
     }
 
-    // --- Delete ---
+    // --------------------------- Delete ------------------------------
 
+    /// <inheritdoc/>
     public virtual async Task<T> DeleteAsync(T entity, string actor)
     {
         entity.StateFlag = StateFlags.DELETED;
@@ -162,6 +187,7 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return entity;
     }
 
+    /// <inheritdoc/>
     public virtual async Task<IReadOnlyList<T>> DeleteRangeAsync(IEnumerable<T> entities, string actor)
     {
         var entityList = entities.ToList();
@@ -180,6 +206,7 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return entityList;
     }
 
+    /// <inheritdoc/>
     public virtual async Task<T?> SoftDeleteAsync(TId id, string actor)
     {
         var entity = await GetByIdAsync(id, actor);
@@ -194,6 +221,7 @@ public abstract class BaseAuditableEntityRepository<T, TId, TContext> : BaseEnti
         return entity;
     }
 
+    /// <inheritdoc/>
     public virtual async Task<T?> RestoreAsync(TId id, string actor)
     {
         var entity = await GetByIdAsync(id, actor, StateFlags.DELETED);

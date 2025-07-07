@@ -1,7 +1,9 @@
-﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
-using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
+﻿using SpireApi.Application.Modules.Iam.Domain.Groups.Contexts;
+using SpireApi.Application.Modules.Iam.Domain.Groups.Models;
+using SpireCore.API.EntityFramework.Entities.Memberships;
 using SpireCore.API.Operations.Attributes;
 using SpireCore.API.Operations.Dtos;
+using SpireCore.Constants;
 
 namespace SpireApi.Application.Modules.Iam.Operations.Groups.GroupMemberOperations;
 
@@ -24,13 +26,21 @@ public class CreateGroupMemberOperation
     public override async Task<GroupMember> ExecuteAsync(AuditableRequestDto<CreateGroupMemberDto> request)
     {
         var dto = request.Data;
+
+        var defaultState = await _groupContext.RepositoryContext
+            .GroupMembershipStateRepository
+            .FirstOrDefaultAsync(s => s.IsDefault && s.StateFlag == StateFlags.ACTIVE);
+
         var entity = new GroupMember
         {
+            StateId = defaultState?.Id ?? Guid.Empty,
+            CurrentState = MembershipState.Active,
             GroupId = dto.GroupId,
             UserId = dto.UserId,
             RoleId = dto.RoleId ?? Guid.Empty,
             JoinedAt = dto.JoinedAt ?? DateTime.UtcNow
         };
+
         await _groupContext.RepositoryContext.GroupMemberRepository.AddAsync(entity);
         return entity;
     }

@@ -1,6 +1,6 @@
 ﻿// --------- ListPermissionScopesPagedOperation.cs ---------
 using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Modules.Iam.Domain.Models.Permissions;
+using SpireApi.Application.Modules.Iam.Domain.Permissions.Models;
 using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireCore.API.Operations.Attributes;
 using SpireCore.API.Operations.Dtos;

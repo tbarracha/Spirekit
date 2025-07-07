@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using SpireApi.Application.Modules.Authentication.Domain.Models.AuthUserIdentities;
-using SpireApi.Application.Modules.Authentication.Domain.Models.RefreshTokens;
+using SpireApi.Application.Modules.Authentication.Domain.AuthUserIdentities;
+using SpireApi.Application.Modules.Authentication.Domain.RefreshTokens.Repositories;
 using SpireApi.Application.Modules.Authentication.Domain.Services;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
 

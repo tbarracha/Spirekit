@@ -1,4 +1,4 @@
-﻿using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
+﻿using SpireApi.Application.Modules.Iam.Domain.Users.Models;
 using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Application.Modules.Iam.Operations.Roles.RoleOperations;
 using SpireCore.API.Operations.Attributes;

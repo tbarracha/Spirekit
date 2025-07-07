@@ -8,7 +8,7 @@
 /// <typeparam name="TGroupId">ID type for Group entities.</typeparam>
 /// <typeparam name="TGroupTypeId">ID type for GroupType entities.</typeparam>
 /// <typeparam name="TMemberId">ID type for GroupMember entities.</typeparam>
-/// <typeparam name="TUserId">ID type for User entities.</typeparam>
+/// <typeparam name="TModeratorUserId">ID type for User entities.</typeparam>
 /// <typeparam name="TRoleId">ID type for Role entities.</typeparam>
 /// <typeparam name="TMembershipStateId">ID type for GroupMembershipState entities.</typeparam>
 /// <typeparam name="TAuditId">ID type for GroupMemberAudit entities.</typeparam>
@@ -21,7 +21,7 @@ public interface IGroupService<
     TGroupId,
     TGroupTypeId,
     TMemberId,
-    TUserId,
+    TModeratorUserId,
     TRoleId,
     TMembershipStateId,
     TAuditId,
@@ -30,10 +30,10 @@ public interface IGroupService<
     TGroupMembershipState,
     TGroupMemberAudit,
     TGroupType>
-    where TGroup : IGroup<TGroupId, TGroupTypeId, TGroupMember, TMemberId, TUserId, TRoleId, TMembershipStateId>
-    where TGroupMember : IGroupMember<TMemberId, TGroupId, TUserId, TRoleId, TMembershipStateId>
-    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TUserId>
-    where TGroupMemberAudit : IGroupMemberAudit<TAuditId, TMemberId, TGroupId, TUserId>
+    where TGroup : IGroup<TGroupId, TGroupTypeId, TGroupMember, TMemberId, TModeratorUserId, TRoleId, TMembershipStateId>
+    where TGroupMember : IGroupMember<TMemberId, TGroupId, TModeratorUserId, TRoleId, TMembershipStateId>
+    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TMemberId, TModeratorUserId>
+    where TGroupMemberAudit : IGroupMemberAudit<TAuditId, TMemberId, TGroupId, TModeratorUserId>
     where TGroupType : IGroupType<TGroupTypeId>
 {
     // ----- Group management -----
@@ -42,7 +42,7 @@ public interface IGroupService<
     /// Creates a new group with the specified owner, name, type, optional description, and optional parent group.
     /// </summary>
     Task<TGroup> CreateGroupAsync(
-        TUserId ownerUserId,
+        TModeratorUserId ownerUserId,
         string name,
         TGroupTypeId groupTypeId,
         string? description = null,
@@ -56,28 +56,28 @@ public interface IGroupService<
     /// <summary>
     /// Lists all groups that the given user is a member of.
     /// </summary>
-    Task<IReadOnlyList<TGroup>> ListGroupsForUserAsync(TUserId userId);
+    Task<IReadOnlyList<TGroup>> ListGroupsForUserAsync(TModeratorUserId userId);
 
     /// <summary>
     /// Gets the group owned by the specified user, if any.
     /// </summary>
-    Task<TGroup?> GetOwnedGroupAsync(TUserId ownerUserId);
+    Task<TGroup?> GetOwnedGroupAsync(TModeratorUserId ownerUserId);
 
     /// <summary>
     /// Lists all groups owned by the specified user.
     /// </summary>
-    Task<IReadOnlyList<TGroup>> ListGroupsByOwnerAsync(TUserId ownerUserId);
+    Task<IReadOnlyList<TGroup>> ListGroupsByOwnerAsync(TModeratorUserId ownerUserId);
 
     /// <summary>
     /// Checks if the specified user is the owner of the given group.
     /// </summary>
-    Task<bool> UserIsGroupOwnerAsync(TGroupId groupId, TUserId userId);
+    Task<bool> UserIsGroupOwnerAsync(TGroupId groupId, TModeratorUserId userId);
 
     /// <summary>
     /// Transfers group ownership to another user.
     /// Optionally, records the user who performed the transfer and a reason.
     /// </summary>
-    Task TransferGroupOwnershipAsync(TGroupId groupId, TUserId newOwnerUserId, TUserId? performedByUserId = default, string? reason = null);
+    Task TransferGroupOwnershipAsync(TGroupId groupId, TModeratorUserId newOwnerUserId, TModeratorUserId? performedByUserId = default, string? reason = null);
 
 
     // ----- Group type queries -----
@@ -114,8 +114,8 @@ public interface IGroupService<
     /// </summary>
     Task<TGroupMember> AddMemberAsync(
         TGroupId groupId,
-        TUserId userId,
-        TUserId? moderatorUserId = default,
+        TModeratorUserId userId,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
     /// <summary>
@@ -124,7 +124,7 @@ public interface IGroupService<
     /// </summary>
     Task RemoveMemberAsync(
         TMemberId groupMemberId,
-        TUserId? moderatorUserId = default,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
     /// <summary>
@@ -140,7 +140,7 @@ public interface IGroupService<
     /// <summary>
     /// Lists all group memberships for the specified user.
     /// </summary>
-    Task<IReadOnlyList<TGroupMember>> ListUserGroupsAsync(TUserId userId);
+    Task<IReadOnlyList<TGroupMember>> ListUserGroupsAsync(TModeratorUserId userId);
 
     /// <summary>
     /// Lists all members of the group who are moderators.
@@ -170,7 +170,7 @@ public interface IGroupService<
     Task AssignRoleAsync(
         TMemberId groupMemberId,
         TRoleId roleId,
-        TUserId? moderatorUserId = default,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
     /// <summary>
@@ -179,7 +179,7 @@ public interface IGroupService<
     /// </summary>
     Task RemoveRoleAsync(
         TMemberId groupMemberId,
-        TUserId? moderatorUserId = default,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
 
@@ -192,7 +192,7 @@ public interface IGroupService<
     Task ModerateMemberAsync(
         TMemberId groupMemberId,
         MembershipState newState,
-        TUserId? moderatorUserId = default,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
 
@@ -224,12 +224,12 @@ public interface IGroupService<
     /// <summary>
     /// Checks if the specified user is a member of the given group.
     /// </summary>
-    Task<bool> UserIsGroupMemberAsync(TGroupId groupId, TUserId userId);
+    Task<bool> UserIsGroupMemberAsync(TGroupId groupId, TModeratorUserId userId);
 
     /// <summary>
     /// Checks if the specified user has the given role in the group.
     /// </summary>
-    Task<bool> UserHasRoleAsync(TGroupId groupId, TUserId userId, TRoleId roleId);
+    Task<bool> UserHasRoleAsync(TGroupId groupId, TModeratorUserId userId, TRoleId roleId);
 
     /// <summary>
     /// Returns the number of members in the group, optionally filtered by participation state.
@@ -239,7 +239,7 @@ public interface IGroupService<
     /// <summary>
     /// Returns the number of groups the specified user is a member of.
     /// </summary>
-    Task<int> CountGroupsForUserAsync(TUserId userId);
+    Task<int> CountGroupsForUserAsync(TModeratorUserId userId);
 
     /// <summary>
     /// Lists all members of the group with the specified participation state (e.g., active, banned).
@@ -260,8 +260,8 @@ public interface IGroupService<
     /// </summary>
     Task<IReadOnlyList<TGroupMember>> AddMembersBulkAsync(
         TGroupId groupId,
-        IEnumerable<TUserId> userIds,
-        TUserId? moderatorUserId = default,
+        IEnumerable<TModeratorUserId> userIds,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
     /// <summary>
@@ -270,7 +270,7 @@ public interface IGroupService<
     /// </summary>
     Task RemoveMembersBulkAsync(
         IEnumerable<TMemberId> groupMemberIds,
-        TUserId? moderatorUserId = default,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
     /// <summary>
@@ -280,18 +280,18 @@ public interface IGroupService<
     Task AssignRoleBulkAsync(
         IEnumerable<TMemberId> groupMemberIds,
         TRoleId roleId,
-        TUserId? moderatorUserId = default,
+        TModeratorUserId? moderatorUserId = default,
         string? reason = null);
 
     /// <summary>
     /// Gets the join date for a user in the specified group, if the user is a member.
     /// </summary>
-    Task<DateTime?> GetMemberJoinDateAsync(TGroupId groupId, TUserId userId);
+    Task<DateTime?> GetMemberJoinDateAsync(TGroupId groupId, TModeratorUserId userId);
 
     /// <summary>
     /// Retrieves the group member entity for the specified user and group, if present.
     /// </summary>
-    Task<TGroupMember?> GetMemberByUserIdAsync(TGroupId groupId, TUserId userId);
+    Task<TGroupMember?> GetMemberByUserIdAsync(TGroupId groupId, TModeratorUserId userId);
 }
 
 
@@ -313,7 +313,7 @@ public interface IGroupService<
         TGroup, TGroupMember, TGroupMembershipState, TGroupMemberAudit, TGroupType>
     where TGroup : IGroup<TId, TGroupTypeId, TGroupMember, TId, TId, TRoleId, TMembershipStateId>
     where TGroupMember : IGroupMember<TId, TId, TId, TRoleId, TMembershipStateId>
-    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TId>
+    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TId, TId>
     where TGroupMemberAudit : IGroupMemberAudit<TId, TId, TId, TId>
     where TGroupType : IGroupType<TGroupTypeId>
 { }
@@ -334,7 +334,7 @@ public interface IGroupService<
         TGroup, TGroupMember, TGroupMembershipState, TGroupMemberAudit, TGroupType>
     where TGroup : IGroup<TId, TId, TGroupMember, TId, TId, TRoleId, TId>
     where TGroupMember : IGroupMember<TId, TId, TId, TRoleId, TId>
-    where TGroupMembershipState : IGroupMembershipState<TId, TId>
+    where TGroupMembershipState : IGroupMembershipState<TId, TId, TId>
     where TGroupMemberAudit : IGroupMemberAudit<TId, TId, TId, TId>
     where TGroupType : IGroupType<TId>
 { }

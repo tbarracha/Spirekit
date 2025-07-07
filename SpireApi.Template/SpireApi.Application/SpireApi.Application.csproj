@@ -31,8 +31,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Modules\Authentication\Domain\Repositories\" />
-    <Folder Include="Modules\Iam\Domain\Repositories\" />
-    <Folder Include="Modules\Iam\Dtos\" />
+    <Folder Include="Modules\Iam\Domain\Contexts\" />
+    <Folder Include="Modules\Iam\Domain\Groups\Dtos\" />
   </ItemGroup>
 </Project>

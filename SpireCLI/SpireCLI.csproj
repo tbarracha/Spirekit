@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Root\ProjectManagement\Frontend\" />
+    <Folder Include="Commands\ProjectManagement\Frontend\" />
   </ItemGroup>
 
 </Project>

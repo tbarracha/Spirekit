@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpireApi.Application.Modules.Iam.Domain.Contexts;
-using SpireApi.Application.Modules.Iam.Domain.Models.Groups;
+using SpireApi.Application.Modules.Iam.Domain.Groups.Contexts;
+using SpireApi.Application.Modules.Iam.Domain.Groups.Models;
+using SpireApi.Application.Modules.Iam.Operations.Groups;
 using SpireCore.API.Operations.Attributes;
 using SpireCore.API.Operations.Dtos;
 using SpireCore.Lists.Pagination;
@@ -31,7 +32,7 @@ public class PaginatedGroupsByTypeOperation : BaseGroupDomainOperation<Paginated
 		if (!string.IsNullOrWhiteSpace(filter.Name))
 			query = query.Where(g => g.Name.Contains(filter.Name));
 		if (filter.OwnerId.HasValue)
-			query = query.Where(g => g.OwnerId == filter.OwnerId.Value);
+			query = query.Where(g => g.OwnerUserId == filter.OwnerId.Value);
 
 		var totalCount = await query.CountAsync();
 		var items = await query

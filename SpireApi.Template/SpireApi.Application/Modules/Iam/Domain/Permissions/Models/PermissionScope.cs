@@ -1,0 +1,10 @@
+﻿using SpireApi.Application.Modules.Iam.Infrastructure;
+
+namespace SpireApi.Application.Modules.Iam.Domain.Permissions.Models;
+
+public class PermissionScope : BaseIamEntity
+{
+    public string Name { get; set; } = default!; // e.g., "Project", "Document", "Invoice"
+    public string? Description { get; set; }
+    public List<Permission> Permissions { get; set; } = new();
+}

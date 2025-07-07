@@ -1,7 +1,7 @@
 ﻿using SpireCLI.Commands.Root;
-using SpireCLI.Commands.Root.AI;
-using SpireCLI.Commands.Root.ProjectManagement;
-using SpireCLI.Commands.Root.ProjectManagement.Backend;
+using SpireCLI.Commands.AI;
+using SpireCLI.Commands.ProjectManagement;
+using SpireCLI.Commands.ProjectManagement.Backend;
 using SpireCore.Commands;
 
 namespace SpireCLI.Commands;

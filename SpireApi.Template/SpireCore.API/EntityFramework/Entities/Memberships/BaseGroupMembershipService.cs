@@ -9,7 +9,21 @@ public abstract class BaseGroupMembershipService<
     TGroupId,
     TGroupTypeId,
     TMemberId,
-    TUserId,
+    TModeratorUserId,
+    TRoleId,
+    TMembershipStateId,
+    TAuditId,
+    TGroup,
+    TGroupType,
+    TGroupMember,
+    TGroupMembershipState,
+    TGroupMemberAudit
+    >
+    : IGroupService<
+    TGroupId,
+    TGroupTypeId,
+    TMemberId,
+    TModeratorUserId,
     TRoleId,
     TMembershipStateId,
     TAuditId,
@@ -18,23 +32,10 @@ public abstract class BaseGroupMembershipService<
     TGroupMembershipState,
     TGroupMemberAudit,
     TGroupType>
-    : IGroupService<
-        TGroupId,
-        TGroupTypeId,
-        TMemberId,
-        TUserId,
-        TRoleId,
-        TMembershipStateId,
-        TAuditId,
-        TGroup,
-        TGroupMember,
-        TGroupMembershipState,
-        TGroupMemberAudit,
-        TGroupType>
-    where TGroup : IGroup<TGroupId, TGroupTypeId, TGroupMember, TMemberId, TUserId, TRoleId, TMembershipStateId>
-    where TGroupMember : IGroupMember<TMemberId, TGroupId, TUserId, TRoleId, TMembershipStateId>
-    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TUserId>
-    where TGroupMemberAudit : IGroupMemberAudit<TAuditId, TMemberId, TGroupId, TUserId>
+    where TGroup : IGroup<TGroupId, TGroupTypeId, TGroupMember, TMemberId, TModeratorUserId, TRoleId, TMembershipStateId>
+    where TGroupMember : IGroupMember<TMemberId, TGroupId, TModeratorUserId, TRoleId, TMembershipStateId>
+    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TMemberId, TModeratorUserId>
+    where TGroupMemberAudit : IGroupMemberAudit<TAuditId, TMemberId, TGroupId, TModeratorUserId>
     where TGroupType : IGroupType<TGroupTypeId>
 {
 
@@ -42,28 +43,28 @@ public abstract class BaseGroupMembershipService<
     // ----- Group management -----
     /// <inheritdoc />
     public abstract Task<TGroup> CreateGroupAsync(
-        TUserId ownerUserId, string name, TGroupTypeId groupTypeId, string? description = null, TGroupId? parentGroupId = default);
+        TModeratorUserId ownerUserId, string name, TGroupTypeId groupTypeId, string? description = null, TGroupId? parentGroupId = default);
 
     /// <inheritdoc />
     public abstract Task<TGroup?> GetGroupByIdAsync(TGroupId groupId);
 
     /// <inheritdoc />
-    public abstract Task<IReadOnlyList<TGroup>> ListGroupsForUserAsync(TUserId userId);
+    public abstract Task<IReadOnlyList<TGroup>> ListGroupsForUserAsync(TModeratorUserId userId);
 
     /// <inheritdoc />
-    public abstract Task<TGroup?> GetOwnedGroupAsync(TUserId ownerUserId);
+    public abstract Task<TGroup?> GetOwnedGroupAsync(TModeratorUserId ownerUserId);
 
     /// <inheritdoc />
-    public abstract Task<IReadOnlyList<TGroup>> ListGroupsByOwnerAsync(TUserId ownerUserId);
+    public abstract Task<IReadOnlyList<TGroup>> ListGroupsByOwnerAsync(TModeratorUserId ownerUserId);
 
     /// <inheritdoc />
-    public abstract Task<bool> UserIsGroupOwnerAsync(TGroupId groupId, TUserId userId);
+    public abstract Task<bool> UserIsGroupOwnerAsync(TGroupId groupId, TModeratorUserId userId);
 
     /// <inheritdoc />
     public abstract Task TransferGroupOwnershipAsync(
         TGroupId groupId,
-        TUserId newOwnerUserId,
-        TUserId? performedByUserId = default,
+        TModeratorUserId newOwnerUserId,
+        TModeratorUserId? performedByUserId = default,
         string? reason = null);
 
 
@@ -89,11 +90,11 @@ public abstract class BaseGroupMembershipService<
     // ----- Member management -----
     /// <inheritdoc />
     public abstract Task<TGroupMember> AddMemberAsync(
-        TGroupId groupId, TUserId userId, TUserId? moderatorUserId = default, string? reason = null);
+        TGroupId groupId, TModeratorUserId userId, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
     /// <inheritdoc />
     public abstract Task RemoveMemberAsync(
-        TMemberId groupMemberId, TUserId? moderatorUserId = default, string? reason = null);
+        TMemberId groupMemberId, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
     /// <inheritdoc />
     public abstract Task<TGroupMember?> GetGroupMemberByIdAsync(TMemberId groupMemberId);
@@ -102,7 +103,7 @@ public abstract class BaseGroupMembershipService<
     public abstract Task<IReadOnlyList<TGroupMember>> ListGroupMembersAsync(TGroupId groupId);
 
     /// <inheritdoc />
-    public abstract Task<IReadOnlyList<TGroupMember>> ListUserGroupsAsync(TUserId userId);
+    public abstract Task<IReadOnlyList<TGroupMember>> ListUserGroupsAsync(TModeratorUserId userId);
 
     /// <inheritdoc />
     public abstract Task<IReadOnlyList<TGroupMember>> ListGroupModeratorsAsync(TGroupId groupId);
@@ -121,18 +122,18 @@ public abstract class BaseGroupMembershipService<
     // ----- Role management -----
     /// <inheritdoc />
     public abstract Task AssignRoleAsync(
-        TMemberId groupMemberId, TRoleId roleId, TUserId? moderatorUserId = default, string? reason = null);
+        TMemberId groupMemberId, TRoleId roleId, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
     /// <inheritdoc />
     public abstract Task RemoveRoleAsync(
-        TMemberId groupMemberId, TUserId? moderatorUserId = default, string? reason = null);
+        TMemberId groupMemberId, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
 
 
     // ----- Moderation -----
     /// <inheritdoc />
     public abstract Task ModerateMemberAsync(
-        TMemberId groupMemberId, MembershipState newState, TUserId? moderatorUserId = default, string? reason = null);
+        TMemberId groupMemberId, MembershipState newState, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
 
 
@@ -153,16 +154,16 @@ public abstract class BaseGroupMembershipService<
     public abstract Task<bool> GroupExistsAsync(TGroupId groupId);
 
     /// <inheritdoc />
-    public abstract Task<bool> UserIsGroupMemberAsync(TGroupId groupId, TUserId userId);
+    public abstract Task<bool> UserIsGroupMemberAsync(TGroupId groupId, TModeratorUserId userId);
 
     /// <inheritdoc />
-    public abstract Task<bool> UserHasRoleAsync(TGroupId groupId, TUserId userId, TRoleId roleId);
+    public abstract Task<bool> UserHasRoleAsync(TGroupId groupId, TModeratorUserId userId, TRoleId roleId);
 
     /// <inheritdoc />
     public abstract Task<int> CountGroupMembersAsync(TGroupId groupId, MembershipState? participationState = null);
 
     /// <inheritdoc />
-    public abstract Task<int> CountGroupsForUserAsync(TUserId userId);
+    public abstract Task<int> CountGroupsForUserAsync(TModeratorUserId userId);
 
     /// <inheritdoc />
     public abstract Task<IReadOnlyList<TGroupMember>> ListMembersByStateAsync(TGroupId groupId, MembershipState participationState);
@@ -175,21 +176,21 @@ public abstract class BaseGroupMembershipService<
     // ----- Bulk operations -----
     /// <inheritdoc />
     public abstract Task<IReadOnlyList<TGroupMember>> AddMembersBulkAsync(
-        TGroupId groupId, IEnumerable<TUserId> userIds, TUserId? moderatorUserId = default, string? reason = null);
+        TGroupId groupId, IEnumerable<TModeratorUserId> userIds, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
     /// <inheritdoc />
     public abstract Task RemoveMembersBulkAsync(
-        IEnumerable<TMemberId> groupMemberIds, TUserId? moderatorUserId = default, string? reason = null);
+        IEnumerable<TMemberId> groupMemberIds, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
     /// <inheritdoc />
     public abstract Task AssignRoleBulkAsync(
-        IEnumerable<TMemberId> groupMemberIds, TRoleId roleId, TUserId? moderatorUserId = default, string? reason = null);
+        IEnumerable<TMemberId> groupMemberIds, TRoleId roleId, TModeratorUserId? moderatorUserId = default, string? reason = null);
 
     /// <inheritdoc />
-    public abstract Task<DateTime?> GetMemberJoinDateAsync(TGroupId groupId, TUserId userId);
+    public abstract Task<DateTime?> GetMemberJoinDateAsync(TGroupId groupId, TModeratorUserId userId);
 
     /// <inheritdoc />
-    public abstract Task<TGroupMember?> GetMemberByUserIdAsync(TGroupId groupId, TUserId userId);
+    public abstract Task<TGroupMember?> GetMemberByUserIdAsync(TGroupId groupId, TModeratorUserId userId);
 }
 
 
@@ -202,16 +203,17 @@ public abstract class BaseGroupMembershipService<
     TGroupTypeId,
     TMembershipStateId,
     TGroup,
+    TGroupType,
     TGroupMember,
     TGroupMembershipState,
-    TGroupMemberAudit,
-    TGroupType>
+    TGroupMemberAudit
+    >
     : BaseGroupMembershipService<
         TId, TGroupTypeId, TId, TId, TRoleId, TMembershipStateId, TId,
-        TGroup, TGroupMember, TGroupMembershipState, TGroupMemberAudit, TGroupType>
+        TGroup, TGroupType, TGroupMember, TGroupMembershipState, TGroupMemberAudit>
     where TGroup : IGroup<TId, TGroupTypeId, TGroupMember, TId, TId, TRoleId, TMembershipStateId>
     where TGroupMember : IGroupMember<TId, TId, TId, TRoleId, TMembershipStateId>
-    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TId>
+    where TGroupMembershipState : IGroupMembershipState<TMembershipStateId, TId, TId>
     where TGroupMemberAudit : IGroupMemberAudit<TId, TId, TId, TId>
     where TGroupType : IGroupType<TGroupTypeId>
 {
@@ -224,16 +226,17 @@ public abstract class BaseGroupMembershipService<
     TId,
     TRoleId,
     TGroup,
+    TGroupType,
     TGroupMember,
     TGroupMembershipState,
-    TGroupMemberAudit,
-    TGroupType>
+    TGroupMemberAudit
+    >
     : BaseGroupMembershipService<
         TId, TId, TId, TId, TRoleId, TId, TId,
-        TGroup, TGroupMember, TGroupMembershipState, TGroupMemberAudit, TGroupType>
+        TGroup, TGroupType, TGroupMember, TGroupMembershipState, TGroupMemberAudit>
     where TGroup : IGroup<TId, TId, TGroupMember, TId, TId, TRoleId, TId>
     where TGroupMember : IGroupMember<TId, TId, TId, TRoleId, TId>
-    where TGroupMembershipState : IGroupMembershipState<TId, TId>
+    where TGroupMembershipState : IGroupMembershipState<TId, TId, TId>
     where TGroupMemberAudit : IGroupMemberAudit<TId, TId, TId, TId>
     where TGroupType : IGroupType<TId>
 {

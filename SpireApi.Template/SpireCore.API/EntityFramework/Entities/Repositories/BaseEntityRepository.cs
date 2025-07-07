@@ -7,27 +7,28 @@ using System.Linq.Expressions;
 namespace SpireCore.API.EntityFramework.Entities.Repositories;
 
 /// <summary>
-/// Provides a generic base implementation for common data access operations (CRUD)
-/// over a specific entity type using Entity Framework Core.
+/// Base implementation of <see cref="IEntityRepository{T,TId}"/> backed by Entity Framework Core.
+/// It centralises the common CRUD logic so concrete repositories only need to inject a
+/// <typeparamref name="TContext"/> (a <see cref="DbContext"/>) and, if required, override individual members.
 /// </summary>
-/// <typeparam name="T">
-/// The entity type for this repository (must implement <see cref="IRepoEntity{TId}"/>).
-/// </typeparam>
-/// <typeparam name="TId">
-/// The type of the primary key for the entity (e.g., <c>Guid</c>, <c>int</c>).
-/// </typeparam>
-/// <typeparam name="TContext">
-/// The DbContext type this repository will use (must inherit from <see cref="DbContext"/>).
-/// </typeparam>
+/// <typeparam name="T">Entity type handled by this repository.</typeparam>
+/// <typeparam name="TId">Primary‑key type.</typeparam>
+/// <typeparam name="TContext">EF Core <see cref="DbContext"/> used for persistence.</typeparam>
 public abstract class BaseEntityRepository<T, TId, TContext> : IEntityRepository<T, TId>, IPagination<T>
     where T : class, IEntity<TId>
     where TContext : DbContext
 {
+    /// <summary>Underlying EF Core context.</summary>
     protected readonly TContext _context;
+
+    /// <summary>EF Core <see cref="DbSet{TEntity}"/> for <typeparamref name="T"/>.</summary>
     protected readonly DbSet<T> _dbSet;
 
     public IQueryable<T> Query() => _dbSet.AsQueryable();
 
+    /// <summary>
+    /// Creates a new repository bound to <paramref name="context"/>.
+    /// </summary>
     protected BaseEntityRepository(TContext context)
     {
         _context = context;
@@ -107,6 +108,40 @@ public abstract class BaseEntityRepository<T, TId, TContext> : IEntityRepository
             .ToListAsync();
 
         return new PaginatedResult<T>(items, totalCount, page, pageSize);
+    }
+
+    public virtual async Task<T?> FirstOrDefaultAsync(
+        Expression<Func<T, bool>> predicate,
+        string? state = StateFlags.ACTIVE)
+    {
+        var query = _dbSet.AsQueryable();
+
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+
+        return await query.FirstOrDefaultAsync(predicate);
+    }
+
+    public virtual async Task<bool> ExistsAsync(
+        Expression<Func<T, bool>> predicate,
+        string? state = StateFlags.ACTIVE)
+    {
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+
+        return await query.AnyAsync(predicate);
+    }
+
+    public virtual async Task<int> CountAsync(
+        Expression<Func<T, bool>> predicate,
+        string? state = StateFlags.ACTIVE)
+    {
+        var query = _dbSet.AsQueryable();
+        if (state != null)
+            query = query.Where(e => e.StateFlag == state);
+
+        return await query.CountAsync(predicate);
     }
 
     // --- Create ---

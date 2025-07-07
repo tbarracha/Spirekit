@@ -1,4 +1,4 @@
-﻿using SpireApi.Application.Modules.Iam.Domain.Contexts;
+﻿using SpireApi.Application.Modules.Iam.Domain.Groups.Contexts;
 using SpireCore.API.Operations;
 using SpireCore.API.Operations.Dtos;
 using SpireCore.Services;

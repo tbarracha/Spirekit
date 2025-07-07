@@ -1,6 +1,5 @@
-﻿using SpireApi.Application.Modules.Iam.Domain.Models.Users;
-using SpireApi.Application.Modules.Iam.Domain.Models.Users.Repositories;
-using SpireApi.Application.Modules.Iam.Domain.Services;
+﻿using SpireApi.Application.Modules.Iam.Domain.Users.Models;
+using SpireApi.Application.Modules.Iam.Domain.Users.Repositories;
 using SpireApi.Contracts.Events.Authentication;
 using SpireCore.Constants;
 using SpireCore.Events.Dispatcher;
@@ -10,12 +9,10 @@ namespace SpireApi.Application.Modules.Iam.EventHandling;
 public class OnAuthUserRegisteredHandler : IEventHandler<AuthUserRegisteredEvent>
 {
     private readonly IamUserRepository _iamUserRepository;
-    private readonly IamService _iamService;
 
-    public OnAuthUserRegisteredHandler(IamUserRepository iamUserRepository, IamService iamService)
+    public OnAuthUserRegisteredHandler(IamUserRepository iamUserRepository)
     {
         _iamUserRepository = iamUserRepository;
-        _iamService = iamService;
     }
 
     public async Task HandleEventAsync(AuthUserRegisteredEvent @event, CancellationToken cancellationToken = default)
@@ -40,7 +37,6 @@ public class OnAuthUserRegisteredHandler : IEventHandler<AuthUserRegisteredEvent
             };
 
             var newUser = await _iamUserRepository.AddAsync(iamUser);
-            await _iamService.NewUserSetup(newUser.Id);
         }
     }
 }

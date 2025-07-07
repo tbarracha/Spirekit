@@ -1,5 +1,5 @@
 ﻿// --------- CreateRoleOperation.cs ---------
-using SpireApi.Application.Modules.Iam.Domain.Models.Roles;
+using SpireApi.Application.Modules.Iam.Domain.Roles.Models;
 using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireCore.API.Operations.Attributes;
 using SpireCore.API.Operations.Dtos;
