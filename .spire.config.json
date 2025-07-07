@@ -62,6 +62,10 @@
       {
         "Name": "Iam",
         "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\Modules\\Iam"
+      },
+      {
+        "Name": "Groups",
+        "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\Modules\\Groups"
       }
     ]
   },

@@ -1,9 +1,12 @@
-﻿using System.Text.Json;
+﻿using SpireCLI.Commands.Root.ProjectManagement.Core;
 using SpireCore.Commands;
+using System.Text.Json;
+using static SpireCLI.Commands.Root.ProjectManagement.Core.SpireProjectConfigManager;
+using static SpireCLI.Commands.Root.ProjectManagement.Core.SpireProjectConfigManager.SpireSolutionConfig; // For SpireSolutionConfig
 
 namespace SpireCLI.Commands.Root;
 
-public class SetActiveSolutionCommand : BaseCommand
+public class SetActiveSolutionCommand : BaseSpireProjectCommand
 {
     public override string Name => "set-solution";
     public override string Description => "Sets the path to the main Spire solution (.sln) this CLI should operate on.";
@@ -23,19 +26,28 @@ public class SetActiveSolutionCommand : BaseCommand
         AssignProjectTemplates(projectEntries);
         WarnIfMissingCrucialProjects(projectEntries);
 
-        // === NEW: Find modules/features in .Application ===
+        // === Find modules/features in .Application ===
         var applicationProject = projectEntries
             .FirstOrDefault(p => p.Name.EndsWith(".Application", StringComparison.OrdinalIgnoreCase));
-        SpireSolutionConfig.ModuleSection? modulesSection = null;
-        SpireSolutionConfig.FeatureSection? featuresSection = null;
+        ModuleSection? modulesSection = null;
+        FeatureSection? featuresSection = null;
         if (applicationProject != null)
         {
             var appRoot = Path.GetDirectoryName(applicationProject.Path)!;
-            modulesSection = FindModulesSection(appRoot);
-            featuresSection = FindFeaturesSection(appRoot);
+            modulesSection = SpireProjectConfigManager.FindModulesSection(appRoot);
+            featuresSection = SpireProjectConfigManager.FindFeaturesSection(appRoot);
         }
 
-        SaveConfig(solutionPath, projectEntries, modulesSection, featuresSection);
+        // Save config via the utility class
+        var config = new SpireSolutionConfig
+        {
+            SolutionPath = solutionPath,
+            Projects = projectEntries,
+            ApplicationModules = modulesSection,
+            ApplicationFeatures = featuresSection
+        };
+        SpireProjectConfigManager.SaveConfig(config);
+
         PrintSummary(solutionPath, projectEntries, modulesSection, featuresSection);
 
         return CommandResult.Success("");
@@ -126,21 +138,25 @@ public class SetActiveSolutionCommand : BaseCommand
         }
     }
 
-    private static void SaveConfig(
-        string solutionPath,
-        List<SpireSolutionConfig.ProjectEntry> projects,
-        SpireSolutionConfig.ModuleSection? modulesSection,
-        SpireSolutionConfig.FeatureSection? featuresSection)
+    private static string? DetectProjectTemplate(string projectName, string projectPath)
     {
-        var config = new SpireSolutionConfig
+        if (projectName.Equals("SpireCLI", StringComparison.OrdinalIgnoreCase))
+            return "cli";
+        if (!File.Exists(projectPath) || !projectPath.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase))
+            return null;
+        try
         {
-            SolutionPath = solutionPath,
-            Projects = projects,
-            ApplicationModules = modulesSection,
-            ApplicationFeatures = featuresSection
-        };
-        var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(ConfigFilePath, json);
+            var firstLines = File.ReadLines(projectPath).Take(5).ToList();
+            foreach (var line in firstLines)
+            {
+                if (line.Contains("<Project Sdk=\"Microsoft.NET.Sdk.Web\""))
+                    return "webapi";
+                if (line.Contains("<Project Sdk=\"Microsoft.NET.Sdk\""))
+                    return "classlib";
+            }
+        }
+        catch { /* ignore */ }
+        return null;
     }
 
     private static void PrintSummary(
@@ -170,148 +186,9 @@ public class SetActiveSolutionCommand : BaseCommand
         }
         Console.ResetColor();
 
-        Console.WriteLine($"Configuration saved at {ConfigFilePath}");
-    }
-
-    // --- Detect Modules (from /Modules) ---
-    private static SpireSolutionConfig.ModuleSection? FindModulesSection(string appRoot)
-    {
-        var modulesDir = Path.Combine(appRoot, "Modules");
-        if (Directory.Exists(modulesDir))
-        {
-            var modules = Directory.GetDirectories(modulesDir)
-                .Select(modDir => new SpireSolutionConfig.ModuleEntry
-                {
-                    Name = Path.GetFileName(modDir),
-                    Path = modDir
-                }).ToList();
-
-            return new SpireSolutionConfig.ModuleSection
-            {
-                Path = modulesDir,
-                Modules = modules
-            };
-        }
-        return null;
-    }
-
-    private static SpireSolutionConfig.FeatureSection? FindFeaturesSection(string appRoot)
-    {
-        var featuresDir = Path.Combine(appRoot, "Features");
-        if (Directory.Exists(featuresDir))
-        {
-            var features = Directory.GetDirectories(featuresDir)
-                .Select(featDir => new SpireSolutionConfig.FeatureEntry
-                {
-                    Name = Path.GetFileName(featDir),
-                    Path = featDir
-                }).ToList();
-
-            return new SpireSolutionConfig.FeatureSection
-            {
-                Path = featuresDir,
-                Features = features
-            };
-        }
-        return null;
-    }
-
-    // --- Other Helpers ---
-    private static string? FindGitRoot(string startDir)
-    {
-        var dir = new DirectoryInfo(startDir);
-        while (dir != null)
-        {
-            if (Directory.Exists(Path.Combine(dir.FullName, ".git")))
-                return dir.FullName;
-            dir = dir.Parent;
-        }
-        return null;
-    }
-
-    private static string? DetectProjectTemplate(string projectName, string projectPath)
-    {
-        if (projectName.Equals("SpireCLI", StringComparison.OrdinalIgnoreCase))
-            return "cli";
-        if (!File.Exists(projectPath) || !projectPath.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase))
-            return null;
-        try
-        {
-            var firstLines = File.ReadLines(projectPath).Take(5).ToList();
-            foreach (var line in firstLines)
-            {
-                if (line.Contains("<Project Sdk=\"Microsoft.NET.Sdk.Web\""))
-                    return "webapi";
-                if (line.Contains("<Project Sdk=\"Microsoft.NET.Sdk\""))
-                    return "classlib";
-            }
-        }
-        catch { /* ignore */ }
-        return null;
-    }
-
-    private static string ConfigFilePath
-    {
-        get
-        {
-            var cwd = Directory.GetCurrentDirectory();
-            var gitRoot = FindGitRoot(cwd);
-            if (gitRoot != null)
-                return Path.Combine(gitRoot, ".spire.config.json");
-
-            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return Path.Combine(home, ".spire.config.json");
-        }
-    }
-
-    public static string? GetActiveSolution()
-    {
-        if (!File.Exists(ConfigFilePath))
-            return null;
-        try
-        {
-            var json = File.ReadAllText(ConfigFilePath);
-            var doc = JsonSerializer.Deserialize<SpireSolutionConfig>(json);
-            return doc?.SolutionPath;
-        }
-        catch { return null; }
-    }
-
-    // --- CONFIG STRUCT ---
-    public class SpireSolutionConfig
-    {
-        public string SolutionPath { get; set; }
-        public List<ProjectEntry> Projects { get; set; }
-        public ModuleSection? ApplicationModules { get; set; }
-        public FeatureSection? ApplicationFeatures { get; set; }
-
-        public class ProjectEntry
-        {
-            public string Name { get; set; }
-            public string Path { get; set; }
-            public string? Template { get; set; }
-        }
-
-        public class ModuleSection
-        {
-            public string Path { get; set; }
-            public List<ModuleEntry> Modules { get; set; }
-        }
-        public class ModuleEntry
-        {
-            public string Name { get; set; }
-            public string Path { get; set; }
-        }
-
-        public class FeatureSection
-        {
-            public string Path { get; set; }
-            public List<FeatureEntry> Features { get; set; }
-        }
-        public class FeatureEntry
-        {
-            public string Name { get; set; }
-            public string Path { get; set; }
-        }
+        // Config file location
+        var configFile = SpireProjectConfigManager.FindConfigFilePath();
+        if (!string.IsNullOrWhiteSpace(configFile))
+            Console.WriteLine($"Configuration saved at {configFile}");
     }
 }

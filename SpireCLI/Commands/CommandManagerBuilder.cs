@@ -31,7 +31,7 @@ public static class CommandManagerBuilder
 
         spireProjectsSubNode.AddSubNode(new CommandNode(new CreateNewSpireApiProject()));
         spireProjectsSubNode.AddSubNode(new CommandNode(new SetActiveSolutionCommand()));
-        spireProjectsSubNode.AddSubNode(new CommandNode(new CreateAppStructureCommand()));
+        spireProjectsSubNode.AddSubNode(new CommandNode(new CreateAppModuleStructureCommand()));
         //spireProjectsSubNode.AddSubNode(new CommandNode(new DetectSpireApiProjectCommand()));
 
         return new CommandManager(root);

@@ -1,21 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\SpireCore\SpireCore.csproj" />
     <ProjectReference Include="..\SpireApi.Contracts\SpireApi.Contracts.csproj" />
     <ProjectReference Include="..\SpireCore.API\SpireCore.API.csproj" />
+    <Compile Include="Modules\Groups\**\*.cs" />
+    <Compile Include="Modules\Groups\GroupsModuleExtensions.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Scrutor" Version="6.1.0" />
   </ItemGroup>
-
   <ItemGroup>
     <!-- Entity Framework Core (no provider, design/tools only) -->
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
@@ -27,19 +26,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-
     <!-- Identity Core (no provider) -->
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.5" />
-
     <!-- JWT Auth -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Modules\Authentication\Domain\Repositories\" />
     <Folder Include="Modules\Iam\Domain\Repositories\" />
     <Folder Include="Modules\Iam\Dtos\" />
   </ItemGroup>
-
 </Project>

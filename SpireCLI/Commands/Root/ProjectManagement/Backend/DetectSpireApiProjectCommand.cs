@@ -3,7 +3,7 @@ using SpireCore.Commands;
 
 namespace SpireCLI.Commands.Root.ProjectManagement.Backend;
 
-public class DetectSpireApiProjectCommand : BaseSpireApiCommand
+public class DetectSpireApiProjectCommand : BaseSpireProjectCommand
 {
     public override string Name => "detect";
     public override string Description => "Detects whether the current folder is a SpireApi solution.";

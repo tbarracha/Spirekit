@@ -7,7 +7,7 @@ namespace SpireCLI.Commands.Root.ProjectManagement;
 /// <summary>
 /// Creates a new SpireApi solution with full multi-project layout.
 /// </summary>
-public class CreateNewSpireApiProject : BaseSpireApiCommand
+public class CreateNewSpireApiProject : BaseSpireProjectCommand
 {
     public override string Name => "new";
     public override string Description => "Create a new SpireApi solution with recommended project structure.";

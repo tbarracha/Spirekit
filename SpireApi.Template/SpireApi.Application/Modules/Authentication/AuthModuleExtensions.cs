@@ -7,7 +7,7 @@ using SpireApi.Application.Modules.Authentication.Infrastructure;
 
 namespace SpireApi.Application.Modules.Authentication;
 
-public static class AuthServiceExtensions
+public static class AuthModuleExtensions
 {
     /// <summary>
     /// Registers only domain authentication services (repositories, interfaces, custom logic).

@@ -2,7 +2,7 @@
 
 namespace SpireCLI.Commands.Root.ProjectManagement.Core;
 
-public abstract class BaseSpireApiCommand : BaseCommand
+public abstract class BaseSpireProjectCommand : BaseCommand
 {
 
 }
