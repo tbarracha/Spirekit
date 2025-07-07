@@ -5,5 +5,5 @@ namespace SpireApi.Infrastructure.Iam;
 
 public class IamDbContext : BaseIamDbContext
 {
-    public IamDbContext(DbContextOptions<IamDbContext> options) : base(options) { }
+    public IamDbContext(DbContextOptions options) : base(options) { }
 }

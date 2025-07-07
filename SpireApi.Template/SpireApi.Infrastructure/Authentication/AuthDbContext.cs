@@ -5,5 +5,5 @@ namespace SpireApi.Infrastructure.Authentication;
 
 public class AuthDbContext : BaseAuthDbContext
 {
-    public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) { }
+    public AuthDbContext(DbContextOptions options) : base(options) { }
 }

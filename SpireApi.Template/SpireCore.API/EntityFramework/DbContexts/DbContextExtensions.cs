@@ -24,30 +24,28 @@ public static class DbContextExtensions
         {
             var clrType = entityType.ClrType;
 
-            // Find IEntity<TId>
+            // only deal with *closed* types
+            if (clrType.IsAbstract || clrType.ContainsGenericParameters)
+                continue;
+
             var ientityInterface = clrType
                 .GetInterfaces()
                 .FirstOrDefault(i =>
                     i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEntity<>));
 
-            if (ientityInterface != null)
-            {
-                var entityBuilder = modelBuilder.Entity(clrType);
+            if (ientityInterface == null)
+                continue;
 
-                // Try to find the ConfigureEntity method
-                var methodInfo = clrType.GetMethod(
-                    "ConfigureEntity",
-                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+            var methodInfo = clrType.GetMethod(
+                "ConfigureEntity",
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
 
-                if (methodInfo != null)
-                {
-                    var entityInstance = Activator.CreateInstance(clrType);
-                    if (entityInstance != null)
-                    {
-                        methodInfo.Invoke(entityInstance, new object[] { entityBuilder });
-                    }
-                }
-            }
+            if (methodInfo == null || methodInfo.ContainsGenericParameters)
+                continue;
+
+            var entityBuilder = modelBuilder.Entity(clrType);
+            var entityInstance = Activator.CreateInstance(clrType)!;
+            methodInfo.Invoke(entityInstance, new object[] { entityBuilder });
         }
     }
 }
