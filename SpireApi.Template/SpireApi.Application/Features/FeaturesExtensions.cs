@@ -4,7 +4,7 @@ using SpireCore.API.Configuration.Features;
 
 namespace SpireApi.Application.Features;
 
-public static class FeatureExtensions
+public static class FeaturesExtensions
 {
     public static void AddEnabledFeatures(this IServiceCollection services, FeaturesConfigurationList features)
     {
