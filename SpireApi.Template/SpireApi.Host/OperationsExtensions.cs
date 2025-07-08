@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 using SpireCore.API.Operations;
 using SpireCore.API.Operations.Attributes;
+using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
+using System.Text;
 
-public static class OperationExtensions
+public static class OperationsExtensions
 {
     public static void AddOperations(this IServiceCollection services)
     {
@@ -175,8 +178,8 @@ public static class OperationExtensions
 
                     var httpMethod = methodAttr?.HttpMethod ?? "POST";
 
-                    var method = typeof(OperationExtensions)
-                        .GetMethod(nameof(OperationExtensions.MapOperation), BindingFlags.Public | BindingFlags.Static)!
+                    var method = typeof(OperationsExtensions)
+                        .GetMethod(nameof(OperationsExtensions.MapOperation), BindingFlags.Public | BindingFlags.Static)!
                         .MakeGenericMethod(opType, requestType, responseType);
 
                     var endpointBuilder = (RouteHandlerBuilder)method.Invoke(null, [app, route, httpMethod])!;

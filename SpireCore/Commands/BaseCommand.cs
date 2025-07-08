@@ -31,7 +31,7 @@ public abstract class BaseCommand : ICommand
     /// synchronous <see cref="ICommand.Execute"/> signature.
     /// Usage: <c>return RunAsync(() => DoWorkAsync(context));</c>
     /// </summary>
-    protected static CommandResult RunAsync(
+    protected CommandResult RunAsync(
         Func<Task<CommandResult>> asyncFunc)
     {
         // .GetAwaiter().GetResult() avoids AggregateException wrapping

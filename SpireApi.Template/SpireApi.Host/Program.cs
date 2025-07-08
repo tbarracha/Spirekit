@@ -1,5 +1,7 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Extensions;
 using SpireApi.Application.Features;
 using SpireApi.Application.Modules;
 using SpireApi.Application.Modules.Authentication.Configuration;
@@ -12,6 +14,8 @@ using SpireCore.API.JWT.Identity.Users;
 using SpireCore.API.Swagger;
 using SpireCore.Events.Dispatcher;
 using SpireCore.Services;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 

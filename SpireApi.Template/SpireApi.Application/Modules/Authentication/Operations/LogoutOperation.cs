@@ -1,4 +1,5 @@
 ﻿using SpireApi.Application.Modules.Authentication.Domain.Services;
+using SpireCore.API.Operations.Attributes;
 
 namespace SpireApi.Application.Modules.Authentication.Operations;
 
@@ -9,6 +10,7 @@ public class LogoutRequestDto
 
 public class EmptyResponseDto { }
 
+[OperationAuthorize]
 public class LogoutOperation : AuthOperation<LogoutRequestDto, EmptyResponseDto>
 {
     public LogoutOperation(AuthenticationService authenticationService)

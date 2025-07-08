@@ -1,8 +1,10 @@
 ﻿using SpireApi.Application.Modules.Authentication.Domain.Services;
 using SpireApi.Contracts.Dtos.Modules.Authentication;
+using SpireCore.API.Operations.Attributes;
 
 namespace SpireApi.Application.Modules.Authentication.Operations;
 
+[OperationGroup("Auth Public")]
 public class RegisterOperation : AuthOperation<RegisterRequestDto, AuthResponseDto>
 {
     public RegisterOperation(AuthenticationService authenticationService)

@@ -37,8 +37,4 @@
     <ProjectReference Include="..\SpireCore\SpireCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\ProjectManagement\Frontend\" />
-  </ItemGroup>
-
 </Project>

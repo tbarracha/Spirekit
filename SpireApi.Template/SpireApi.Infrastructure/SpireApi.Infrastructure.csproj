@@ -29,4 +29,8 @@
     <ProjectReference Include="..\SpireApi.Contracts\SpireApi.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
