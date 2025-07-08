@@ -10,10 +10,11 @@ public class CommandNode
     public string Name { get; }
     public string Description { get; }
     public ICommand Command { get; }
+    public int Index { get; set; }
 
-    // Subnodes keyed by name
+    private static int _globalIndex = 0;
+
     private readonly Dictionary<string, CommandNode> _subNodes = new();
-    // Subnodes keyed by alias
     private readonly Dictionary<string, CommandNode> _aliases = new();
 
     /// <summary>
@@ -29,15 +30,17 @@ public class CommandNode
         Name = command.Name;
         Description = command.Description;
         Command = command;
+        Index = _globalIndex++;
     }
 
     /// <summary>
-    /// Constructor for group/category nodes.
+    /// Constructor for groups/category nodes.
     /// </summary>
     public CommandNode(string name, string description = "")
     {
         Name = name;
         Description = description;
+        Index = _globalIndex++;
     }
 
     /// <summary>
@@ -61,15 +64,16 @@ public class CommandNode
     /// <summary>
     /// Looks up a subnode by name or alias.
     /// </summary>
+    // In CommandNode
     public bool TryGetSubNode(string name, out CommandNode node)
     {
-        if (_subNodes.TryGetValue(name, out node))
-            return true;
+        // Case-insensitive match for subcommand names and aliases
+        node = SubNodes
+            .FirstOrDefault(n =>
+                n.Name.Equals(name, StringComparison.OrdinalIgnoreCase) ||
+                n.Command?.Aliases?.Any(a => a.Equals(name, StringComparison.OrdinalIgnoreCase)) == true);
 
-        if (_aliases.TryGetValue(name, out node))
-            return true;
-
-        return false;
+        return node != null;
     }
 
     /// <summary>

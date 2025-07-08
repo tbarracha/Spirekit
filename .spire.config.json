@@ -1,0 +1,77 @@
+{
+  "SolutionPath": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\Spirekit.sln",
+  "Projects": [
+    {
+      "Name": "SpireCLI",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireCLI\\SpireCLI.csproj",
+      "Template": "cli"
+    },
+    {
+      "Name": "SpireCore",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireCore\\SpireCore.csproj",
+      "Template": "classlib"
+    },
+    {
+      "Name": "SpireApi",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi",
+      "Template": null
+    },
+    {
+      "Name": "SpireApi.Application",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\SpireApi.Application.csproj",
+      "Template": "classlib"
+    },
+    {
+      "Name": "SpireApi.Contracts",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Contracts\\SpireApi.Contracts.csproj",
+      "Template": "classlib"
+    },
+    {
+      "Name": "SpireApi.Host",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Host\\SpireApi.Host.csproj",
+      "Template": "webapi"
+    },
+    {
+      "Name": "SpireApi.Infrastructure",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Infrastructure\\SpireApi.Infrastructure.csproj",
+      "Template": "classlib"
+    },
+    {
+      "Name": "Solution Items",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\Solution Items",
+      "Template": null
+    },
+    {
+      "Name": "Scripts",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\Scripts",
+      "Template": null
+    },
+    {
+      "Name": "SpireCore.API",
+      "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireCore.API\\SpireCore.API.csproj",
+      "Template": "classlib"
+    }
+  ],
+  "ApplicationModules": {
+    "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\Modules",
+    "Modules": [
+      {
+        "Name": "Authentication",
+        "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\Modules\\Authentication"
+      },
+      {
+        "Name": "Iam",
+        "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\Modules\\Iam"
+      }
+    ]
+  },
+  "ApplicationFeatures": {
+    "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\Features",
+    "Features": [
+      {
+        "Name": "Hello",
+        "Path": "C:\\Users\\PC\\Documents\\GitHub\\Spirekit\\SpireApi.Template\\SpireApi.Application\\Features\\Hello"
+      }
+    ]
+  }
+}

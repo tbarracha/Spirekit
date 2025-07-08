@@ -17,12 +17,12 @@ public interface IPagination<T> where T : class
     /// <summary>
     /// Paged query for all entities matching a given state flag (default: ACTIVE).
     /// </summary>
-    Task<PaginatedResult<T>> ListPagedAsync(int page, int pageSize, string state = StateFlags.ACTIVE);
+    Task<PaginatedResult<T>> GetPaginatedResultAsync(int page, int pageSize, string state = StateFlags.ACTIVE);
 
     /// <summary>
     /// Paged filtered query for entities matching a given state flag (default: ACTIVE).
     /// </summary>
-    Task<PaginatedResult<T>> ListPagedFilteredAsync(
+    Task<PaginatedResult<T>> GetFilteredPaginatedResultAsync(
         Expression<Func<T, bool>> filter,
         int page,
         int pageSize,

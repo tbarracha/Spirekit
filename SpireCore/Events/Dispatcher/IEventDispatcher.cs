@@ -1,7 +1,8 @@
-﻿namespace SpireCore.Events.Dispatcher;
+﻿
+namespace SpireCore.Events.Dispatcher;
 
 public interface IEventDispatcher
 {
-    Task DispatchEventAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
+    Task PublishEventAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
         where TEvent : IDomainEvent;
 }

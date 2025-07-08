@@ -1,0 +1,20 @@
+﻿using SpireApi.Application.Modules.Authentication.Domain.Services;
+using SpireApi.Contracts.Dtos.Modules.Authentication;
+using SpireCore.API.Operations.Attributes;
+
+namespace SpireApi.Application.Modules.Authentication.Operations;
+
+[OperationGroup("Auth Public")]
+public class LoginOperation : AuthOperation<LoginRequestDto, AuthResponseDto>
+{
+    public LoginOperation(AuthenticationService authenticationService)
+        : base(authenticationService) { }
+
+    public override async Task<AuthResponseDto> ExecuteAsync(LoginRequestDto request)
+    {
+        var (accessToken, refreshToken) = await _authenticationService.LoginAsync(
+            request.Identifier, request.Password
+        );
+        return new AuthResponseDto { AccessToken = accessToken, RefreshToken = refreshToken };
+    }
+}

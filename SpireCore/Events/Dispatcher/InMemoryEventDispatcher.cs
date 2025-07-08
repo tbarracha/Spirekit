@@ -12,7 +12,7 @@ public class InMemoryEventDispatcher : IEventDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public async Task DispatchEventAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
+    public async Task PublishEventAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
         where TEvent : IDomainEvent
     {
         var handlers = _serviceProvider.GetServices<IEventHandler<TEvent>>();

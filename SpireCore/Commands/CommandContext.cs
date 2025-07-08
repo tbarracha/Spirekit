@@ -10,14 +10,16 @@ public class CommandContext
     public string[] Args { get; }
     public CommandManager CommandManager { get; }
     public CommandNode Root { get; }
+    public string InvokedCommandName { get; }
     public bool IsInteractive { get; }
     public string CurrentDirectory { get; }
 
-    public CommandContext(string[] args, CommandManager commandManager, CommandNode root, bool isInteractive = false)
+    public CommandContext(string[] args, CommandManager commandManager, CommandNode root, string invokedCommandName = null, bool isInteractive = false)
     {
         Args = args;
         CommandManager = commandManager;
         Root = root;
+        InvokedCommandName = invokedCommandName ?? "";
         IsInteractive = isInteractive;
         CurrentDirectory = Directory.GetCurrentDirectory();
     }

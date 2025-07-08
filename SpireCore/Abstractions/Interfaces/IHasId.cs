@@ -5,7 +5,7 @@ public interface IHasId
     string Id { get; }
 }
 
-public interface IHasId<T>
+public interface IHasId<TId>
 {
-    T Id { get; set; }
+    TId Id { get; set; }
 }
