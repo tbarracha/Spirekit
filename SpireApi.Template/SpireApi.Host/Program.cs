@@ -4,9 +4,7 @@ using SpireApi.Application.Features;
 using SpireApi.Application.Modules;
 using SpireApi.Application.Modules.Authentication.Configuration;
 using SpireApi.Application.Modules.Authentication.Infrastructure;
-using SpireApi.Application.Modules.Iam.Infrastructure;
 using SpireApi.Infrastructure.Authentication;
-using SpireApi.Infrastructure.Iam;
 using SpireCore.API.Configuration.Features;
 using SpireCore.API.Configuration.Modules;
 using SpireCore.API.JWT;
@@ -41,9 +39,6 @@ var iamConnString = iamConfig.DbConnectionString
 // --- DB Contexts ---
 builder.Services.AddDbContext<BaseAuthDbContext, AuthDbContext>(options =>
     options.UseNpgsql(authConnString));
-
-builder.Services.AddDbContext<BaseIamDbContext, IamDbContext>(options =>
-    options.UseNpgsql(iamConnString));
 
 // --- Event dispatcher, modules & domain services ---
 builder.Services.AddDomainEventDispatcher();

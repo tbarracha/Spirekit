@@ -11,7 +11,7 @@ Spirekit
 ¦   ¦   ¦   ¦   ¦   +-- HelloWorldOperation.cs
 ¦   ¦   ¦   ¦   +-- Services
 ¦   ¦   ¦   ¦       +-- HelloService.cs
-¦   ¦   ¦   +-- FeatureExtensions.cs
+¦   ¦   ¦   +-- FeaturesExtensions.cs
 ¦   ¦   +-- Modules
 ¦   ¦   ¦   +-- Authentication
 ¦   ¦   ¦   ¦   +-- Configuration
@@ -47,6 +47,7 @@ Spirekit
 ¦   ¦   ¦   ¦   ¦   +-- RefreshTokenOperation.cs
 ¦   ¦   ¦   ¦   ¦   +-- RegisterOperation.cs
 ¦   ¦   ¦   ¦   +-- AuthModuleExtensions.cs
+¦   ¦   ¦   ¦   +-- AuthREADME.md
 ¦   ¦   ¦   +-- Iam
 ¦   ¦   ¦   ¦   +-- Domain
 ¦   ¦   ¦   ¦   ¦   +-- Contexts
@@ -164,6 +165,7 @@ Spirekit
 ¦   ¦   ¦   ¦   ¦           +-- PaginatedRolesByUserIdOperation.cs
 ¦   ¦   ¦   ¦   ¦           +-- RemoveUserRoleOperation.cs
 ¦   ¦   ¦   ¦   +-- IamModuleExtensions.cs
+¦   ¦   ¦   ¦   +-- IamREADME.md
 ¦   ¦   ¦   +-- ModulesExtensions.cs
 ¦   ¦   +-- SpireApi.Application.csproj
 ¦   ¦   +-- structure.txt
@@ -210,68 +212,6 @@ Spirekit
 ¦   ¦   +-- migration_commands.txt
 ¦   ¦   +-- SpireApi.Infrastructure.csproj
 ¦   +-- SpireCore.API
-¦   ¦   +-- Configuration
-¦   ¦   ¦   +-- Features
-¦   ¦   ¦   ¦   +-- FeatureConfiguration.cs
-¦   ¦   ¦   ¦   +-- FeaturesConfigurationList.cs
-¦   ¦   ¦   +-- Modules
-¦   ¦   ¦       +-- ModuleConfiguration.cs
-¦   ¦   ¦       +-- ModulesConfigurationList.cs.cs
-¦   ¦   +-- EntityFramework
-¦   ¦   ¦   +-- DbContexts
-¦   ¦   ¦   ¦   +-- BaseDbContext.cs
-¦   ¦   ¦   ¦   +-- BaseEntityDbContext.cs
-¦   ¦   ¦   ¦   +-- DbContextExtensions.cs
-¦   ¦   ¦   +-- Entities
-¦   ¦   ¦       +-- Base
-¦   ¦   ¦       ¦   +-- BaseAuditableEntity.cs
-¦   ¦   ¦       ¦   +-- BaseEntity.cs
-¦   ¦   ¦       ¦   +-- IAuditableEntity.cs
-¦   ¦   ¦       ¦   +-- IEntity.cs
-¦   ¦   ¦       +-- Memberships
-¦   ¦   ¦       ¦   +-- BaseGroupMembership.cs
-¦   ¦   ¦       ¦   +-- BaseGroupMembershipService.cs
-¦   ¦   ¦       ¦   +-- GroupMemberAuditType.cs
-¦   ¦   ¦       ¦   +-- IGroupMembership.cs
-¦   ¦   ¦       ¦   +-- IGroupService.cs
-¦   ¦   ¦       ¦   +-- MembershipState.cs
-¦   ¦   ¦       +-- Repositories
-¦   ¦   ¦       ¦   +-- BaseAuditableEntityRepository.cs
-¦   ¦   ¦       ¦   +-- BaseEntityRepository.cs
-¦   ¦   ¦       ¦   +-- IAuditableEntityRepository.cs
-¦   ¦   ¦       ¦   +-- IEntityRepository.cs
-¦   ¦   ¦       +-- BaseEntityConfigurationHelper.cs
-¦   ¦   +-- JWT
-¦   ¦   ¦   +-- Identity
-¦   ¦   ¦   ¦   +-- Services
-¦   ¦   ¦   ¦   ¦   +-- IJwtServiceIdentity.cs
-¦   ¦   ¦   ¦   ¦   +-- IServiceAuthenticationService.cs
-¦   ¦   ¦   ¦   +-- Users
-¦   ¦   ¦   ¦       +-- IJwtUserIdentity.cs
-¦   ¦   ¦   ¦       +-- IJwtUserService.cs
-¦   ¦   ¦   ¦       +-- JwtUser.cs
-¦   ¦   ¦   ¦       +-- JwtUserService.cs
-¦   ¦   ¦   +-- JwtExtensions.cs
-¦   ¦   +-- Operations
-¦   ¦   ¦   +-- Attributes
-¦   ¦   ¦   ¦   +-- OperationAuthorizeAttribute.cs
-¦   ¦   ¦   ¦   +-- OperationGroupAttribute.cs
-¦   ¦   ¦   ¦   +-- OperationMethodAttribute.cs
-¦   ¦   ¦   ¦   +-- OperationProducesFileAttribute.cs
-¦   ¦   ¦   ¦   +-- OperationRouteAttribute.cs
-¦   ¦   ¦   +-- Dtos
-¦   ¦   ¦   ¦   +-- AuditableRequestDto.cs
-¦   ¦   ¦   +-- IOperation.cs
-¦   ¦   ¦   +-- OperationEndpointMapper.cs
-¦   ¦   ¦   +-- OperationExtensions.cs
-¦   ¦   ¦   +-- OperationMiddleware.cs
-¦   ¦   +-- Swagger
-¦   ¦   ¦   +-- SwaggerControllerOrders
-¦   ¦   ¦   ¦   +-- CustomSwaggerDocumentFilter.cs
-¦   ¦   ¦   ¦   +-- SwaggerControllerOrder.cs
-¦   ¦   ¦   ¦   +-- SwaggerControllerOrderAttribute.cs
-¦   ¦   ¦   ¦   +-- VerbOrderOperationIdFilter.cs
-¦   ¦   ¦   +-- SwaggerAutoOpenExtension.cs
 ¦   ¦   +-- SpireCore.API.csproj
 ¦   +-- Template
 ¦       +-- {Namespace}.Application
@@ -493,6 +433,8 @@ Spirekit
 ¦   ¦   ¦   +-- HelpCommand.cs
 ¦   ¦   ¦   +-- VersionCommand.cs
 ¦   ¦   +-- CommandManagerBuilder.cs
+¦   +-- appsettings.Development.json
+¦   +-- appsettings.json
 ¦   +-- Program.cs
 ¦   +-- SpireCLI.csproj
 ¦   +-- SpireCLI.sln
@@ -580,6 +522,70 @@ Spirekit
 ¦   +-- Utils
 ¦   ¦   +-- GuidUtility.cs
 ¦   +-- SpireCore.csproj
++-- SpireCore.API
+¦   +-- Configuration
+¦   ¦   +-- Features
+¦   ¦   ¦   +-- FeatureConfiguration.cs
+¦   ¦   ¦   +-- FeaturesConfigurationList.cs
+¦   ¦   +-- Modules
+¦   ¦       +-- ModuleConfiguration.cs
+¦   ¦       +-- ModulesConfigurationList.cs.cs
+¦   +-- EntityFramework
+¦   ¦   +-- DbContexts
+¦   ¦   ¦   +-- BaseDbContext.cs
+¦   ¦   ¦   +-- BaseEntityDbContext.cs
+¦   ¦   ¦   +-- DbContextExtensions.cs
+¦   ¦   +-- Entities
+¦   ¦       +-- Base
+¦   ¦       ¦   +-- BaseAuditableEntity.cs
+¦   ¦       ¦   +-- BaseEntity.cs
+¦   ¦       ¦   +-- IAuditableEntity.cs
+¦   ¦       ¦   +-- IEntity.cs
+¦   ¦       +-- Memberships
+¦   ¦       ¦   +-- BaseGroupMembership.cs
+¦   ¦       ¦   +-- BaseGroupMembershipService.cs
+¦   ¦       ¦   +-- GroupMemberAuditType.cs
+¦   ¦       ¦   +-- IGroupMembership.cs
+¦   ¦       ¦   +-- IGroupService.cs
+¦   ¦       ¦   +-- MembershipState.cs
+¦   ¦       +-- Repositories
+¦   ¦       ¦   +-- BaseAuditableEntityRepository.cs
+¦   ¦       ¦   +-- BaseEntityRepository.cs
+¦   ¦       ¦   +-- IAuditableEntityRepository.cs
+¦   ¦       ¦   +-- IEntityRepository.cs
+¦   ¦       +-- BaseEntityConfigurationHelper.cs
+¦   +-- JWT
+¦   ¦   +-- Identity
+¦   ¦   ¦   +-- Services
+¦   ¦   ¦   ¦   +-- IJwtServiceIdentity.cs
+¦   ¦   ¦   ¦   +-- IServiceAuthenticationService.cs
+¦   ¦   ¦   +-- Users
+¦   ¦   ¦       +-- IJwtUserIdentity.cs
+¦   ¦   ¦       +-- IJwtUserService.cs
+¦   ¦   ¦       +-- JwtUser.cs
+¦   ¦   ¦       +-- JwtUserService.cs
+¦   ¦   +-- JwtExtensions.cs
+¦   +-- Operations
+¦   ¦   +-- Attributes
+¦   ¦   ¦   +-- OperationAuthorizeAttribute.cs
+¦   ¦   ¦   +-- OperationGroupAttribute.cs
+¦   ¦   ¦   +-- OperationMethodAttribute.cs
+¦   ¦   ¦   +-- OperationProducesFileAttribute.cs
+¦   ¦   ¦   +-- OperationRouteAttribute.cs
+¦   ¦   +-- Dtos
+¦   ¦   ¦   +-- AuditableRequestDto.cs
+¦   ¦   +-- IOperation.cs
+¦   ¦   +-- OperationEndpointMapper.cs
+¦   ¦   +-- OperationExtensions.cs
+¦   ¦   +-- OperationMiddleware.cs
+¦   +-- Swagger
+¦   ¦   +-- SwaggerControllerOrders
+¦   ¦   ¦   +-- CustomSwaggerDocumentFilter.cs
+¦   ¦   ¦   +-- SwaggerControllerOrder.cs
+¦   ¦   ¦   +-- SwaggerControllerOrderAttribute.cs
+¦   ¦   ¦   +-- VerbOrderOperationIdFilter.cs
+¦   ¦   +-- SwaggerAutoOpenExtension.cs
+¦   +-- SpireCore.API.csproj
 +-- Spirekit
 +-- solution-structure.txt
 +-- Spirekit.sln

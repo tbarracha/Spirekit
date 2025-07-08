@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SpireApi.Application.Modules.Authentication;
-using SpireApi.Application.Modules.Iam;
 using SpireCore.API.Configuration.Modules;
 
 namespace SpireApi.Application.Modules;
@@ -13,12 +12,6 @@ public static class ModulesExtensions
         {
             services.AddAuthModuleServices();
             Console.WriteLine("[MODULE] Added Auth");
-        }
-
-        if (modules.TryGetValue("Iam", out var iamConfig) && iamConfig.Enabled)
-        {
-            services.AddIamModuleServices();
-            Console.WriteLine("[MODULE] Added IAM");
         }
     }
 }

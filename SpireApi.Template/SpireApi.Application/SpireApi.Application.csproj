@@ -6,9 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Modules\Iam\IamREADME.md" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\SpireCore.API\SpireCore.API.csproj" />
     <ProjectReference Include="..\..\SpireCore\SpireCore.csproj" />
     <ProjectReference Include="..\SpireApi.Contracts\SpireApi.Contracts.csproj" />
@@ -32,9 +29,5 @@
     <!-- JWT Auth -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Iam\Domain\Contexts\" />
-    <Folder Include="Modules\Iam\Domain\Groups\Dtos\" />
   </ItemGroup>
 </Project>
